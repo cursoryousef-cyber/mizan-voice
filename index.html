@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ميزان صوت | Mizan Voice — نموذج أولي</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#152536;--muted:#657589;--line:#e4eaf1;--teal:#087f8c;--teal2:#0aa69a;--gold:#b88636;--red:#b42318;--green:#067647;--shadow:0 8px 28px rgba(19,42,66,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.65}
+button,input,select{font:inherit}button{cursor:pointer}.layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh}.side{background:#102b3a;color:#edf7fa;padding:26px 18px;display:flex;flex-direction:column;gap:22px}.brand{display:flex;gap:12px;align-items:center;padding:6px}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#10b8ae,#087f8c);display:grid;place-items:center;font-weight:900;font-size:22px;color:white}.brand strong{font-size:18px;display:block}.brand small{color:#a8c3ce}.nav{display:grid;gap:8px}.nav button{border:0;text-align:right;background:transparent;color:#c7dbe2;padding:12px 14px;border-radius:12px}.nav button.active,.nav button:hover{background:#1d4657;color:white}.side-note{margin-top:auto;background:#173a4a;border:1px solid #2b5262;border-radius:14px;padding:14px;color:#c4d9e0;font-size:12px}.main{padding:28px;max-width:1500px;width:100%;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}.eyebrow{font-size:12px;color:var(--teal);font-weight:800;letter-spacing:.2px}.top h1{font-size:28px;margin:2px 0}.subtitle{color:var(--muted);margin:0}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 14px;border-radius:11px;font-weight:700}.btn.primary{background:var(--teal);border-color:var(--teal);color:white}.btn:disabled{opacity:.45;cursor:not-allowed}.notice{background:#fff8e7;border:1px solid #f0dfb5;color:#70521a;border-radius:12px;padding:12px 15px;margin-bottom:18px;font-size:13px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow)}.stat{padding:18px}.stat .label{font-size:13px;color:var(--muted)}.stat .value{font-size:28px;font-weight:850;margin:4px 0}.stat .hint{font-size:12px;color:var(--muted)}.grid{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}.panel{padding:20px;margin-bottom:16px}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}.panel h2{font-size:17px;margin:0 0 4px}.panel p{margin:0;color:var(--muted);font-size:13px}.pill{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;background:#e8f7f5;color:#086c70;font-size:11px;font-weight:800}.pill.warn{background:#fff1d6;color:#8b5b00}.pill.gray{background:#edf1f5;color:#526275}.field{display:grid;gap:6px;margin:12px 0}.field label{font-weight:750;font-size:13px}.field input,.field select{border:1px solid #d7e0e8;border-radius:10px;padding:10px 12px;background:white;color:var(--ink);width:100%}.filters{display:grid;grid-template-columns:1fr 1fr;gap:10px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:right;padding:12px 9px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--muted);font-size:12px;font-weight:800;background:#f9fbfd}tbody tr:last-child td{border-bottom:0}.status{font-weight:800;font-size:11px;border-radius:8px;padding:4px 7px}.ok{background:#e8f7ef;color:#067647}.bad{background:#fdebea;color:#b42318}.review{background:#fff4db;color:#8a5b00}.meter{height:8px;border-radius:99px;background:#edf1f5;overflow:hidden;margin-top:8px}.meter span{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));width:0;transition:width .5s}.bars{display:grid;gap:15px}.barrow{display:grid;grid-template-columns:130px 1fr 42px;gap:10px;align-items:center;font-size:12px}.bar{height:9px;background:#edf1f5;border-radius:20px;overflow:hidden}.bar span{display:block;height:100%;background:var(--teal2);width:0}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed #ccd7e0;border-radius:12px}.scenario{border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center;gap:12px}.scenario strong{display:block;font-size:13px}.scenario small{color:var(--muted)}.scenario .right{display:flex;align-items:center;gap:8px}.smallbtn{padding:6px 10px;border:1px solid var(--line);background:white;border-radius:8px;font-size:12px;font-weight:700}.footer{font-size:12px;color:var(--muted);text-align:center;padding:12px}.page{display:none}.page.active{display:block}.report{background:#f8fbfc;border:1px solid #dce8eb;padding:16px;border-radius:12px;white-space:pre-wrap;font-size:13px;line-height:1.9}.toast{position:fixed;bottom:20px;left:20px;background:#123b49;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);display:none;z-index:9}.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:5px}.muted{color:var(--muted)}@media(max-width:1000px){.layout{grid-template-columns:1fr}.side{padding:12px 14px}.brand{padding:0}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.side-note{display:none}.main{padding:18px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}}@media(max-width:560px){.top{align-items:flex-start;flex-direction:column}.top h1{font-size:23px}.stats{gap:9px}.stat{padding:13px}.stat .value{font-size:23px}.filters{grid-template-columns:1fr}.panel{padding:14px}.barrow{grid-template-columns:100px 1fr 35px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="side">
+ <div class="brand"><div class="logo">م</div><div><strong>ميزان صوت</strong><small>Mizan Voice · نموذج أولي</small></div></div>
+ <nav class="nav">
+  <button class="active" data-page="overview">نظرة عامة</button>
+  <button data-page="dataset">مجموعة الاختبار</button>
+  <button data-page="evaluation">تشغيل تقييم تجريبي</button>
+  <button data-page="report">التقرير والمؤشرات</button>
+ </nav>
+ <div class="side-note"><strong>خصوصية وسلامة أولاً</strong><br>النسخة التجريبية لا ترفع صوتاً ولا تتصل بخدمات خارجية. البيانات المعروضة اصطناعية لأغراض توضيح تجربة الاستخدام فقط.</div>
+</aside>
+<main class="main">
+<header class="top"><div><div class="eyebrow">منصة تقييم دفاعية لسلامة الطفل رقمياً</div><h1 id="pageTitle">نظرة عامة</h1><p class="subtitle">تقييم قابل للتكرار لفهم الإشراف على المحادثات الصوتية العربية في الألعاب.</p></div><div class="actions"><button class="btn" id="exportBtn">تصدير CSV</button><button class="btn primary" id="runTop">تشغيل تقييم تجريبي</button></div></header>
+<div class="notice"><strong>تنبيه:</strong> هذه واجهة تصميم أولي تفاعلية. جميع السيناريوهات والنتائج افتراضية؛ لا تمثل اختباراً فعلياً لأي لعبة أو نظام إشراف، ولا يجوز تقديمها كنتائج ميدانية.</div>
+
+<section class="page active" id="overview">
+ <div class="stats">
+  <div class="stat"><div class="label">سيناريوهات الاختبار التجريبية</div><div class="value" id="statTotal">8</div><div class="hint">عينات توضيحية مصطنعة</div></div>
+  <div class="stat"><div class="label">التغطية اللغوية</div><div class="value">3</div><div class="hint">فصحى · لهجة سعودية · مزج عربي/إنجليزي</div></div>
+  <div class="stat"><div class="label">آخر تقييم</div><div class="value" id="statRun">—</div><div class="hint">لا توجد نتائج فعلية بعد</div></div>
+  <div class="stat"><div class="label">حالة النموذج</div><div class="value" style="font-size:20px">تصميم أولي</div><div class="hint">غير متصل بأنظمة خارجية</div></div>
+ </div>
+ <div class="grid">
+  <div class="panel"><div class="panel-head"><div><h2>تغطية سيناريوهات الاختبار</h2><p>توزيع توضيحي للعينات المدرجة في النسخة الحالية.</p></div><span class="pill gray">بيانات اصطناعية</span></div><div class="bars" id="coverageBars"></div></div>
+  <div class="panel"><div class="panel-head"><div><h2>رحلة التقييم</h2><p>من السيناريو إلى تقرير قابل للمراجعة.</p></div></div>
+   <div class="scenario"><div><strong>1. إعداد السيناريو</strong><small>النص، اللهجة، والفئة المرجعية</small></div><span class="pill">جاهز</span></div>
+   <div class="scenario"><div><strong>2. اختبار النظام</strong><small>يتطلب تكاملاً مصرحاً به في مرحلة لاحقة</small></div><span class="pill warn">محاكاة فقط</span></div>
+   <div class="scenario"><div><strong>3. مقارنة المخرجات</strong><small>الحالة المرجعية مقابل نتيجة النظام</small></div><span class="pill gray">تجريبي</span></div>
+   <div class="scenario"><div><strong>4. إنشاء التقرير</strong><small>مؤشرات وحدود الاختبار وملاحظات</small></div><span class="pill gray">بعد التشغيل</span></div>
+  </div>
+ </div>
+ <div class="panel"><div class="panel-head"><div><h2>مبدأ التصميم</h2><p>تمييز خطأ تحويل الكلام إلى نص عن خطأ تصنيف المحتوى، دون مراقبة الأطفال.</p></div></div>
+ <div class="legend"><span><i class="dot" style="background:#0aa69a"></i>محتوى سليم</span><span><i class="dot" style="background:#b88636"></i>محتوى يحتاج مراجعة</span><span><i class="dot" style="background:#b42318"></i>حالة ضارة ضمن بيانات الاختبار</span></div></div>
+</section>
+
+<section class="page" id="dataset">
+ <div class="panel"><div class="panel-head"><div><h2>مجموعة السيناريوهات</h2><p>عينة صغيرة لشرح سير العمل. النصوص أمثلة غير مسجلة صوتياً.</p></div><button class="btn primary" id="addScenario">+ إضافة سيناريو</button></div>
+ <div class="filters"><div class="field"><label for="filterType">تصفية حسب الفئة</label><select id="filterType"><option value="all">جميع الفئات</option><option>سليم</option><option>إساءة</option><option>تهديد</option><option>طلب معلومات شخصية</option><option>استدراج</option></select></div><div class="field"><label for="filterDialect">تصفية حسب اللغة</label><select id="filterDialect"><option value="all">جميع الأنماط</option><option>لهجة سعودية</option><option>العربية الفصحى</option><option>عربي/إنجليزي</option></select></div></div>
+ <div class="table-wrap"><table><thead><tr><th>المعرّف</th><th>وصف آمن للسيناريو</th><th>النمط اللغوي</th><th>الفئة المرجعية</th><th>الإجراء</th></tr></thead><tbody id="scenarioRows"></tbody></table></div></div>
+</section>
+
+<section class="page" id="evaluation">
+ <div class="grid">
+  <div class="panel"><div class="panel-head"><div><h2>إعداد التقييم التجريبي</h2><p>تشغيل محاكاة محلية على بيانات اصطناعية فقط.</p></div><span class="pill warn">ليس اختباراً حقيقياً</span></div>
+   <div class="field"><label for="systemName">اسم النظام المراد تقييمه (للتوثيق فقط)</label><input id="systemName" placeholder="مثال: نظام تجريبي داخلي" value="محاكاة ميزان صوت"/></div>
+   <div class="field"><label for="testDialect">النطاق اللغوي</label><select id="testDialect"><option value="all">جميع الأنماط</option><option>لهجة سعودية</option><option>العربية الفصحى</option><option>عربي/إنجليزي</option></select></div>
+   <div class="field"><label for="testMode">وضع التقييم</label><select id="testMode"><option>محاكاة تعليمية</option><option disabled>تكامل نظام مصرح به — غير متاح في هذه النسخة</option></select></div>
+   <button class="btn primary" id="runEval">تشغيل المحاكاة</button>
+   <p style="margin-top:12px">لا يتم رفع ملفات صوتية أو الاتصال بأي خدمة أو نظام لعبة.</p>
+  </div>
+  <div class="panel"><h2>ما الذي يقيسه النموذج لاحقاً؟</h2><p>عند بناء التكامل الفعلي وتوفير وسوم مراجعة، ستُحسب هذه المؤشرات من النتائج الحقيقية.</p><div class="scenario"><div><strong>الاستدعاء للحالات الضارة</strong><small>كم حالة ضارة اكتشفها النظام؟</small></div><span class="pill gray">لاحقاً</span></div><div class="scenario"><div><strong>الإنذارات الخاطئة</strong><small>كم حالة سليمة صُنّفت خطأً؟</small></div><span class="pill gray">لاحقاً</span></div><div class="scenario"><div><strong>خطأ التعرّف مقابل التصنيف</strong><small>تحديد المرحلة التي وقع فيها الخلل</small></div><span class="pill gray">لاحقاً</span></div></div>
+ </div>
+</section>
+
+<section class="page" id="report">
+ <div class="panel"><div class="panel-head"><div><h2>تقرير التقييم</h2><p>لا يُنشأ تقرير إلا بعد تشغيل المحاكاة، وسيبقى موسوماً بوضوح بأنه افتراضي.</p></div><button class="btn" id="downloadReport">تنزيل التقرير النصي</button></div><div id="reportBody" class="empty">لم يتم تشغيل محاكاة بعد. انتقل إلى «تشغيل تقييم تجريبي» لعرض مثال توضيحي.</div></div>
+ <div class="panel"><h2>تعريف المؤشرات</h2><div class="table-wrap"><table><thead><tr><th>المؤشر</th><th>المعنى</th><th>تنبيه</th></tr></thead><tbody><tr><td>Precision — الدقة الإيجابية</td><td>التنبيهات الصحيحة ÷ جميع التنبيهات</td><td>تتأثر بتوازن العينة</td></tr><tr><td>Recall — الاستدعاء</td><td>الحالات الضارة المكتشفة ÷ الحالات الضارة المرجعية</td><td>لا يقيس جميع المخاطر الواقعية</td></tr><tr><td>False Positive Rate</td><td>الحالات السليمة المصنفة ضارة ÷ جميع الحالات السليمة</td><td>يحتاج عينة سليمة ممثلة</td></tr><tr><td>F1</td><td>المتوسط التوافقي للدقة والاستدعاء</td><td>ليس بديلاً عن مراجعة الحالات</td></tr></tbody></table></div></div>
+</section>
+<div class="footer">ميزان صوت · نموذج واجهة أولي · v0.1 · لا يحتوي على بيانات أطفال أو تسجيلات حقيقية</div>
+</main></div><div class="toast" id="toast"></div>
+<script>
+const scenarios=[
+{id:"MV-001",desc:"مزاح ودي بين لاعبين دون إساءة",dialect:"لهجة سعودية",type:"سليم"},
+{id:"MV-002",desc:"عبارة تتضمن إهانة مباشرة",dialect:"لهجة سعودية",type:"إساءة"},
+{id:"MV-003",desc:"عبارة تهديد داخل سياق اللعب",dialect:"العربية الفصحى",type:"تهديد"},
+{id:"MV-004",desc:"طلب مشاركة رقم هاتف أو عنوان",dialect:"عربي/إنجليزي",type:"طلب معلومات شخصية"},
+{id:"MV-005",desc:"محاولة نقل الحديث إلى قناة خاصة",dialect:"لهجة سعودية",type:"استدراج"},
+{id:"MV-006",desc:"نقاش عادي حول استراتيجية اللعبة",dialect:"عربي/إنجليزي",type:"سليم"},
+{id:"MV-007",desc:"سخرية ملتبسة تتطلب فهم السياق",dialect:"لهجة سعودية",type:"إساءة"},
+{id:"MV-008",desc:"طلب عدم إخبار ولي الأمر عن التواصل",dialect:"العربية الفصحى",type:"استدراج"}
+];
+let ran=false, reportText="";
+const $=id=>document.getElementById(id);
+function toast(t){$("toast").textContent=t;$("toast").style.display="block";setTimeout(()=>{$("toast").style.display="none"},2600)}
+function renderRows(){let t=$("filterType")?.value||"all",d=$("filterDialect")?.value||"all";let rows=scenarios.filter(s=>(t==="all"||s.type===t)&&(d==="all"||s.dialect===d));$("scenarioRows").innerHTML=rows.map(s=>`<tr><td><strong>${s.id}</strong></td><td>${s.desc}</td><td>${s.dialect}</td><td>${s.type}</td><td><button class="smallbtn" data-remove="${s.id}">حذف</button></td></tr>`).join("")||'<tr><td colspan="5">لا توجد سيناريوهات مطابقة.</td></tr>'; $("statTotal").textContent=scenarios.length}
+function renderCoverage(){let types=["سليم","إساءة","تهديد","طلب معلومات شخصية","استدراج"];let colors=["#0aa69a","#b88636","#b42318","#087f8c","#7c5ac7"];let counts=types.map(t=>scenarios.filter(s=>s.type===t).length);$("coverageBars").innerHTML=types.map((t,i)=>`<div class="barrow"><span>${t}</span><div class="bar"><span style="width:${scenarios.length?counts[i]/scenarios.length*100:0}%;background:${colors[i]}"></span></div><strong>${counts[i]}</strong></div>`).join("")}
+function runSimulation(){ran=true;$("statRun").textContent="محاكاة";const name=$("systemName")?.value||"محاكاة ميزان صوت";const dialect=$("testDialect")?.value||"all";const data=scenarios.filter(s=>dialect==="all"||s.dialect===dialect);const harmful=data.filter(s=>s.type!=="سليم").length;const safe=data.filter(s=>s.type==="سليم").length;const missed=Math.min(harmful,Math.max(1,Math.round(harmful*.25)));const detected=harmful-missed;const falsePos=safe?1:0;const recall=harmful?detected/harmful:0;const precision=(detected+falsePos)?detected/(detected+falsePos):0;const fpr=safe?falsePos/safe:0;const f1=(precision+recall)?2*precision*recall/(precision+recall):0;
+const pct=n=>(n*100).toFixed(1)+"%";
+reportText=`ميزان صوت | تقرير محاكاة توضيحي\nاسم النظام المدخل: ${name}\nالنطاق: ${dialect==="all"?"جميع الأنماط":dialect}\nعدد السيناريوهات: ${data.length}\n\nتنبيه أساسي: كل الأرقام التالية مولدة داخل الواجهة لتوضيح شكل التقرير، وليست نتائج اختبار فعلي لأي نظام.\n\nمؤشرات محاكاة فقط:\n- الاستدعاء للحالات الضارة: ${pct(recall)}\n- الدقة الإيجابية: ${pct(precision)}\n- معدل الإيجابيات الكاذبة: ${pct(fpr)}\n- F1: ${pct(f1)}\n\nملخص توضيحي:\n- حالات ضارة ضمن العينة: ${harmful}\n- حالات سليمة ضمن العينة: ${safe}\n- اكتشافات افتراضية: ${detected}\n- حالات فائتة افتراضية: ${missed}\n- إنذارات كاذبة افتراضية: ${falsePos}\n\nالقيود والخطوات التالية:\n1. إنشاء مجموعة اختبار بموافقة واضحة وبدون تسجيل أطفال.\n2. مراجعة الوسوم من مقيّمين مستقلين.\n3. توصيل الأداة بنظام يصرح مالكه باختباره.\n4. حفظ الإصدارات وإعادة الاختبار عند تغيير النظام.\n5. عدم تعميم النتائج خارج نطاق العينة.`;
+$("reportBody").className="report";$("reportBody").textContent=reportText;toast("اكتملت المحاكاة التوضيحية — النتائج ليست فعلية");showPage("report")}
+function showPage(id){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));const names={overview:"نظرة عامة",dataset:"مجموعة الاختبار",evaluation:"تشغيل تقييم تجريبي",report:"التقرير والمؤشرات"};$("pageTitle").textContent=names[id]||"ميزان صوت";if(id==="dataset")renderRows()}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+$("runTop").addEventListener("click",()=>{showPage("evaluation");runSimulation()});
+$("runEval").addEventListener("click",runSimulation);
+$("filterType").addEventListener("change",renderRows);$("filterDialect").addEventListener("change",renderRows);
+$("scenarioRows").addEventListener("click",e=>{const id=e.target.dataset.remove;if(id){const i=scenarios.findIndex(s=>s.id===id);if(i>=0)scenarios.splice(i,1);renderRows();renderCoverage();toast("حُذف السيناريو من العينة المحلية") }});
+$("addScenario").addEventListener("click",()=>{const desc=prompt("اكتب وصفاً عاماً وآمناً للسيناريو (لا تدخل أسماء أو بيانات شخصية):");if(!desc)return;const dialect=prompt("النمط اللغوي: لهجة سعودية / العربية الفصحى / عربي/إنجليزي","لهجة سعودية");const type=prompt("الفئة: سليم / إساءة / تهديد / طلب معلومات شخصية / استدراج","سليم");const validD=["لهجة سعودية","العربية الفصحى","عربي/إنجليزي"],validT=["سليم","إساءة","تهديد","طلب معلومات شخصية","استدراج"];if(!validD.includes(dialect)||!validT.includes(type)){toast("لم تتم الإضافة: تحقق من كتابة الخيارات كما ظهرت");return}scenarios.push({id:"MV-"+String(scenarios.length+1).padStart(3,"0"),desc,dialect,type});renderRows();renderCoverage();toast("أضيف السيناريو إلى الجلسة الحالية")});
+function csvEscape(v){return '"'+String(v).replaceAll('"','""')+'"'}
+$("exportBtn").addEventListener("click",()=>{const lines=[["ID","Description","Dialect","Reference label"],...scenarios.map(s=>[s.id,s.desc,s.dialect,s.type])].map(r=>r.map(csvEscape).join(",")).join("\r\n");const blob=new Blob(["\ufeff"+lines],{type:"text/csv;charset=utf-8"});downloadBlob(blob,"mizan_voice_scenarios.csv")});
+$("downloadReport").addEventListener("click",()=>{if(!ran){toast("شغّل المحاكاة أولاً");return}downloadBlob(new Blob([reportText],{type:"text/plain;charset=utf-8"}),"mizan_voice_demo_report.txt")});
+function downloadBlob(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href)}
+renderRows();renderCoverage();
+</script>
+</body></html>
