@@ -62,8 +62,7 @@ progress{width:100%;height:12px}a{color:#087f8c}
 </main>
 <footer>ميزان صوت — نموذج أولي للاختبار والتطوير، وليس أداة حماية جاهزة للنشر.</footer>
 <script type="module">
-import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2';
-env.allowLocalModels = false;
+let pipeline = null;
 let transcriber = null;
 let loadedModelId = null;
 let selectedFile = null;
@@ -114,9 +113,15 @@ function runClassification() {
 }
 document.getElementById('classifyBtn').addEventListener('click', runClassification);
 runBtn.addEventListener('click', async () => {
- if (!selectedFile) return;
+ if (!selectedFile) { setStatus('لم يتم التقاط الملف من المتصفح. اختر الملف مرة أخرى.'); return; }
  runBtn.disabled = true; progress.classList.remove('hidden'); progress.value=8;
  try {
+   if (!pipeline) {
+     setStatus('جارٍ تحميل مكتبة التفريغ من الشبكة...');
+     const module = await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2');
+     module.env.allowLocalModels = false;
+     pipeline = module.pipeline;
+   }
    setStatus('المرحلة 1/3: تحميل مكتبة التفريغ والنموذج متعدد اللغات. في أول تشغيل قد يستغرق ذلك عدة دقائق، وقد يكون حجم التنزيل كبيرًا.');
    const requestedModelId = modelChoice.value;
    if (!transcriber || loadedModelId !== requestedModelId) {
