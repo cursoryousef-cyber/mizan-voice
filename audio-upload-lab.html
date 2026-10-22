@@ -139,7 +139,7 @@ runBtn.addEventListener('click', async () => {
    }
    await ctx.close();
    progress.value=80; setStatus('المرحلة 3/3: تحويل الكلام إلى نص. قد يحتاج جهازك إلى بعض الوقت...');
-   const output = await transcriber({raw:audio16k, sampling_rate:targetRate}, {language:'arabic', task:'transcribe'});
+   const output = await transcriber(audio16k, {sampling_rate:targetRate, language:'arabic', task:'transcribe'});
    transcript.value = (output?.text || '').trim();
    progress.value=100;
    setStatus('اكتمل التفريغ. راجع النص يدويًا لأن نموذج التفريغ قد يخطئ، ثم افحصه بالقواعد الأولية.');
