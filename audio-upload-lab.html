@@ -81,7 +81,7 @@ fileInput.addEventListener('change', () => {
   classification.textContent = 'لم يتم الفحص بعد.';
   if (!selectedFile) { runBtn.disabled = true; preview.classList.add('hidden'); setStatus('اختر ملفًا صوتيًا للبدء.'); return; }
   if (selectedFile.size > 20 * 1024 * 1024) { selectedFile = null; fileInput.value=''; runBtn.disabled=true; setStatus('حجم الملف أكبر من 20 MB. اختر مقطعًا أقصر.'); return; }
-  const audioExtensionOK = /\\.(wav|mp3|m4a|aac|ogg|oga|opus|webm|flac)$/i.test(selectedFile.name || '');
+  const audioExtensionOK = /\.(wav|mp3|m4a|aac|ogg|oga|opus|webm|flac)$/i.test(selectedFile.name || '');
   const audioMimeOK = (selectedFile.type || '').toLowerCase().startsWith('audio/');
   if (!audioMimeOK && !audioExtensionOK) { selectedFile = null; runBtn.disabled=true; setStatus('لم أستطع التحقق من نوع الملف. اختر ملفًا بامتداد صوتي مثل WAV أو MP3 أو M4A.'); return; }
   preview.src = URL.createObjectURL(selectedFile); preview.classList.remove('hidden');
