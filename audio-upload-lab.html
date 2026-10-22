@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ميزان صوت | مختبر الملف الصوتي</title>
+<style>
+:root{--navy:#102b46;--teal:#087f8c;--bg:#f3f7fa;--line:#d8e2ea;--muted:#5b6b7a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#172b3a;font-family:Tahoma,Arial,sans-serif;line-height:1.75}
+header{background:linear-gradient(120deg,#102b46,#087f8c);color:white;padding:28px 18px}
+main{max-width:900px;margin:22px auto;padding:0 14px}.brand{font-size:13px;opacity:.9}h1{margin:4px 0;font-size:27px}header p{margin:4px 0 0;max-width:700px}
+.card{background:white;border:1px solid var(--line);border-radius:16px;padding:20px;margin:14px 0;box-shadow:0 4px 16px #16344d0b}
+h2{font-size:19px;margin:0 0 10px;color:var(--navy)}.hint{color:var(--muted);font-size:14px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}button{border:0;border-radius:10px;background:var(--teal);color:white;padding:11px 17px;font-size:15px;font-weight:bold;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#e9f0f5;color:var(--navy)}
+input,select,textarea{font:inherit;padding:10px;border:1px solid #bdccd8;border-radius:9px;max-width:100%}input[type=file]{width:100%;background:#f9fbfc}label{display:block;font-weight:bold;margin:10px 0 5px}
+.status{padding:12px;border-radius:10px;background:#edf5f8;margin-top:12px;white-space:pre-wrap}.warning{border-right:4px solid #d58a13;background:#fff8e9}.result{border-right:4px solid var(--teal)}.hidden{display:none}audio{width:100%;margin-top:12px}textarea{width:100%;min-height:100px}
+.pill{display:inline-block;border-radius:999px;padding:3px 10px;background:#e8f2f4;color:#075f69;font-size:12px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+progress{width:100%;height:12px}a{color:#087f8c}
+</style>
+</head>
+<body>
+<header><div class="brand">MIZAN VOICE · ميزان صوت</div><h1>مختبر تحليل ملف صوتي — النسخة التجريبية</h1><p>تحويل الكلام العربي في ملف صوتي إلى نص محليًا داخل المتصفح، ثم تطبيق قواعد أولية لفرز النص للمراجعة.</p></header>
+<main>
+<section class="card">
+<h2>1) اختر ملفًا صوتيًا</h2>
+<p class="hint">ابدأ بمقطع قصير وواضح (يفضّل 5–30 ثانية). الصيغ المدعومة تعتمد على المتصفح مثل WAV أو MP3 أو M4A أو WebM. الحد التجريبي 20 MB.</p>
+<label for="audioFile">الملف الصوتي</label><input id="audioFile" type="file" accept="audio/*">
+<audio id="preview" controls class="hidden"></audio>
+<div class="row" style="margin-top:14px"><button id="runBtn" disabled>ابدأ التفريغ والفحص الأولي</button><button id="clearBtn" class="secondary" type="button">مسح النتائج</button></div>
+<div id="status" class="status" role="status">اختر ملفًا صوتيًا للبدء.</div>
+<progress id="progress" value="0" max="100" class="hidden"></progress>
+</section>
+<section class="card">
+<h2>2) النص المستخرج</h2>
+<textarea id="transcript" placeholder="سيظهر النص هنا بعد اكتمال التفريغ، ويمكنك تعديله يدويًا لأغراض التقييم." dir="rtl"></textarea>
+<div class="row" style="margin-top:10px"><button id="classifyBtn" class="secondary" type="button">أعد الفحص على النص</button><button id="exportBtn" class="secondary" type="button">تصدير سجل CSV</button></div>
+</section>
+<section class="card">
+<h2>3) نتيجة الفرز الأولي</h2>
+<div id="classification" class="status">لم يتم الفحص بعد.</div>
+<label for="reference">التصنيف المرجعي للمقطع (للتقييم فقط)</label>
+<select id="reference"><option value="غير محدد">غير محدد</option><option value="سليم">سليم</option><option value="محتوى غير مناسب">محتوى غير مناسب</option><option value="مراجعة بشرية">مراجعة بشرية</option></select>
+<label for="notes">ملاحظات المراجع</label><input id="notes" type="text" placeholder="مثال: التفريغ غير دقيق أو السياق غير واضح" style="width:100%">
+</section>
+<section class="card warning">
+<h2>حدود مهمة — اقرأ قبل استخدام النتائج</h2>
+<ul>
+<li>هذه نسخة بحثية أولية وليست نظام حماية أو إشراف معتمدًا، ولا ينبغي استخدامها لاتخاذ قرار ضد مستخدم.</li>
+<li>نموذج Whisper tiny يحوّل الصوت إلى نص فقط؛ لا يقرر وحده ما إذا كان المحتوى ضارًا.</li>
+<li>التصنيف هنا قائم على كلمات وقواعد بسيطة، وقد يفوّت الإساءة أو يسيء فهم المزاح واللهجات والسياق. كلمة «سليم» تعني فقط أن القواعد لم تجد تطابقًا، ولا تثبت سلامة المقطع.</li>
+<li>يُحمّل المتصفح مكتبة النموذج وأوزانه من شبكة الإنترنت في أول تشغيل، وقد يستغرق ذلك وقتًا وحجم تنزيل كبيرًا. بعد التحميل، يعالج هذا الكود الصوت داخل المتصفح ولا يرسل ملف الصوت إلى خادم ميزان صوت. لا تستخدم تسجيلات شخصية أو حساسة في هذه النسخة التجريبية.</li>
+<li>العمل يتطلب اتصالًا بالإنترنت لتنزيل المكتبة والنموذج، ومتصفحًا حديثًا يدعم وحدات JavaScript وWebAssembly. الأداء يختلف حسب الجهاز.</li>
+</ul>
+</section>
+<div class="row"><a href="./">العودة إلى الصفحة الرئيسية</a><span>·</span><a href="./voice-lab-asr.html">مختبر الميكروفون</a><span>·</span><a href="./evaluation-engine.html">محرك التقييم</a></div>
+</main>
+<footer>ميزان صوت — نموذج أولي للاختبار والتطوير، وليس أداة حماية جاهزة للنشر.</footer>
+<script type="module">
+import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2';
+env.allowLocalModels = false;
+let transcriber = null;
+let selectedFile = null;
+let lastResult = null;
+const fileInput = document.getElementById('audioFile');
+const preview = document.getElementById('preview');
+const runBtn = document.getElementById('runBtn');
+const statusBox = document.getElementById('status');
+const transcript = document.getElementById('transcript');
+const classification = document.getElementById('classification');
+const progress = document.getElementById('progress');
+const setStatus = (msg) => { statusBox.textContent = msg; };
+fileInput.addEventListener('change', () => {
+  selectedFile = fileInput.files?.[0] || null;
+  transcript.value = ''; lastResult = null;
+  classification.textContent = 'لم يتم الفحص بعد.';
+  if (!selectedFile) { runBtn.disabled = true; preview.classList.add('hidden'); setStatus('اختر ملفًا صوتيًا للبدء.'); return; }
+  if (selectedFile.size > 20 * 1024 * 1024) { selectedFile = null; fileInput.value=''; runBtn.disabled=true; setStatus('حجم الملف أكبر من 20 MB. اختر مقطعًا أقصر.'); return; }
+  if (!selectedFile.type.startsWith('audio/')) { selectedFile = null; runBtn.disabled=true; setStatus('الملف المحدد لا يبدو ملفًا صوتيًا.'); return; }
+  preview.src = URL.createObjectURL(selectedFile); preview.classList.remove('hidden');
+  runBtn.disabled = false;
+  setStatus('تم اختيار: ' + selectedFile.name + '\nالحجم: ' + (selectedFile.size/1024/1024).toFixed(2) + ' MB. اضغط بدء التفريغ.');
+});
+function classify(text) {
+  const t = text.toLowerCase().replace(/[ًٌٍَُِّْـ]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه');
+  const rules = [
+    {label:'طلب معلومات شخصية / استدراج محتمل', words:['لا تعلم اهلك','لا تقول لاهلك','ارسل صورتك','اعطني رقمك','وين بيتك','مكان سكنك','خلك سر بيننا','لا تخبر احد','قابلني لحالك']},
+    {label:'تهديد محتمل', words:['باذيك','راح اقتلك','بفضحك','بضربك','بعرف وينك']},
+    {label:'إساءة لفظية محتملة', words:['يا غبي','يا حمار','يا كلب','اكرهك','لعنة عليك']},
+    {label:'مراجعة بشرية — سياق ملتبس', words:['امزح','مزح','تمثيل','مقطع لعب','كلام اغنيه']}
+  ];
+  for (const rule of rules) if (rule.words.some(w => t.includes(w))) return {label:rule.label, level:'مراجعة بشرية مطلوبة', matched:rule.words.filter(w=>t.includes(w))};
+  return {label:'لم تطابق القواعد أي مؤشر معروف', level:'غير محسوم — لا يعني أن المحتوى آمن', matched:[]};
+}
+function runClassification() {
+ const text = transcript.value.trim();
+ if (!text) { classification.textContent='لا يوجد نص لفحصه.'; return; }
+ lastResult = classify(text);
+ classification.innerHTML = '';
+ const strong = document.createElement('strong'); strong.textContent = lastResult.label;
+ const detail = document.createElement('div'); detail.textContent = lastResult.level;
+ const matched = document.createElement('div'); matched.className='hint'; matched.textContent = lastResult.matched.length ? 'المؤشرات المطابقة: ' + lastResult.matched.join('، ') : 'لم يظهر تطابق مع القواعد المحدودة الحالية.';
+ classification.append(strong, detail, matched);
+ classification.classList.add('result');
+}
+document.getElementById('classifyBtn').addEventListener('click', runClassification);
+runBtn.addEventListener('click', async () => {
+ if (!selectedFile) return;
+ runBtn.disabled = true; progress.classList.remove('hidden'); progress.value=8;
+ try {
+   setStatus('المرحلة 1/3: تحميل مكتبة التفريغ والنموذج متعدد اللغات. في أول تشغيل قد يستغرق ذلك عدة دقائق، وقد يكون حجم التنزيل كبيرًا.');
+   if (!transcriber) {
+     transcriber = await pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny', {
+       progress_callback: (p) => {
+         if (p && typeof p.progress === 'number') {
+           progress.value = Math.max(8, Math.min(65, 8 + p.progress * 0.57));
+           setStatus('جارٍ تحميل مكونات النموذج: ' + (p.file || p.status || 'تحميل') + (p.progress ? ' — ' + Math.round(p.progress) + '%' : ''));
+         }
+       }
+     });
+   }
+   progress.value=68; setStatus('المرحلة 2/3: قراءة الملف الصوتي وتجهيز الموجة الصوتية...');
+   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+   if (!AudioContextClass) throw new Error('المتصفح لا يدعم AudioContext.');
+   const ctx = new AudioContextClass();
+   const buffer = await ctx.decodeAudioData(await selectedFile.arrayBuffer());
+   if (buffer.duration > 60) { await ctx.close(); throw new Error('مدة الملف أطول من 60 ثانية في هذه النسخة. قصّ المقطع ثم أعد المحاولة.'); }
+   const mono = new Float32Array(buffer.length);
+   for (let c=0;c<buffer.numberOfChannels;c++) {
+     const channel=buffer.getChannelData(c);
+     for(let i=0;i<channel.length;i++) mono[i] += channel[i] / buffer.numberOfChannels;
+   }
+   const targetRate=16000;
+   const targetLength=Math.round(mono.length*targetRate/buffer.sampleRate);
+   const audio16k=new Float32Array(targetLength);
+   const ratio=buffer.sampleRate/targetRate;
+   for(let i=0;i<targetLength;i++){
+     const pos=i*ratio, left=Math.floor(pos), right=Math.min(left+1,mono.length-1), frac=pos-left;
+     audio16k[i]=mono[left]*(1-frac)+mono[right]*frac;
+   }
+   await ctx.close();
+   progress.value=80; setStatus('المرحلة 3/3: تحويل الكلام إلى نص. قد يحتاج جهازك إلى بعض الوقت...');
+   const output = await transcriber({raw:audio16k, sampling_rate:targetRate}, {language:'arabic', task:'transcribe'});
+   transcript.value = (output?.text || '').trim();
+   progress.value=100;
+   setStatus('اكتمل التفريغ. راجع النص يدويًا لأن نموذج التفريغ قد يخطئ، ثم افحصه بالقواعد الأولية.');
+   runClassification();
+ } catch(err) {
+   console.error(err);
+   setStatus('تعذر إكمال التفريغ: ' + (err?.message || String(err)) + '\nجرّب ملف WAV قصيرًا، أو متصفحًا حديثًا، وتأكد من توفر مساحة ذاكرة واتصال بالإنترنت.');
+ } finally { runBtn.disabled = !selectedFile; }
+});
+document.getElementById('clearBtn').addEventListener('click',()=>{
+ selectedFile=null; lastResult=null; fileInput.value=''; preview.pause(); preview.removeAttribute('src'); preview.classList.add('hidden');
+ transcript.value=''; classification.textContent='لم يتم الفحص بعد.'; progress.value=0; progress.classList.add('hidden'); runBtn.disabled=true; setStatus('اختر ملفًا صوتيًا للبدء.');
+});
+document.getElementById('exportBtn').addEventListener('click',()=>{
+ const row={test_id:'MV-'+new Date().toISOString(),file_name:selectedFile?.name||'',reference_label:document.getElementById('reference').value,transcript:transcript.value,predicted_label:lastResult?.label||'',review_level:lastResult?.level||'',matched_terms:(lastResult?.matched||[]).join('|'),review_notes:document.getElementById('notes').value,model:'Xenova/whisper-tiny + keyword baseline'};
+ const csv=[Object.keys(row).map(csvCell).join(','),Object.values(row).map(csvCell).join(',')].join('\r\n');
+ const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+ const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='mizan-voice-audio-test.csv'; a.click(); URL.revokeObjectURL(url);
+});
+function csvCell(v){return '"'+String(v??'').replace(/"/g,'""')+'"';}
+</script>
+</body></html>
