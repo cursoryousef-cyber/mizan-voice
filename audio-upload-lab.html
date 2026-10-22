@@ -64,12 +64,14 @@ progress{width:100%;height:12px}a{color:#087f8c}
 <script type="module">
 import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2';
 env.allowLocalModels = false;
-let transcriber = null;\nlet loadedModelId = null;
+let transcriber = null;
+let loadedModelId = null;
 let selectedFile = null;
 let lastResult = null;
 const fileInput = document.getElementById('audioFile');
 const preview = document.getElementById('preview');
-const runBtn = document.getElementById('runBtn');\nconst modelChoice = document.getElementById('modelChoice');
+const runBtn = document.getElementById('runBtn');
+const modelChoice = document.getElementById('modelChoice');
 const statusBox = document.getElementById('status');
 const transcript = document.getElementById('transcript');
 const classification = document.getElementById('classification');
