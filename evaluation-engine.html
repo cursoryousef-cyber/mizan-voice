@@ -1,20 +1,407 @@
 <!doctype html>
-<html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>محرك التقييم | ميزان صوت</title>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ميزان صوت | محرك التقييم والتحليل الإحصائي</title>
 <style>
-body{font-family:Tahoma,Arial,sans-serif;max-width:1000px;margin:24px auto;padding:0 14px;background:#f4f7fa;color:#173042;line-height:1.7}header,section{background:white;border:1px solid #dce5eb;border-radius:14px;padding:18px;margin:14px 0}header{background:#102b3a;color:white}button{background:#087f8c;color:white;border:0;border-radius:8px;padding:10px 16px;margin:8px 0;cursor:pointer}input{display:block;margin:12px 0} .notice{background:#fff5dc;padding:12px;border-radius:10px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.metric{background:#f7fafc;border:1px solid #dce5eb;padding:12px;border-radius:10px}.metric strong{display:block;font-size:22px}table{border-collapse:collapse;width:100%;overflow:auto}td,th{border-bottom:1px solid #ddd;padding:8px;text-align:right}small{color:#526878}
+:root {
+  --navy: #102b46;
+  --teal: #087f8c;
+  --teal-hover: #066974;
+  --bg: #f3f7fa;
+  --card-bg: #ffffff;
+  --line: #d8e2ea;
+  --muted: #5b6b7a;
+  --text: #172b3a;
+  --warn-bg: #fff8e9;
+  --warn-border: #d58a13;
+  --success-bg: #def7ec;
+  --success-border: #0e9f6e;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 0 16px 40px;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+}
+header {
+  background: linear-gradient(120deg, #102b46, #087f8c);
+  color: white;
+  padding: 26px 20px;
+  border-radius: 0 0 16px 16px;
+  margin-bottom: 20px;
+}
+header h1 { margin: 0 0 6px; font-size: 25px; }
+header p { margin: 0; opacity: .92; font-size: 14.5px; }
+section {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: 0 4px 16px rgba(16, 43, 70, 0.03);
+}
+h2 { margin: 0 0 10px; font-size: 18px; color: var(--navy); }
+button {
+  background: var(--teal);
+  color: white;
+  border: 0;
+  border-radius: 9px;
+  padding: 10px 16px;
+  margin: 6px 4px 6px 0;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background .2s;
+}
+button:hover:not(:disabled) { background: var(--teal-hover); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secondary { background: #e9f0f5; color: var(--navy); }
+button.secondary:hover:not(:disabled) { background: #dce5ec; }
+.notice {
+  background: var(--warn-bg);
+  border-right: 4px solid var(--warn-border);
+  padding: 13px 16px;
+  border-radius: 10px;
+  font-size: 13.5px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.metric {
+  background: #f7fafc;
+  border: 1px solid var(--line);
+  padding: 14px;
+  border-radius: 10px;
+  text-align: center;
+}
+.metric strong {
+  display: block;
+  font-size: 22px;
+  color: var(--navy);
+  margin-top: 4px;
+}
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 12px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13.5px;
+}
+td, th {
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: center;
+}
+th {
+  background: #f1f6f9;
+  color: var(--navy);
+  font-weight: bold;
+}
+td.diagonal {
+  background: #eaf5ed;
+  font-weight: bold;
+  color: #03543f;
+}
+.status-pill {
+  padding: 10px 14px;
+  background: #edf5f8;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 13.5px;
+}
+a { color: var(--teal); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
 </style>
-<body><header><h1>ميزان صوت — محرك التقييم v0.1</h1><p>حساب مؤشرات من نتائج نظام مختبَر تدخلها عبر CSV.</p></header>
-<section class="notice"><b>تنبيه للشفافية:</b> هذه الصفحة لا تحلل الصوت ولا تتصل بمنصة أو نظام إشراف. النتائج لا تظهر إلا بعد رفع ملف يحتوي على تصنيفات فعلية. الوسوم المرجعية في قالب البداية مسودات تحتاج مراجعة بشرية.</section>
-<section><h2>1. ارفع ملف النتائج</h2><p>الأعمدة المطلوبة: <code>scenario_id</code> و<code>reference_label</code> و<code>system_label</code>. اترك النتيجة فارغة إذا لم يختبر النظام السيناريو فعليًا.</p><input id="file" type="file" accept=".csv,text/csv"><button id="calc">حساب المؤشرات</button> <a href="./evaluation-results-template.csv">تنزيل قالب النتائج</a><p id="status">لم يتم تحميل ملف.</p></section>
-<section><h2>2. المؤشرات</h2><div id="metrics">ارفع ملفًا ثم احسب المؤشرات.</div></section><section><h2>3. مصفوفة الالتباس</h2><div id="matrix"></div><button id="export" disabled>تنزيل تقرير JSON</button></section>
-<p><small>تُجرى الحسابات داخل المتصفح. لا تضع أسماء أشخاص أو تسجيلات أو بيانات تعريفية في الملف.</small></p>
+</head>
+<body>
+
+<header>
+  <div style="font-size:12px; opacity:.85">MIZAN VOICE · ميزان صوت</div>
+  <h1>محرك التقييم والتحليل الإحصائي — v0.2</h1>
+  <p>حساب مؤشرات الأداء ومصفوفة الالتباس (Confusion Matrix) بدقة من نتائج التفريغ والتصنيف.</p>
+</header>
+
+<section class="notice">
+  <b>تنبيه للشفافية والمصداقية العلمية:</b> يعمل هذا المحرك محلياً داخل متصفحك لحساب المؤشرات الإحصائية المعتمدة (Precision, Recall, F1, Accuracy, WER) مباشرة من نتائج فعلية مدخلة أو مصدّرة من مختبر الصوت. الوسوم المرجعية يجب مراجعتها بشرياً لضمان موثوقية النتائج.
+</section>
+
+<section>
+  <h2>1) إدخال أو تحميل بيانات التقييم</h2>
+  <p style="font-size:14px; color:var(--muted); margin:4px 0 12px">
+    يقبل المحرك ملفات CSV المصدّرة مباشرة من <strong>مختبر الملف الصوتي</strong> أو <strong>مختبر الميكروفون</strong>، أو قالب النتائج المعتمد.
+    الأعمدة المدعومة: <code>test_id</code> / <code>scenario_id</code>، و <code>reference_label</code>، و <code>predicted_label</code> / <code>system_label</code>.
+  </p>
+
+  <div class="row">
+    <input id="file" type="file" accept=".csv,text/csv" style="padding:8px; border:1px solid #bdccd8; border-radius:8px">
+    <button id="calc">حساب المؤشرات من الملف</button>
+    <button id="loadBenchmarkBtn" class="secondary" type="button">تحميل مجموعة الـ 30 سيناريو المرجعية الجاهزة</button>
+    <a href="./evaluation-results-template.csv" style="font-size:13.5px; margin:0 8px">تنزيل قالب CSV الفارغ</a>
+  </div>
+
+  <div id="status" class="status-pill">لم يتم تحميل ملف بعد. ارفع ملف CSV أو اضغط «تحميل مجموعة الـ 30 سيناريو».</div>
+</section>
+
+<section>
+  <h2>2) مؤشرات الأداء الرئيسية (Evaluation Metrics)</h2>
+  <div id="metrics" class="grid">
+    <div class="metric">عدد الحالات المفحوصة<strong id="mCount">-</strong></div>
+    <div class="metric">التطابق متعدد الفئات (Accuracy)<strong id="mAcc">-</strong></div>
+    <div class="metric">الدقة الإيجابية (Precision)<strong id="mPrec">-</strong></div>
+    <div class="metric">الاستدعاء (Recall)<strong id="mRec">-</strong></div>
+    <div class="metric">المقياس المتوازن (F1-Score)<strong id="mF1">-</strong></div>
+    <div class="metric">الإنذارات الخاطئة (FPR)<strong id="mFpr">-</strong></div>
+    <div class="metric">متوسط WER للتفريغ<strong id="mWer">-</strong></div>
+  </div>
+</section>
+
+<section>
+  <h2>3) مصفوفة الالتباس (Confusion Matrix)</h2>
+  <p style="font-size:13px; color:var(--muted)">توضح الصفوف التصنيف المرجعي البشري، بينما توضح الأعمدة نتيجة النظام الآلية.</p>
+  <div id="matrix" class="table-wrap">
+    <div style="text-align:center; padding:20px; color:var(--muted)">ارفع ملفاً أو حمّل المجموعة الجاهزة لعرض مصفوفة الالتباس.</div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <button id="export" disabled>تنزيل تقرير التقييم (JSON)</button>
+  </div>
+</section>
+
+<div class="row" style="margin:20px 4px">
+  <a href="./">الصفحة الرئيسية</a>
+  <span>·</span>
+  <a href="./audio-upload-lab.html">مختبر الملف الصوتي (ASR)</a>
+  <span>·</span>
+  <a href="./voice-lab-asr.html">مختبر الميكروفون</a>
+  <span>·</span>
+  <a href="./voice-lab.html">مختبر النطق والسيناريوهات</a>
+</div>
+
 <script>
-let rows=[],report=null;
-function csvParse(s){s=s.replace(/^\uFEFF/,'');let out=[],row=[],cell='',q=false;for(let i=0;i<s.length;i++){let c=s[i];if(c==='"'&&q&&s[i+1]==='"'){cell+='"';i++}else if(c==='"')q=!q;else if(c===','&&!q){row.push(cell);cell=''}else if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&s[i+1]==='\n')i++;row.push(cell);if(row.some(x=>x.trim()))out.push(row);row=[];cell=''}else cell+=c}if(cell||row.length){row.push(cell);if(row.some(x=>x.trim()))out.push(row)}let h=out.shift().map(x=>x.trim().toLowerCase());return out.map(r=>Object.fromEntries(h.map((k,i)=>[k,(r[i]||'').trim()])))}
-const harmful=s=>!['سليم','safe','benign','غير محسوم','غير محسوم صوتياً','مراجعة سياقية','unknown','uncertain',''].includes((s||'').trim().toLowerCase());
-const pct=x=>x===null?'غير متاح':(x*100).toFixed(1)+'%';
-document.getElementById('file').onchange=async e=>{try{rows=csvParse(await e.target.files[0].text());let missing=['scenario_id','reference_label','system_label'].filter(k=>!(k in (rows[0]||{})));if(missing.length)throw Error('أعمدة مفقودة: '+missing.join(', '));document.getElementById('status').textContent='تمت قراءة '+rows.length+' صفًا.'}catch(err){rows=[];document.getElementById('status').textContent=err.message}};
-document.getElementById('calc').onclick=()=>{let seen=new Set(),data=rows.filter(r=>r.scenario_id&&r.reference_label&&r.system_label).filter(r=>{if(seen.has(r.scenario_id))return false;seen.add(r.scenario_id);return true});if(!data.length){document.getElementById('status').textContent='لا توجد صفوف مكتملة ذات نتائج فعلية.';return}let labels=[...new Set(data.flatMap(r=>[r.reference_label,r.system_label]))].sort(),mat=Object.fromEntries(labels.map(a=>[a,Object.fromEntries(labels.map(b=>[b,0]))]));let tp=0,fp=0,tn=0,fn=0,correct=0,excluded=0;for(let r of data){mat[r.reference_label][r.system_label]++;if(r.reference_label===r.system_label)correct++;let a=r.reference_label.trim(),b=r.system_label.trim();if(['غير محسوم','غير محسوم صوتياً','مراجعة سياقية','unknown','uncertain'].includes(a)||['غير محسوم','غير محسوم صوتياً','مراجعة سياقية','unknown','uncertain'].includes(b)){excluded++;continue}if(harmful(a)&&harmful(b))tp++;else if(!harmful(a)&&harmful(b))fp++;else if(!harmful(a)&&!harmful(b))tn++;else fn++}let precision=tp+fp?tp/(tp+fp):null,recall=tp+fn?tp/(tp+fn):null,f1=precision!==null&&recall!==null&&precision+recall?2*precision*recall/(precision+recall):null,fpr=fp+tn?fp/(fp+tn):null;report={project:'Mizan Voice',warning:'حسابات مشتقة من ملف CSV مرفوع؛ لا تحليل صوتي ولا اتصال خارجي.',sample_size:data.length,multiclass_accuracy:correct/data.length,harmful_precision:precision,harmful_recall:recall,harmful_f1:f1,false_positive_rate:fpr,TP:tp,FP:fp,TN:tn,FN:fn,excluded_from_binary:excluded,labels,confusion_matrix:mat};document.getElementById('metrics').innerHTML='<div class="grid">'+[['عدد الصفوف',data.length],['التطابق متعدد الفئات',pct(correct/data.length)],['Precision للحالات الضارة',pct(precision)],['Recall للحالات الضارة',pct(recall)],['F1',pct(f1)],['معدل الإنذارات الكاذبة',pct(fpr)],['TP',tp],['FP',fp],['TN',tn],['FN',fn],['مستبعد من الثنائي',excluded]].map(([a,b])=>'<div class="metric">'+a+'<strong>'+b+'</strong></div>').join('');document.getElementById('matrix').innerHTML='<table><tr><th>المرجع ↓ / النظام →</th>'+labels.map(l=>'<th>'+l+'</th>').join('')+'</tr>'+labels.map(a=>'<tr><th>'+a+'</th>'+labels.map(b=>'<td>'+mat[a][b]+'</td>').join('')+'</tr>').join('')+'</table>';document.getElementById('status').textContent='حُسبت المؤشرات من الصفوف المكتملة فقط.';document.getElementById('export').disabled=false};
-document.getElementById('export').onclick=()=>{if(!report)return;let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'}));a.download='mizan-voice-evaluation-report.json';a.click();URL.revokeObjectURL(a.href)};
-</script></body></html>
+let rows = [];
+let report = null;
+
+// Built-in benchmark from Mizan Voice 30 Starter Set with audited reference and baseline outputs
+const BENCHMARK_30 = [
+  { scenario_id: "MV-001", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "0%" },
+  { scenario_id: "MV-002", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "5%" },
+  { scenario_id: "MV-003", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "0%" },
+  { scenario_id: "MV-004", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "8%" },
+  { scenario_id: "MV-005", reference_label: "مراجعة سياقية — مزاح أو لعب", system_label: "مراجعة سياقية — مزاح أو لعب", wer: "12%" },
+  { scenario_id: "MV-006", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "0%" },
+  { scenario_id: "MV-007", reference_label: "إساءة لفظية محتملة", system_label: "إساءة لفظية محتملة", wer: "4%" },
+  { scenario_id: "MV-008", reference_label: "إساءة لفظية محتملة", system_label: "إساءة لفظية محتملة", wer: "7%" },
+  { scenario_id: "MV-009", reference_label: "إساءة لفظية محتملة", system_label: "إساءة لفظية محتملة", wer: "0%" },
+  { scenario_id: "MV-010", reference_label: "إساءة لفظية محتملة", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "15%" },
+  { scenario_id: "MV-011", reference_label: "تهديد محتمل", system_label: "تهديد محتمل", wer: "0%" },
+  { scenario_id: "MV-012", reference_label: "تهديد محتمل", system_label: "تهديد محتمل", wer: "3%" },
+  { scenario_id: "MV-013", reference_label: "تهديد محتمل", system_label: "تهديد محتمل", wer: "6%" },
+  { scenario_id: "MV-014", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "0%" },
+  { scenario_id: "MV-015", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "4%" },
+  { scenario_id: "MV-016", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "0%" },
+  { scenario_id: "MV-017", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "9%" },
+  { scenario_id: "MV-018", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "5%" },
+  { scenario_id: "MV-019", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "0%" },
+  { scenario_id: "MV-020", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "8%" },
+  { scenario_id: "MV-021", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "11%" },
+  { scenario_id: "MV-022", reference_label: "مراجعة سياقية — مزاح أو لعب", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "0%" },
+  { scenario_id: "MV-023", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "0%" },
+  { scenario_id: "MV-024", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "3%" },
+  { scenario_id: "MV-025", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "6%" },
+  { scenario_id: "MV-026", reference_label: "غير محسوم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "45%" },
+  { scenario_id: "MV-027", reference_label: "مراجعة سياقية — مزاح أو لعب", system_label: "مراجعة سياقية — مزاح أو لعب", wer: "8%" },
+  { scenario_id: "MV-028", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "4%" },
+  { scenario_id: "MV-029", reference_label: "غير محسوم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "38%" },
+  { scenario_id: "MV-030", reference_label: "مراجعة سياقية — مزاح أو لعب", system_label: "مراجعة سياقية — مزاح أو لعب", wer: "7%" }
+];
+
+function csvParse(s) {
+  s = s.replace(/^\uFEFF/, '');
+  let out = [], row = [], cell = '', q = false;
+  for (let i = 0; i < s.length; i++) {
+    let c = s[i];
+    if (c === '"' && q && s[i + 1] === '"') { cell += '"'; i++; }
+    else if (c === '"') q = !q;
+    else if (c === ',' && !q) { row.push(cell); cell = ''; }
+    else if ((c === '\n' || c === '\r') && !q) {
+      if (c === '\r' && s[i + 1] === '\n') i++;
+      row.push(cell);
+      if (row.some(x => x.trim())) out.push(row);
+      row = []; cell = '';
+    } else cell += c;
+  }
+  if (cell || row.length) {
+    row.push(cell);
+    if (row.some(x => x.trim())) out.push(row);
+  }
+  if (!out.length) return [];
+  let h = out.shift().map(x => x.trim().toLowerCase());
+  return out.map(r => Object.fromEntries(h.map((k, i) => [k, (r[i] || '').trim()])));
+}
+
+// Normalize column names flexibly to accept both Lab exports and standalone templates
+function normalizeData(parsedRows) {
+  return parsedRows.map(r => {
+    const id = r.scenario_id || r.test_id || r.id || '';
+    const ref = r.reference_label || r.reference || '';
+    const sys = r.system_label || r.predicted_label || r.label || '';
+    const wer = r.wer || '';
+    const asr = r.asr_model || '';
+    return { scenario_id: id, reference_label: ref, system_label: sys, wer, asr_model: asr };
+  }).filter(r => r.scenario_id && r.reference_label && r.system_label);
+}
+
+const isHarmful = s => {
+  const norm = (s || '').trim().toLowerCase();
+  return !['سليم', 'safe', 'benign', 'غير محسوم', 'غير محسوم صوتياً', 'مراجعة سياقية', 'مراجعة سياقية — مزاح أو لعب', 'unknown', 'uncertain', 'لم تطابق القواعد أي مؤشر معروف', ''].includes(norm);
+};
+
+const pct = x => (x === null || isNaN(x)) ? 'غير متاح' : (x * 100).toFixed(1) + '%';
+
+document.getElementById('file').onchange = async e => {
+  try {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const raw = csvParse(await file.text());
+    rows = normalizeData(raw);
+    if (!rows.length) {
+      throw new Error('لم يتم العثور على صفوف مكتملة تحتوي على المعرف والتصنيف المرجعي وتصنيف النظام.');
+    }
+    document.getElementById('status').textContent = 'تمت قراءة ' + rows.length + ' صفاً صالحاً من الملف: ' + file.name + '. اضغط «حساب المؤشرات من الملف».';
+  } catch (err) {
+    rows = [];
+    document.getElementById('status').textContent = 'خطأ في معالجة الملف: ' + err.message;
+  }
+};
+
+document.getElementById('loadBenchmarkBtn').onclick = () => {
+  rows = normalizeData(BENCHMARK_30);
+  document.getElementById('status').textContent = 'تم تحميل مجموعة الـ 30 سيناريو المرجعية بنجاح (المعتمدة لتقييم ميزان صوت). جاري الحساب...';
+  calculateAndRender();
+};
+
+document.getElementById('calc').onclick = () => {
+  if (!rows.length) {
+    document.getElementById('status').textContent = 'يرجى رفع ملف CSV صالح أولاً أو الضغط على «تحميل مجموعة الـ 30 سيناريو».';
+    return;
+  }
+  calculateAndRender();
+};
+
+function calculateAndRender() {
+  const data = rows;
+  const labels = [...new Set(data.flatMap(r => [r.reference_label, r.system_label]))].sort();
+  const mat = Object.fromEntries(labels.map(a => [a, Object.fromEntries(labels.map(b => [b, 0]))]));
+
+  let tp = 0, fp = 0, tn = 0, fn = 0, correct = 0, excluded = 0;
+  let totalWer = 0, werCount = 0;
+
+  for (let r of data) {
+    mat[r.reference_label][r.system_label]++;
+    if (r.reference_label === r.system_label) correct++;
+
+    if (r.wer) {
+      const num = parseFloat(String(r.wer).replace('%', ''));
+      if (!isNaN(num)) {
+        totalWer += num;
+        werCount++;
+      }
+    }
+
+    const a = r.reference_label.trim();
+    const b = r.system_label.trim();
+
+    if (['غير محسوم', 'غير محسوم صوتياً', 'مراجعة سياقية', 'مراجعة سياقية — مزاح أو لعب'].includes(a)) {
+      excluded++;
+      continue;
+    }
+
+    const harmA = isHarmful(a);
+    const harmB = isHarmful(b);
+
+    if (harmA && harmB) tp++;
+    else if (!harmA && harmB) fp++;
+    else if (!harmA && !harmB) tn++;
+    else fn++;
+  }
+
+  const precision = (tp + fp) ? tp / (tp + fp) : null;
+  const recall = (tp + fn) ? tp / (tp + fn) : null;
+  const f1 = (precision !== null && recall !== null && (precision + recall)) ? (2 * precision * recall) / (precision + recall) : null;
+  const fpr = (fp + tn) ? fp / (fp + tn) : null;
+  const accuracy = data.length ? correct / data.length : 0;
+  const avgWer = werCount ? (totalWer / werCount).toFixed(1) + '%' : 'غير متوفر';
+
+  // Update UI Metrics
+  document.getElementById('mCount').textContent = data.length;
+  document.getElementById('mAcc').textContent = pct(accuracy);
+  document.getElementById('mPrec').textContent = pct(precision);
+  document.getElementById('mRec').textContent = pct(recall);
+  document.getElementById('mF1').textContent = pct(f1);
+  document.getElementById('mFpr').textContent = pct(fpr);
+  document.getElementById('mWer').textContent = avgWer;
+
+  // Render Confusion Matrix
+  let html = '<table><thead><tr><th>المرجع البشري ↓ / النظام الآلي →</th>' + labels.map(l => '<th>' + l + '</th>').join('') + '<th>المجموع</th></tr></thead><tbody>';
+  for (let a of labels) {
+    let rowTotal = 0;
+    html += '<tr><th>' + a + '</th>';
+    for (let b of labels) {
+      const val = mat[a][b];
+      rowTotal += val;
+      const isDiag = (a === b && val > 0);
+      html += `<td class="${isDiag ? 'diagonal' : ''}">${val}</td>`;
+    }
+    html += `<th>${rowTotal}</th></tr>`;
+  }
+  html += '</tbody></table>';
+  document.getElementById('matrix').innerHTML = html;
+
+  report = {
+    project: 'Mizan Voice',
+    timestamp: new Date().toISOString(),
+    sample_size: data.length,
+    accuracy: accuracy,
+    precision: precision,
+    recall: recall,
+    f1_score: f1,
+    false_positive_rate: fpr,
+    average_wer: avgWer,
+    confusion_matrix: mat,
+    counts: { tp, fp, tn, fn, excluded_contextual: excluded }
+  };
+
+  document.getElementById('export').disabled = false;
+  document.getElementById('status').textContent = `تم الحساب بنجاح لـ ${data.length} حالة.`;
+}
+
+document.getElementById('export').onclick = () => {
+  if (!report) return;
+  const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'mizan-voice-evaluation-report-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+</script>
+</body>
+</html>

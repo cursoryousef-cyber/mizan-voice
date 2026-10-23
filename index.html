@@ -19,8 +19,13 @@ button,input,select{font:inherit}button{cursor:pointer}.layout{display:grid;grid
   <button data-page="dataset">مجموعة الاختبار</button>
   <button data-page="evaluation">تشغيل تقييم تجريبي</button>
   <button data-page="report">التقرير والمؤشرات</button>
+  <hr style="border:0; border-top:1px solid #234d60; margin:4px 0">
+  <a href="./audio-upload-lab.html" style="color:#10b8ae; padding:10px 14px; text-decoration:none; font-weight:bold; display:block; border-radius:10px; background:#143749">🎙️ مختبر الملف الصوتي (ASR)</a>
+  <a href="./evaluation-engine.html" style="color:#c7dbe2; padding:8px 14px; text-decoration:none; font-size:13px; display:block">📊 محرك التقييم الإحصائي</a>
+  <a href="./voice-lab-asr.html" style="color:#c7dbe2; padding:8px 14px; text-decoration:none; font-size:13px; display:block">🎤 مختبر الميكروفون المباشر</a>
+  <a href="./voice-lab.html" style="color:#c7dbe2; padding:8px 14px; text-decoration:none; font-size:13px; display:block">🔊 مختبر النطق والتصنيف</a>
  </nav>
- <div class="side-note"><strong>خصوصية وسلامة أولاً</strong><br>النسخة التجريبية لا ترفع صوتاً ولا تتصل بخدمات خارجية. البيانات المعروضة اصطناعية لأغراض توضيح تجربة الاستخدام فقط.</div>
+ <div class="side-note"><strong>خصوصية وسلامة أولاً</strong><br>المختبرات الصوتية تعمل محلياً داخل المتصفح عبر WebAssembly و Web Audio دون رفع ملفات إلى خوادم خارجية.</div>
 </aside>
 <main class="main">
 <header class="top"><div><div class="eyebrow">منصة تقييم دفاعية لسلامة الطفل رقمياً</div><h1 id="pageTitle">نظرة عامة</h1><p class="subtitle">تقييم قابل للتكرار لفهم الإشراف على المحادثات الصوتية العربية في الألعاب.</p></div><div class="actions"><button class="btn" id="exportBtn">تصدير CSV</button><button class="btn primary" id="runTop">تشغيل تقييم تجريبي</button></div></header>
