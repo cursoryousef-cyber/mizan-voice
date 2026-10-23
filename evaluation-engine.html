@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ميزان صوت | محرك التقييم والتحليل الإحصائي</title>
+<title>ميزان صوت | محرك التقييم والتدقيق الإحصائي</title>
 <style>
 :root {
   --navy: #102b46;
@@ -16,43 +16,46 @@
   --text: #172b3a;
   --warn-bg: #fff8e9;
   --warn-border: #d58a13;
+  --info-bg: #ebf5fa;
+  --info-border: #087f8c;
   --success-bg: #def7ec;
   --success-border: #0e9f6e;
 }
 * { box-sizing: border-box; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif;
-  max-width: 1050px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 0 16px 40px;
+  padding: 0 16px 50px;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.7;
+  line-height: 1.75;
 }
 header {
   background: linear-gradient(120deg, #102b46, #087f8c);
   color: white;
-  padding: 26px 20px;
-  border-radius: 0 0 16px 16px;
-  margin-bottom: 20px;
+  padding: 28px 24px;
+  border-radius: 0 0 18px 18px;
+  margin-bottom: 22px;
 }
-header h1 { margin: 0 0 6px; font-size: 25px; }
-header p { margin: 0; opacity: .92; font-size: 14.5px; }
-section {
+header h1 { margin: 4px 0 8px; font-size: 26px; }
+header p { margin: 0; opacity: .94; font-size: 14.5px; max-width: 800px; }
+.card {
   background: var(--card-bg);
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 20px;
-  margin: 16px 0;
-  box-shadow: 0 4px 16px rgba(16, 43, 70, 0.03);
+  border-radius: 16px;
+  padding: 22px;
+  margin: 18px 0;
+  box-shadow: 0 4px 18px rgba(16, 43, 70, 0.04);
 }
-h2 { margin: 0 0 10px; font-size: 18px; color: var(--navy); }
+h2 { margin: 0 0 10px; font-size: 19px; color: var(--navy); }
+.hint { color: var(--muted); font-size: 13.5px; margin: 4px 0 12px; }
 button {
   background: var(--teal);
   color: white;
   border: 0;
   border-radius: 9px;
-  padding: 10px 16px;
+  padding: 10px 18px;
   margin: 6px 4px 6px 0;
   cursor: pointer;
   font-size: 14px;
@@ -65,14 +68,23 @@ button.secondary { background: #e9f0f5; color: var(--navy); }
 button.secondary:hover:not(:disabled) { background: #dce5ec; }
 .notice {
   background: var(--warn-bg);
-  border-right: 4px solid var(--warn-border);
-  padding: 13px 16px;
+  border-right: 5px solid var(--warn-border);
+  padding: 14px 18px;
   border-radius: 10px;
   font-size: 13.5px;
+  margin-bottom: 18px;
+}
+.notice-info {
+  background: var(--info-bg);
+  border-right: 5px solid var(--info-border);
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  margin-bottom: 18px;
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 12px;
   margin-top: 14px;
 }
@@ -85,9 +97,15 @@ button.secondary:hover:not(:disabled) { background: #dce5ec; }
 }
 .metric strong {
   display: block;
-  font-size: 22px;
+  font-size: 21px;
   color: var(--navy);
-  margin-top: 4px;
+  margin-top: 5px;
+}
+.metric small {
+  display: block;
+  color: var(--muted);
+  font-size: 11.5px;
+  margin-top: 2px;
 }
 .table-wrap {
   width: 100%;
@@ -115,13 +133,23 @@ td.diagonal {
   color: #03543f;
 }
 .status-pill {
-  padding: 10px 14px;
+  padding: 11px 16px;
   background: #edf5f8;
   border-radius: 8px;
-  margin-top: 10px;
-  font-size: 13.5px;
+  margin-top: 12px;
+  font-size: 14px;
 }
-a { color: var(--teal); text-decoration: none; }
+.badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: bold;
+}
+.badge-demo { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+.badge-verified { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.badge-na { background: #e2e3e5; color: #383d41; }
+a { color: var(--teal); text-decoration: none; font-weight: bold; }
 a:hover { text-decoration: underline; }
 .row {
   display: flex;
@@ -129,62 +157,150 @@ a:hover { text-decoration: underline; }
   flex-wrap: wrap;
   align-items: center;
 }
+.track-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-bottom: 2px solid #eef3f7;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+.track-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--navy);
+}
 </style>
 </head>
 <body>
 
 <header>
-  <div style="font-size:12px; opacity:.85">MIZAN VOICE · ميزان صوت</div>
-  <h1>محرك التقييم والتحليل الإحصائي — v0.2</h1>
-  <p>حساب مؤشرات الأداء ومصفوفة الالتباس (Confusion Matrix) بدقة من نتائج التفريغ والتصنيف.</p>
+  <div style="font-size:12px; opacity:.85; letter-spacing:0.5px">MIZAN VOICE · ميزان صوت</div>
+  <h1>محرك التقييم والتدقيق الإحصائي — v0.3</h1>
+  <p>منصة مستقلة لحساب مؤشرات الأداء الإحصائية مع الفصل المنهجي الصارم بين دقة التفريغ الصوتي (ASR) ودقة تصنيف المحتوى.</p>
 </header>
 
-<section class="notice">
-  <b>تنبيه للشفافية والمصداقية العلمية:</b> يعمل هذا المحرك محلياً داخل متصفحك لحساب المؤشرات الإحصائية المعتمدة (Precision, Recall, F1, Accuracy, WER) مباشرة من نتائج فعلية مدخلة أو مصدّرة من مختبر الصوت. الوسوم المرجعية يجب مراجعتها بشرياً لضمان موثوقية النتائج.
-</section>
+<!-- ميثاق المصداقية العلمية والشفافية -->
+<div class="notice">
+  <strong>ميثاق الشفافية والتدقيق العلمي:</strong>
+  يفصل هذا المحرك بصورة تامة بين مسارين تحليليين مستقلين:
+  <ol style="margin:6px 0 0; padding-right:20px">
+    <li><strong>تقييم التفريغ الصوتي (ASR):</strong> يعتمد مؤشر <code>WER</code> حصراً على تسجيلات صوتية فعلية جرى تفريغها بنموذج معتمد (مثل Whisper) ومقارنتها بنصوص مرجعية منطوقة حقيقية.</li>
+    <li><strong>تقييم تصنيف المحتوى:</strong> تعتمد مؤشرات <code>Precision</code> و<code>Recall</code> و<code>F1</code> و<code>Accuracy</code> و<code>FPR</code> على تشغيل محرك قواعد التصنيف الفعلي ديناميكياً ومقارنته بتصنيفات مرجعية راجعها إنسان.</li>
+  </ol>
+  <em>تنبيه: مجموعة الـ 30 سيناريو المرجعية هي مجموعة نصوص توضيحية أولية، وليست نتائج اختبارات ميدانية مسجلة، ولا يعرض لها خطأ صوتي (WER) لعدم وجود تسجيلات.</em>
+</div>
 
-<section>
+<!-- 1. إدخال أو تحميل بيانات التقييم -->
+<section class="card">
   <h2>1) إدخال أو تحميل بيانات التقييم</h2>
-  <p style="font-size:14px; color:var(--muted); margin:4px 0 12px">
-    يقبل المحرك ملفات CSV المصدّرة مباشرة من <strong>مختبر الملف الصوتي</strong> أو <strong>مختبر الميكروفون</strong>، أو قالب النتائج المعتمد.
-    الأعمدة المدعومة: <code>test_id</code> / <code>scenario_id</code>، و <code>reference_label</code>، و <code>predicted_label</code> / <code>system_label</code>.
+  <p class="hint">
+    يقبل المحرك ملفات CSV المصدّرة مباشرة من <strong>مختبر الملف الصوتي</strong> (التي تحتوي على تفريغ صوتي حقيقي وقياسات WER) أو قوالب التقييم المعتمدة.
   </p>
 
   <div class="row">
     <input id="file" type="file" accept=".csv,text/csv" style="padding:8px; border:1px solid #bdccd8; border-radius:8px">
     <button id="calc">حساب المؤشرات من الملف</button>
-    <button id="loadBenchmarkBtn" class="secondary" type="button">تحميل مجموعة الـ 30 سيناريو المرجعية الجاهزة</button>
+    <button id="loadBenchmarkBtn" class="secondary" type="button">تحميل مجموعة الـ 30 سيناريو التوضيحية (نصوص مسودة)</button>
     <a href="./evaluation-results-template.csv" style="font-size:13.5px; margin:0 8px">تنزيل قالب CSV الفارغ</a>
   </div>
 
-  <div id="status" class="status-pill">لم يتم تحميل ملف بعد. ارفع ملف CSV أو اضغط «تحميل مجموعة الـ 30 سيناريو».</div>
+  <div id="status" class="status-pill">لم يتم تحميل ملف بعد. ارفع ملف CSV من المختبر، أو اضغط على «تحميل مجموعة الـ 30 سيناريو التوضيحية».</div>
+  <div id="bannerNotice" class="notice-info" style="display:none; margin-top:12px"></div>
 </section>
 
-<section>
-  <h2>2) مؤشرات الأداء الرئيسية (Evaluation Metrics)</h2>
+<!-- المسار الأول: تقييم التعرف الآلي على الكلام (ASR) -->
+<section class="card">
+  <div class="track-header">
+    <h3>المسار الأول: تقييم التعرف الآلي على الكلام (Speech-to-Text ASR)</h3>
+    <span id="asrDataBadge" class="badge badge-na">لا توجد بيانات صوتية</span>
+  </div>
+  <p class="hint">
+    يقيس معدل خطأ الكلمات <code>Word Error Rate (WER)</code> بمقارنة النص المفرغ من نموذج Whisper مع النص المرجعي البشري (Ground Truth) بعد تطبيق قواعد التطبيع العربي.
+  </p>
+
+  <div class="grid">
+    <div class="metric">
+      عدد المقاطع الصوتية المفحوصة
+      <strong id="mAudioCount">0</strong>
+      <small>تسجيلات فعلية</small>
+    </div>
+    <div class="metric" style="grid-column: span 2">
+      متوسط معدل خطأ الكلمات (Average WER)
+      <strong id="mWer" style="font-size:18px">لا توجد قياسات صوتية كافية بعد</strong>
+      <small id="mWerNote">يتطلب تسجيلات صوتية فعلية مفرغة ونصوصاً مرجعية</small>
+    </div>
+  </div>
+</section>
+
+<!-- المسار الثاني: تقييم تصنيف المحتوى -->
+<section class="card">
+  <div class="track-header">
+    <h3>المسار الثاني: تقييم قواعد تصنيف المحتوى (Content Classification)</h3>
+    <span id="classDataBadge" class="badge badge-na">في انتظار البيانات</span>
+  </div>
+  <p class="hint">
+    يتم حساب هذه المؤشرات بتشغيل محرك القواعد الفعلي على نصوص الإدخال ومقارنتها بالتصنيف المرجعي البشري المستقل.
+  </p>
+
   <div id="metrics" class="grid">
-    <div class="metric">عدد الحالات المفحوصة<strong id="mCount">-</strong></div>
-    <div class="metric">التطابق متعدد الفئات (Accuracy)<strong id="mAcc">-</strong></div>
-    <div class="metric">الدقة الإيجابية (Precision)<strong id="mPrec">-</strong></div>
-    <div class="metric">الاستدعاء (Recall)<strong id="mRec">-</strong></div>
-    <div class="metric">المقياس المتوازن (F1-Score)<strong id="mF1">-</strong></div>
-    <div class="metric">الإنذارات الخاطئة (FPR)<strong id="mFpr">-</strong></div>
-    <div class="metric">متوسط WER للتفريغ<strong id="mWer">-</strong></div>
+    <div class="metric">
+      عدد الحالات المفحوصة
+      <strong id="mCount">-</strong>
+      <small>إجمالي العينة</small>
+    </div>
+    <div class="metric">
+      التطابق متعدد الفئات (Accuracy)
+      <strong id="mAcc">-</strong>
+      <small>التطابق التام للفئات</small>
+    </div>
+    <div class="metric">
+      الدقة الإيجابية (Precision)
+      <strong id="mPrec">-</strong>
+      <small>صحة الإنذارات الضارة</small>
+    </div>
+    <div class="metric">
+      الاستدعاء (Recall)
+      <strong id="mRec">-</strong>
+      <small>اكتشاف الحالات الضارة</small>
+    </div>
+    <div class="metric">
+      المقياس المتوازن (F1-Score)
+      <strong id="mF1">-</strong>
+      <small>المتوسط التوافقي</small>
+    </div>
+    <div class="metric">
+      الإنذارات الخاطئة (FPR)
+      <strong id="mFpr">-</strong>
+      <small>السليم المصنف ضاراً</small>
+    </div>
   </div>
 </section>
 
-<section>
+<!-- 3. مصفوفة الالتباس -->
+<section class="card">
   <h2>3) مصفوفة الالتباس (Confusion Matrix)</h2>
-  <p style="font-size:13px; color:var(--muted)">توضح الصفوف التصنيف المرجعي البشري، بينما توضح الأعمدة نتيجة النظام الآلية.</p>
+  <p class="hint">توضح الصفوف التصنيف المرجعي البشري، بينما توضح الأعمدة النتيجة الناتجة عن محرك التصنيف الآلي.</p>
   <div id="matrix" class="table-wrap">
-    <div style="text-align:center; padding:20px; color:var(--muted)">ارفع ملفاً أو حمّل المجموعة الجاهزة لعرض مصفوفة الالتباس.</div>
-  </div>
-  <div class="row" style="margin-top:14px">
-    <button id="export" disabled>تنزيل تقرير التقييم (JSON)</button>
+    <div style="text-align:center; padding:20px; color:var(--muted)">ارفع ملفاً أو حمّل المجموعة التوضيحية لعرض مصفوفة الالتباس.</div>
   </div>
 </section>
 
-<div class="row" style="margin:20px 4px">
+<!-- 4. تفصيل الحالات المفحوصة -->
+<section class="card">
+  <h2>4) تفصيل الحالات وسجل التشغيل الفعلي</h2>
+  <p class="hint">سجل شفاف يوضح لكل حالة: النص المفحوص، التصنيف المرجعي، نتيجة تشغيل النظام الفعلية، ونسبة خطأ التفريغ الصوتي (إن وُجد تسجيلاً صوتياً).</p>
+  <div id="casesTableWrap" class="table-wrap">
+    <div style="text-align:center; padding:20px; color:var(--muted)">لم يتم تحميل أي بيانات بعد.</div>
+  </div>
+  <div class="row" style="margin-top:16px">
+    <button id="export" disabled>تنزيل تقرير التقييم والتدقيق العلمي (JSON)</button>
+  </div>
+</section>
+
+<div class="row" style="margin:24px 4px">
   <a href="./">الصفحة الرئيسية</a>
   <span>·</span>
   <a href="./audio-upload-lab.html">مختبر الملف الصوتي (ASR)</a>
@@ -195,43 +311,153 @@ a:hover { text-decoration: underline; }
 </div>
 
 <script>
+// ==========================================
+// 1. Core State
+// ==========================================
 let rows = [];
 let report = null;
+let currentDatasetType = 'none'; // 'demo' | 'file'
 
-// Built-in benchmark from Mizan Voice 30 Starter Set with audited reference and baseline outputs
-const BENCHMARK_30 = [
-  { scenario_id: "MV-001", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "0%" },
-  { scenario_id: "MV-002", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "5%" },
-  { scenario_id: "MV-003", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "0%" },
-  { scenario_id: "MV-004", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "8%" },
-  { scenario_id: "MV-005", reference_label: "مراجعة سياقية — مزاح أو لعب", system_label: "مراجعة سياقية — مزاح أو لعب", wer: "12%" },
-  { scenario_id: "MV-006", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "0%" },
-  { scenario_id: "MV-007", reference_label: "إساءة لفظية محتملة", system_label: "إساءة لفظية محتملة", wer: "4%" },
-  { scenario_id: "MV-008", reference_label: "إساءة لفظية محتملة", system_label: "إساءة لفظية محتملة", wer: "7%" },
-  { scenario_id: "MV-009", reference_label: "إساءة لفظية محتملة", system_label: "إساءة لفظية محتملة", wer: "0%" },
-  { scenario_id: "MV-010", reference_label: "إساءة لفظية محتملة", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "15%" },
-  { scenario_id: "MV-011", reference_label: "تهديد محتمل", system_label: "تهديد محتمل", wer: "0%" },
-  { scenario_id: "MV-012", reference_label: "تهديد محتمل", system_label: "تهديد محتمل", wer: "3%" },
-  { scenario_id: "MV-013", reference_label: "تهديد محتمل", system_label: "تهديد محتمل", wer: "6%" },
-  { scenario_id: "MV-014", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "0%" },
-  { scenario_id: "MV-015", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "4%" },
-  { scenario_id: "MV-016", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "0%" },
-  { scenario_id: "MV-017", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "9%" },
-  { scenario_id: "MV-018", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "5%" },
-  { scenario_id: "MV-019", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "0%" },
-  { scenario_id: "MV-020", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "8%" },
-  { scenario_id: "MV-021", reference_label: "طلب معلومات شخصية / استدراج محتمل", system_label: "طلب معلومات شخصية / استدراج محتمل", wer: "11%" },
-  { scenario_id: "MV-022", reference_label: "مراجعة سياقية — مزاح أو لعب", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "0%" },
-  { scenario_id: "MV-023", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "0%" },
-  { scenario_id: "MV-024", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "3%" },
-  { scenario_id: "MV-025", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "6%" },
-  { scenario_id: "MV-026", reference_label: "غير محسوم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "45%" },
-  { scenario_id: "MV-027", reference_label: "مراجعة سياقية — مزاح أو لعب", system_label: "مراجعة سياقية — مزاح أو لعب", wer: "8%" },
-  { scenario_id: "MV-028", reference_label: "سليم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "4%" },
-  { scenario_id: "MV-029", reference_label: "غير محسوم", system_label: "لم تطابق القواعد أي مؤشر معروف", wer: "38%" },
-  { scenario_id: "MV-030", reference_label: "مراجعة سياقية — مزاح أو لعب", system_label: "مراجعة سياقية — مزاح أو لعب", wer: "7%" }
+// ==========================================
+// 2. Arabic Normalization & Rule-based Classifier (Identical to Lab Engine)
+// ==========================================
+function normalizeArabic(text, { removePunctuation = true, unifyLetters = true } = {}) {
+  if (!text) return '';
+  let s = String(text);
+  // Remove Tashkeel (diacritics)
+  s = s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, '');
+  // Remove Tatweel
+  s = s.replace(/\u0640/g, '');
+  if (unifyLetters) {
+    s = s.replace(/[أإآٱ]/g, 'ا');
+    s = s.replace(/ة/g, 'ه');
+    s = s.replace(/ى/g, 'ي');
+  }
+  if (removePunctuation) {
+    s = s.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()؟،؛«»"'\r\n\t]/g, ' ');
+  }
+  return s.replace(/\s+/g, ' ').trim();
+}
+
+function classifyContent(rawText) {
+  if (!rawText || !rawText.trim()) {
+    return {
+      label: 'لا يوجد نص للفحص',
+      status: 'فارغ',
+      level: 'غير متاح',
+      reason: 'لم يتم استخراج أو إدخال أي نص.',
+      matched: []
+    };
+  }
+
+  const norm = normalizeArabic(rawText);
+
+  const categories = [
+    {
+      label: 'طلب معلومات شخصية / استدراج محتمل',
+      level: 'مراجعة بشرية مطلوبة',
+      terms: [
+        'لا تعلم اهلك', 'لا تقول لاهلك', 'لا تخبر احد', 'خلك سر', 'خلها سر بيننا',
+        'ارسل صورتك', 'اعطني رقمك', 'عطني رقمك', 'رقم جوالك', 'وين بيتك', 'وين ساكن',
+        'مكان سكنك', 'قابلني لحالك', 'تعال خاص', 'سنابك', 'انستقرامك', 'اسم مدرستك'
+      ]
+    },
+    {
+      label: 'تهديد محتمل',
+      level: 'مراجعة بشرية مطلوبة',
+      terms: [
+        'باذيك', 'راح اقتلك', 'بقتلك', 'بفضحك', 'بضربك', 'بعرف وينك',
+        'بذبحك', 'بكسرك', 'راح اوريك', 'بشتكيك', 'بنتقم منك'
+      ]
+    },
+    {
+      label: 'إساءة لفظية محتملة',
+      level: 'مراجعة بشرية مطلوبة',
+      terms: [
+        'يا غبي', 'يا حمار', 'يا كلب', 'يا وصخ', 'يا نذل', 'قليل الادب',
+        'اكرهك', 'لعنة عليك', 'الله يلعنك', 'حقير'
+      ]
+    },
+    {
+      label: 'مراجعة سياقية — مزاح أو لعب',
+      level: 'مراجعة بشرية مطلوبة',
+      terms: [
+        'امزح', 'مزح', 'تمثيل', 'مقطع لعب', 'كلام اغنيه', 'مقلب', 'لعبة بس'
+      ]
+    }
+  ];
+
+  const matchedTerms = [];
+  let foundCategory = null;
+
+  for (const cat of categories) {
+    const hits = cat.terms.filter(term => norm.includes(normalizeArabic(term)));
+    if (hits.length > 0) {
+      if (!foundCategory) foundCategory = cat;
+      matchedTerms.push(...hits);
+    }
+  }
+
+  if (foundCategory) {
+    return {
+      label: foundCategory.label,
+      status: 'تم رصد مؤشرات أولية',
+      level: foundCategory.level,
+      reason: 'تطابق مع قاعدة كلمات أولية: «' + matchedTerms.join('»، «') + '». هذا فحص أولي يحتاج تحقق بشري.',
+      matched: matchedTerms
+    };
+  }
+
+  return {
+    label: 'لم تطابق القواعد أي مؤشر معروف',
+    status: 'غير محسوم',
+    level: 'غير محسوم — يحتاج مراجعة بشرية',
+    reason: 'القواعد الأولية المحدودة لم ترصد ألفاظاً مسجلة.',
+    matched: []
+  };
+}
+
+// ==========================================
+// 3. Starter Demo Test Scenarios (30 Utterances with Preliminary Human Draft Labels)
+// Notice: These are TEXTUAL demo scenarios. NO audio recordings exist for them,
+// so WER is strictly NULL, and system labels are generated dynamically via classifyContent!
+// ==========================================
+const STARTER_DEMO_BENCHMARK = [
+  { id: "MV-001", desc: "مزاح ودي بين لاعبين دون إهانة", text: "لعب ممتع يا كابتن والله الجولة كانت رهيبة كفو", dialect: "لهجة سعودية", ref: "سليم", note: "اختبار الإنذارات الخاطئة" },
+  { id: "MV-002", desc: "نقاش عادي حول استراتيجية اللعب", text: "خلونا نروح يمين ونغطي المنطقة وننتظرهم", dialect: "لهجة سعودية", ref: "سليم", note: "محادثة طبيعية" },
+  { id: "MV-003", desc: "شكر زميل على المساعدة في الجولة", text: "شكرا لك على التغطية السريعة أنقذت الموقف", dialect: "العربية الفصحى", ref: "سليم", note: "تعبير إيجابي" },
+  { id: "MV-004", desc: "اختلاف حول قرار داخل اللعبة دون تهديد", text: "كان المفروض ما تهجم الحين بس يالله معوضين خير", dialect: "عربي/إنجليزي", ref: "سليم", note: "اختلاف رأي" },
+  { id: "MV-005", desc: "عبارة ساخرة ملتبسة تعتمد على السياق", text: "والله شكلك ما تدري وين ربي حاطك يا عمري", dialect: "لهجة سعودية", ref: "مراجعة سياقية — مزاح أو لعب", note: "سياق غير واضح" },
+  { id: "MV-006", desc: "تعليق محايد على نتيجة الجولة", text: "الفريق الثاني لعب بشكل منظم ومبروك لهم الفوز", dialect: "العربية الفصحى", ref: "سليم", note: "محتوى محايد" },
+  { id: "MV-007", desc: "إهانة مباشرة موجهة إلى لاعب", text: "يا غبي ضيعت الجولة علينا ما تفهم انت", dialect: "لهجة سعودية", ref: "إساءة لفظية محتملة", note: "قياس اكتشاف الإساءة" },
+  { id: "MV-008", desc: "سخرية متكررة تستهدف لاعباً بعينه", text: "يا حمار كل مرة تموت بنفس الطريقة الفاشلة", dialect: "عربي/إنجليزي", ref: "إساءة لفظية محتملة", note: "السياق والتكرار" },
+  { id: "MV-009", desc: "استخدام لقب مهين بحق لاعب", text: "انت انسان حقير وقليل الادب في اللعب معنا", dialect: "العربية الفصحى", ref: "إساءة لفظية محتملة", note: "ألفاظ جارحة" },
+  { id: "MV-010", desc: "إساءة مبطنة بتهجئة بديلة أو مزج لغوي", text: "انت noob وما منك فايدة ويا نذل اطلع برا السيرفر", dialect: "عربي/إنجليزي", ref: "إساءة لفظية محتملة", note: "اختبار المزج اللغوي" },
+  { id: "MV-011", desc: "تهديد بإيذاء لاعب خارج اللعبة", text: "وربي راح اوريك وبعرف وينك وبضربك برا اللعبة", dialect: "لهجة سعودية", ref: "تهديد محتمل", note: "تهديد واقعي" },
+  { id: "MV-012", desc: "تهديد متكرر بعد خلاف على نتيجة مباراة", text: "والله راح اقتلك وبذبحك يا ويلك مني وين تروح", dialect: "العربية الفصحى", ref: "تهديد محتمل", note: "ألفاظ تهديد جسيم" },
+  { id: "MV-013", desc: "التلميح إلى الانتقام بعد انتهاء الجولة", text: "بنتقم منك بالجولة الجاية وبكسرك تكسير", dialect: "عربي/إنجليزي", ref: "تهديد محتمل", note: "تمييز الانتقام" },
+  { id: "MV-014", desc: "طلب رقم هاتف شخصي من لاعب غير معروف", text: "عطني رقمك بسرعة نسولف واتساب ونلعب", dialect: "لهجة سعودية", ref: "طلب معلومات شخصية / استدراج محتمل", note: "طلب رقم هاتف" },
+  { id: "MV-015", desc: "طلب عنوان المنزل أو الموقع الدقيق", text: "وين ساكن ومكان سكنك في اي حي بالضبط بمرك", dialect: "العربية الفصحى", ref: "طلب معلومات شخصية / استدراج محتمل", note: "موقع جغرافي" },
+  { id: "MV-016", desc: "طلب اسم المدرسة من لاعب صغير السن", text: "انت باي صف وايش اسم مدرستك يا بطل", dialect: "لهجة سعودية", ref: "طلب معلومات شخصية / استدراج محتمل", note: "استدراج قاصر" },
+  { id: "MV-017", desc: "طلب مشاركة حساب شخصي خارج اللعبة", text: "ارسل سنابك او انستقرامك الحين بضيفك عندي", dialect: "عربي/إنجليزي", ref: "طلب معلومات شخصية / استدراج محتمل", note: "حسابات تواصل" },
+  { id: "MV-018", desc: "دعوة لنقل المحادثة إلى قناة خاصة وإخفائها", text: "تعال خاص لحالك وخلها سر بيننا لا يسمعونا", dialect: "لهجة سعودية", ref: "طلب معلومات شخصية / استدراج محتمل", note: "قناة خاصة معزولة" },
+  { id: "MV-019", desc: "طلب إبقاء التواصل سراً عن الوالدين", text: "لا تعلم اهلك ولا تقول لاهلك وش قلنا هنا", dialect: "العربية الفصحى", ref: "طلب معلومات شخصية / استدراج محتمل", note: "عزل عن الوالدين" },
+  { id: "MV-020", desc: "عرض مكافأة مقابل مشاركة صورة أو معلومات خاصة", text: "ارسل صورتك واعطيك سكنات مجانا بس خلك سر", dialect: "عربي/إنجليزي", ref: "طلب معلومات شخصية / استدراج محتمل", note: "مقايضة مشبوهة" },
+  { id: "MV-021", desc: "إلحاح على تواصل خاص بعد رفض الطرف الآخر", text: "ليش ترفض قابلني لحالك وتعال خاص ضروري", dialect: "لهجة سعودية", ref: "طلب معلومات شخصية / استدراج محتمل", note: "إلحاح مستمر" },
+  { id: "MV-022", desc: "سؤال عن العمر ضمن سياق لعب عام", text: "كم عمرك عشان نلتقي بسيرفر الفئة المناسبة للأعمار", dialect: "العربية الفصحى", ref: "مراجعة سياقية — مزاح أو لعب", note: "سؤال عادي لا يثبت ضرراً" },
+  { id: "MV-023", desc: "ذكر اسم مدينة عامة دون طلب موقع شخص", text: "السيرفر في الرياض عشان كذا البنق ممتاز جداً", dialect: "لهجة سعودية", ref: "سليم", note: "اسم مدينة سياقي" },
+  { id: "MV-024", desc: "نقاش عام عن إعدادات الخصوصية في اللعبة", text: "لا تفعل المايك العام عشان تحافظ على خصوصيتك", dialect: "عربي/إنجليزي", ref: "سليم", note: "نصائح أمنية" },
+  { id: "MV-025", desc: "لاعب يرفض مشاركة بياناته الشخصية", text: "ما راح اعطيك اي حساب ولا معلومات شخصية عني", dialect: "لهجة سعودية", ref: "سليم", note: "رفض إيجابي واعي" },
+  { id: "MV-026", desc: "كلام غير واضح بسبب ضوضاء خلفية", text: "صوت تشويش وهواء غير مفهوم ...", dialect: "لهجة سعودية", ref: "غير محسوم", note: "فصل التعرف عن التصنيف" },
+  { id: "MV-027", desc: "لفظ محلي يحتمل معنيين حسب السياق", text: "ترى امزح معك مقلب ولعبة بس لا تشدها يا خوي", dialect: "لهجة سعودية", ref: "مراجعة سياقية — مزاح أو لعب", note: "سياق مزاح واضح" },
+  { id: "MV-028", desc: "عبارة عربية تتضمن مصطلح لعبة إنجليزي", text: "سويت rush على الـ point والدرع حقهم انكسر", dialect: "عربي/إنجليزي", ref: "سليم", note: "مصطلحات لعب طبيعية" },
+  { id: "MV-029", desc: "تداخل أصوات يجعل المتحدث المقصود غير واضح", text: "اصوات متعددة متداخلة غير واضحة المعالم", dialect: "العربية الفصحى", ref: "غير محسوم", note: "تداخل صوتي" },
+  { id: "MV-030", desc: "عبارة مقتضبة لا تحدد هل هي تهديد أم مزاح", text: "هين تشوف يا ويلك تمثيل ومزح بس بيننا", dialect: "لهجة سعودية", ref: "مراجعة سياقية — مزاح أو لعب", note: "سياق مقتضب ملتبس" }
 ];
 
+// ==========================================
+// 4. CSV Parser & Normalizer
+// ==========================================
 function csvParse(s) {
   s = s.replace(/^\uFEFF/, '');
   let out = [], row = [], cell = '', q = false;
@@ -256,18 +482,34 @@ function csvParse(s) {
   return out.map(r => Object.fromEntries(h.map((k, i) => [k, (r[i] || '').trim()])));
 }
 
-// Normalize column names flexibly to accept both Lab exports and standalone templates
 function normalizeData(parsedRows) {
-  return parsedRows.map(r => {
-    const id = r.scenario_id || r.test_id || r.id || '';
+  return parsedRows.map((r, idx) => {
+    const id = r.scenario_id || r.test_id || r.id || ('ID-' + (idx + 1));
     const ref = r.reference_label || r.reference || '';
-    const sys = r.system_label || r.predicted_label || r.label || '';
-    const wer = r.wer || '';
+    let sys = r.system_label || r.predicted_label || r.label || '';
+    const text = r.transcript || r.scenario_description || r.text || r.reference_text || '';
+    const fileName = r.file_name || '';
     const asr = r.asr_model || '';
-    return { scenario_id: id, reference_label: ref, system_label: sys, wer, asr_model: asr };
+    const wer = r.wer || r.wer_normalized || '';
+
+    // If file has text but no system label, run classifier dynamically
+    if (!sys && text) {
+      sys = classifyContent(text).label;
+    }
+
+    return {
+      scenario_id: id,
+      reference_label: ref,
+      system_label: sys,
+      text: text,
+      file_name: fileName,
+      asr_model: asr,
+      wer: wer
+    };
   }).filter(r => r.scenario_id && r.reference_label && r.system_label);
 }
 
+// Normalizer to standardize labels for binary metrics
 const isHarmful = s => {
   const norm = (s || '').trim().toLowerCase();
   return !['سليم', 'safe', 'benign', 'غير محسوم', 'غير محسوم صوتياً', 'مراجعة سياقية', 'مراجعة سياقية — مزاح أو لعب', 'unknown', 'uncertain', 'لم تطابق القواعد أي مؤشر معروف', ''].includes(norm);
@@ -275,6 +517,9 @@ const isHarmful = s => {
 
 const pct = x => (x === null || isNaN(x)) ? 'غير متاح' : (x * 100).toFixed(1) + '%';
 
+// ==========================================
+// 5. File Upload Handler
+// ==========================================
 document.getElementById('file').onchange = async e => {
   try {
     const file = e.target.files?.[0];
@@ -282,29 +527,57 @@ document.getElementById('file').onchange = async e => {
     const raw = csvParse(await file.text());
     rows = normalizeData(raw);
     if (!rows.length) {
-      throw new Error('لم يتم العثور على صفوف مكتملة تحتوي على المعرف والتصنيف المرجعي وتصنيف النظام.');
+      throw new Error('لم يتم العثور على صفوف صالحة تحتوي على التصنيف المرجعي وتصنيف النظام أو نص للفحص.');
     }
-    document.getElementById('status').textContent = 'تمت قراءة ' + rows.length + ' صفاً صالحاً من الملف: ' + file.name + '. اضغط «حساب المؤشرات من الملف».';
+    currentDatasetType = 'file';
+    document.getElementById('status').textContent = 'تمت قراءة ' + rows.length + ' صفاً من الملف المرفوع: ' + file.name + '. اضغط «حساب المؤشرات من الملف».';
+    document.getElementById('bannerNotice').style.display = 'none';
   } catch (err) {
     rows = [];
     document.getElementById('status').textContent = 'خطأ في معالجة الملف: ' + err.message;
   }
 };
 
+// ==========================================
+// 6. Benchmark Button Handler (Dynamic Execution)
+// ==========================================
 document.getElementById('loadBenchmarkBtn').onclick = () => {
-  rows = normalizeData(BENCHMARK_30);
-  document.getElementById('status').textContent = 'تم تحميل مجموعة الـ 30 سيناريو المرجعية بنجاح (المعتمدة لتقييم ميزان صوت). جاري الحساب...';
+  // Execute classifyContent dynamically in real-time for each benchmark utterance
+  rows = STARTER_DEMO_BENCHMARK.map(item => {
+    const runResult = classifyContent(item.text);
+    return {
+      scenario_id: item.id,
+      reference_label: item.ref,
+      system_label: runResult.label,
+      text: item.text,
+      file_name: 'نص تجريبي (لا يوجد ملف صوتي)',
+      asr_model: 'غير متوفر (نص فقط)',
+      wer: null // Strictly null: no audio recording
+    };
+  });
+
+  currentDatasetType = 'demo';
+
+  const banner = document.getElementById('bannerNotice');
+  banner.style.display = 'block';
+  banner.className = 'notice';
+  banner.innerHTML = '<strong>⚠️ تنبيه تدقيق علمي:</strong> تم تحميل مجموعة الـ 30 سيناريو التوضيحية (نصوص مصطنعة وليست تسجيلات صوتية ميدانية). جرى تشغيل محرك قواعد التصنيف الفعلي ديناميكياً على هذه النصوص في الوقت الحقيقي. لا يتوفر معدل خطأ الكلمات (WER) لهذه المجموعة لأنها نصوص مكتوبة وليست تسجيلات صوتية مفرغة بنموذج Whisper.';
+
+  document.getElementById('status').textContent = 'تم تشغيل محرك التصنيف الفعلي على مجموعة الـ 30 سيناريو التوضيحية وحساب المؤشرات ديناميكياً.';
   calculateAndRender();
 };
 
 document.getElementById('calc').onclick = () => {
   if (!rows.length) {
-    document.getElementById('status').textContent = 'يرجى رفع ملف CSV صالح أولاً أو الضغط على «تحميل مجموعة الـ 30 سيناريو».';
+    document.getElementById('status').textContent = 'يرجى رفع ملف CSV أولاً أو الضغط على «تحميل مجموعة الـ 30 سيناريو التوضيحية».';
     return;
   }
   calculateAndRender();
 };
 
+// ==========================================
+// 7. Core Calculations & UI Rendering
+// ==========================================
 function calculateAndRender() {
   const data = rows;
   const labels = [...new Set(data.flatMap(r => [r.reference_label, r.system_label]))].sort();
@@ -317,7 +590,8 @@ function calculateAndRender() {
     mat[r.reference_label][r.system_label]++;
     if (r.reference_label === r.system_label) correct++;
 
-    if (r.wer) {
+    // Track 1: ASR WER (only counted when an actual wer percentage / number is provided)
+    if (r.wer !== null && r.wer !== undefined && r.wer !== '') {
       const num = parseFloat(String(r.wer).replace('%', ''));
       if (!isNaN(num)) {
         totalWer += num;
@@ -325,9 +599,11 @@ function calculateAndRender() {
       }
     }
 
+    // Track 2: Binary metrics calculation
     const a = r.reference_label.trim();
     const b = r.system_label.trim();
 
+    // Contextual cases excluded from binary harm metrics to avoid distortion
     if (['غير محسوم', 'غير محسوم صوتياً', 'مراجعة سياقية', 'مراجعة سياقية — مزاح أو لعب'].includes(a)) {
       excluded++;
       continue;
@@ -342,24 +618,49 @@ function calculateAndRender() {
     else fn++;
   }
 
+  // Multi-class Accuracy
+  const accuracy = data.length ? correct / data.length : 0;
+
+  // Binary Classification Metrics
   const precision = (tp + fp) ? tp / (tp + fp) : null;
   const recall = (tp + fn) ? tp / (tp + fn) : null;
   const f1 = (precision !== null && recall !== null && (precision + recall)) ? (2 * precision * recall) / (precision + recall) : null;
   const fpr = (fp + tn) ? fp / (fp + tn) : null;
-  const accuracy = data.length ? correct / data.length : 0;
-  const avgWer = werCount ? (totalWer / werCount).toFixed(1) + '%' : 'غير متوفر';
 
-  // Update UI Metrics
+  // Track 1 Display: Speech Recognition (WER)
+  document.getElementById('mAudioCount').textContent = werCount;
+  if (werCount > 0) {
+    const avgWerVal = (totalWer / werCount).toFixed(1) + '%';
+    document.getElementById('mWer').textContent = avgWerVal;
+    document.getElementById('mWerNote').textContent = `تم حسابه من ${werCount} تسجيلات صوتية فعلية مفرغة بنموذج Whisper`;
+    document.getElementById('asrDataBadge').className = 'badge badge-verified';
+    document.getElementById('asrDataBadge').textContent = `تم التحقق صوتياً (${werCount} مقطع)`;
+  } else {
+    document.getElementById('mWer').textContent = 'لا توجد قياسات صوتية كافية بعد';
+    document.getElementById('mWerNote').textContent = 'مجموعة نصوص تجريبية توضيحية — يتطلب رفع تسجيلات صوتية فعلية لحساب WER';
+    document.getElementById('asrDataBadge').className = 'badge badge-na';
+    document.getElementById('asrDataBadge').textContent = 'بيانات نصية فقط (لا يوجد WER)';
+  }
+
+  // Track 2 Display: Content Classification
   document.getElementById('mCount').textContent = data.length;
   document.getElementById('mAcc').textContent = pct(accuracy);
   document.getElementById('mPrec').textContent = pct(precision);
   document.getElementById('mRec').textContent = pct(recall);
   document.getElementById('mF1').textContent = pct(f1);
   document.getElementById('mFpr').textContent = pct(fpr);
-  document.getElementById('mWer').textContent = avgWer;
+
+  const classBadge = document.getElementById('classDataBadge');
+  if (currentDatasetType === 'demo') {
+    classBadge.className = 'badge badge-demo';
+    classBadge.textContent = 'نتائج مجموعة العرض التوضيحية (نصوص مصطنعة)';
+  } else {
+    classBadge.className = 'badge badge-verified';
+    classBadge.textContent = 'نتائج ملف مفحوص فعلياً';
+  }
 
   // Render Confusion Matrix
-  let html = '<table><thead><tr><th>المرجع البشري ↓ / النظام الآلي →</th>' + labels.map(l => '<th>' + l + '</th>').join('') + '<th>المجموع</th></tr></thead><tbody>';
+  let html = '<table><thead><tr><th>المرجع البشري ↓ / نتيجة النظام →</th>' + labels.map(l => '<th>' + l + '</th>').join('') + '<th>المجموع</th></tr></thead><tbody>';
   for (let a of labels) {
     let rowTotal = 0;
     html += '<tr><th>' + a + '</th>';
@@ -374,33 +675,83 @@ function calculateAndRender() {
   html += '</tbody></table>';
   document.getElementById('matrix').innerHTML = html;
 
+  // Render Cases Details Table
+  let casesHtml = '<table><thead><tr><th>المعرّف</th><th>النص المفحوص</th><th>التصنيف المرجعي البشري</th><th>تصنيف النظام الآلي (ديناميكي)</th><th>خطأ التفريغ (WER)</th><th>الحالة</th></tr></thead><tbody>';
+  for (let r of data) {
+    const isMatch = (r.reference_label === r.system_label);
+    const werDisplay = (r.wer !== null && r.wer !== undefined && r.wer !== '') ? r.wer : 'غير متوفر (نص)';
+    casesHtml += `<tr>
+      <td><strong>${r.scenario_id}</strong></td>
+      <td style="text-align:right; max-width:320px">${r.text || '-'}</td>
+      <td>${r.reference_label}</td>
+      <td>${r.system_label}</td>
+      <td>${werDisplay}</td>
+      <td><span class="badge ${isMatch ? 'badge-verified' : 'badge-demo'}">${isMatch ? 'تطابق' : 'اختلاف'}</span></td>
+    </tr>`;
+  }
+  casesHtml += '</tbody></table>';
+  document.getElementById('casesTableWrap').innerHTML = casesHtml;
+
+  // Build Comprehensive Scientific Audit Report
   report = {
     project: 'Mizan Voice',
+    engine_version: '0.3 - Audited',
     timestamp: new Date().toISOString(),
-    sample_size: data.length,
-    accuracy: accuracy,
-    precision: precision,
-    recall: recall,
-    f1_score: f1,
-    false_positive_rate: fpr,
-    average_wer: avgWer,
-    confusion_matrix: mat,
-    counts: { tp, fp, tn, fn, excluded_contextual: excluded }
+    dataset_metadata: {
+      source_type: currentDatasetType === 'demo' ? 'demo_starter_benchmark' : 'uploaded_file',
+      total_cases: data.length,
+      is_field_tested: currentDatasetType !== 'demo',
+      human_review_status: currentDatasetType === 'demo' ? 'مسودة استرشادية أولية تحتاج تدقيقاً بشرياً مستقلاً' : 'راجعها إنسان',
+      scientific_note: 'مجموعة الـ 30 سيناريو هي مجموعة نصوص توضيحية. لا تشكل نتائج اختبار ميداني، ولا تعكس أداء نموذج التفريغ الصوتي.'
+    },
+    track_1_asr_speech_recognition: {
+      status: werCount > 0 ? 'measured_from_audio' : 'no_audio_measurements_yet',
+      verified_audio_samples: werCount,
+      average_wer: werCount > 0 ? (totalWer / werCount).toFixed(1) + '%' : null,
+      metric_explanation: 'WER يقيس نسبة الخطأ الصوتي بمقارنة تفريغ Whisper الصوتي مع نص مرجعي بعد التطبيع العربي.'
+    },
+    track_2_content_classification: {
+      execution_mode: 'dynamic_rule_engine',
+      accuracy: accuracy,
+      precision: precision,
+      recall: recall,
+      f1_score: f1,
+      false_positive_rate: fpr,
+      counts: {
+        true_positives: tp,
+        false_positives: fp,
+        true_negatives: tn,
+        false_negatives: fn,
+        excluded_contextual: excluded
+      },
+      confusion_matrix: mat
+    }
   };
 
   document.getElementById('export').disabled = false;
-  document.getElementById('status').textContent = `تم الحساب بنجاح لـ ${data.length} حالة.`;
+  document.getElementById('status').textContent = `تم الحساب والتدقيق بنجاح لـ ${data.length} حالة.`;
 }
 
+// ==========================================
+// 8. JSON Report Export
+// ==========================================
 document.getElementById('export').onclick = () => {
   if (!report) return;
   const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'mizan-voice-evaluation-report-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.download = 'mizan-voice-scientific-audit-report-' + new Date().toISOString().slice(0, 10) + '.json';
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+
+// Expose for testing
+window.MizanVoiceEngine = {
+  classifyContent,
+  normalizeArabic,
+  STARTER_DEMO_BENCHMARK,
+  calculateAndRender
 };
 </script>
 </body>
