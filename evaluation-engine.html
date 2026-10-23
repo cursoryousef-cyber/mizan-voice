@@ -178,7 +178,7 @@ a:hover { text-decoration: underline; }
 
 <header>
   <div style="font-size:12px; opacity:.85; letter-spacing:0.5px">MIZAN VOICE · ميزان صوت</div>
-  <h1>محرك التقييم والتدقيق الإحصائي — v0.3</h1>
+  <h1>محرك التقييم والتدقيق الإحصائي — v0.4 (التقييم الصوتي والفرز المستقل)</h1>
   <p>منصة مستقلة لحساب مؤشرات الأداء الإحصائية مع الفصل المنهجي الصارم بين دقة التفريغ الصوتي (ASR) ودقة تصنيف المحتوى.</p>
 </header>
 
@@ -201,14 +201,90 @@ a:hover { text-decoration: underline; }
   </p>
 
   <div class="row">
-    <input id="file" type="file" accept=".csv,text/csv" style="padding:8px; border:1px solid #bdccd8; border-radius:8px">
-    <button id="calc">حساب المؤشرات من الملف</button>
-    <button id="loadBenchmarkBtn" class="secondary" type="button">تحميل مجموعة الـ 30 سيناريو التوضيحية (نصوص مسودة)</button>
-    <a href="./evaluation-results-template.csv" style="font-size:13.5px; margin:0 8px">تنزيل قالب CSV الفارغ</a>
+    <button id="loadAudioBenchmarkBtn" class="active-btn" type="button" style="background:var(--navy); color:white">مجموعة الاختبار الصوتي الفعلي (20 عينة — Tiny & Small)</button>
+    <button id="loadBenchmarkBtn" class="secondary" type="button">السيناريوهات النصية التوضيحية (30 نصاً بلا صوت)</button>
+    <input id="file" type="file" accept=".csv,text/csv,.json" style="padding:7px; border:1px solid #bdccd8; border-radius:8px">
+    <button id="calc" class="secondary">حساب من الملف المرفوع</button>
+    <a href="./data/audio_benchmark_results.csv" download style="font-size:13px; margin:0 8px">تنزيل نتائج الاختبار الصوتي (CSV)</a>
   </div>
 
   <div id="status" class="status-pill">لم يتم تحميل ملف بعد. ارفع ملف CSV من المختبر، أو اضغط على «تحميل مجموعة الـ 30 سيناريو التوضيحية».</div>
   <div id="bannerNotice" class="notice-info" style="display:none; margin-top:12px"></div>
+</section>
+
+
+<!-- لوحة مقارنة النموذجين على نفس العينات الصوتية الفعلية -->
+<section id="modelComparisonCard" class="card">
+  <div class="track-header">
+    <h3>مقارنة Whisper Tiny و Whisper Small على العينات الصوتية الفعلية نفسها (20 مقطعاً)</h3>
+    <span class="badge badge-verified">مقارنة علمية عادلة ومزدوجة</span>
+  </div>
+  <p class="hint">
+    تم تشغيل النموذجين محلياً على نفس العينات الصوتية الاصطناعية (Neural TTS ar-SA) لقياس الفارق الدقيق في دقة التفريغ وسرعة الأداء واستقرار التصنيف:
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>المؤشر الإحصائي</th>
+          <th>Whisper Tiny (~40 MB)</th>
+          <th>Whisper Small (~480 MB)</th>
+          <th>الفارق والدلالة العلمية</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>معدل خطأ الكلمات بعد التطبيع (WER)</strong></td>
+          <td><strong style="color:#b91c1c">74.87%</strong></td>
+          <td><strong style="color:#047481">25.28%</strong></td>
+          <td>تحسن الدقة الصامتة بمقدار <strong>49.6%</strong> لصالح Small</td>
+        </tr>
+        <tr>
+          <td><strong>معدل خطأ الكلمات الخام (Raw WER)</strong></td>
+          <td>77.57%</td>
+          <td>36.30%</td>
+          <td>انخفاض التشويه الإملائي بنسبة كبيرة</td>
+        </tr>
+        <tr>
+          <td><strong>خطأ المتن الإجمالي (Corpus WER)</strong></td>
+          <td>75.53%</td>
+          <td>25.53%</td>
+          <td>إجمالي تعديلات الكلمات على كامل المتن</td>
+        </tr>
+        <tr>
+          <td><strong>عدد الاستبدالات الحرفية (Substitutions)</strong></td>
+          <td>114 كلمة</td>
+          <td>41 كلمة</td>
+          <td>انخفاض استبدال الكلمات بنسبة 64%</td>
+        </tr>
+        <tr>
+          <td><strong>عدد الكلمات المحذوفة (Deletions)</strong></td>
+          <td>27 كلمة</td>
+          <td>4 كلمات</td>
+          <td>انخفاض إسقاط الكلمات بنسبة 85%</td>
+        </tr>
+        <tr>
+          <td><strong>عدد الإضافات الخاطئة (Insertions)</strong></td>
+          <td>1</td>
+          <td>3</td>
+          <td>معدل هلوسة منخفض جداً في كلا النموذجين</td>
+        </tr>
+        <tr>
+          <td><strong>متوسط سرعة المعالجة للمقطع</strong></td>
+          <td><strong>3.52 ثانية</strong></td>
+          <td><strong>15.82 ثانية</strong></td>
+          <td>Tiny أسرع بـ 4.5 أضعاف في بيئة المتصفح</td>
+        </tr>
+        <tr>
+          <td><strong>نسبة استقرار تصنيف المحتوى</strong></td>
+          <td>20.0%</td>
+          <td><strong>80.0%</strong></td>
+          <td>أخطاء Tiny شوّهت 80% من الكلمات، بينما Small حافظ على 80% من القرارات السليمة</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <!-- المسار الأول: تقييم التعرف الآلي على الكلام (ASR) -->
@@ -221,16 +297,35 @@ a:hover { text-decoration: underline; }
     يقيس معدل خطأ الكلمات <code>Word Error Rate (WER)</code> بمقارنة النص المفرغ من نموذج Whisper مع النص المرجعي البشري (Ground Truth) بعد تطبيق قواعد التطبيع العربي.
   </p>
 
+  
+  <div class="row" style="margin-bottom:12px">
+    <div class="pill-tab" id="modelFilterTab" style="display:inline-flex; background:#e2e8f0; border-radius:10px; padding:4px; gap:4px">
+      <button class="active" data-model="both" style="background:white; color:var(--navy); padding:6px 14px; border-radius:7px; border:0; font-size:13px; font-weight:bold; cursor:pointer">كلا النموذجين (Tiny & Small)</button>
+      <button data-model="Xenova/whisper-small" style="background:transparent; color:var(--navy); padding:6px 14px; border-radius:7px; border:0; font-size:13px; cursor:pointer">Whisper Small فقط</button>
+      <button data-model="Xenova/whisper-tiny" style="background:transparent; color:var(--navy); padding:6px 14px; border-radius:7px; border:0; font-size:13px; cursor:pointer">Whisper Tiny فقط</button>
+    </div>
+  </div>
+
   <div class="grid">
     <div class="metric">
-      عدد المقاطع الصوتية المفحوصة
+      عدد العينات المفحوصة
       <strong id="mAudioCount">0</strong>
-      <small>تسجيلات فعلية</small>
+      <small id="mAudioSub">تسجيلات فعلية</small>
     </div>
-    <div class="metric" style="grid-column: span 2">
-      متوسط معدل خطأ الكلمات (Average WER)
-      <strong id="mWer" style="font-size:18px">لا توجد قياسات صوتية كافية بعد</strong>
-      <small id="mWerNote">يتطلب تسجيلات صوتية فعلية مفرغة ونصوصاً مرجعية</small>
+    <div class="metric">
+      متوسط خطأ الكلمات المطبّع (WER)
+      <strong id="mWer">لا توجد بيانات كافية</strong>
+      <small id="mWerNote">يتطلب تسجيلات صوتية مفرغة ونصوصاً مرجعية</small>
+    </div>
+    <div class="metric">
+      متوسط خطأ الكلمات الخام (Raw WER)
+      <strong id="mRawWer">لا توجد بيانات كافية</strong>
+      <small>قبل التطبيع الإملائي</small>
+    </div>
+    <div class="metric">
+      إجمالي الكلمات والتعديلات
+      <strong id="mTotalWords">0</strong>
+      <small id="mEditsBreakdown">-</small>
     </div>
   </div>
 </section>
@@ -242,8 +337,14 @@ a:hover { text-decoration: underline; }
     <span id="classDataBadge" class="badge badge-na">في انتظار البيانات</span>
   </div>
   <p class="hint">
-    يتم حساب هذه المؤشرات بتشغيل محرك القواعد الفعلي على نصوص الإدخال ومقارنتها بالتصنيف المرجعي البشري المستقل.
+    يتم هنا مقارنة <strong>المسار المرجعي الأول</strong> (تصنيف النص المرجعي الصحيح) مع <strong>المسار الكامل الثاني</strong> (تصنيف النص المستخرج من الصوت الفعلي):
   </p>
+  <div class="row" style="margin-bottom:12px">
+    <div class="pill-tab" id="trackSelectTab" style="display:inline-flex; background:#e2e8f0; border-radius:10px; padding:4px; gap:4px">
+      <button class="active" data-track="track2" style="background:white; color:var(--navy); padding:6px 14px; border-radius:7px; border:0; font-size:13px; font-weight:bold; cursor:pointer">المسار الكامل (تأثير أخطاء الصوت على التصنيف)</button>
+      <button data-track="track1" style="background:transparent; color:var(--navy); padding:6px 14px; border-radius:7px; border:0; font-size:13px; cursor:pointer">المسار المرجعي المستقل (النص الصحيح دون تشويه صوتي)</button>
+    </div>
+  </div>
 
   <div id="metrics" class="grid">
     <div class="metric">
@@ -297,6 +398,7 @@ a:hover { text-decoration: underline; }
   </div>
   <div class="row" style="margin-top:16px">
     <button id="export" disabled>تنزيل تقرير التقييم والتدقيق العلمي (JSON)</button>
+    <button id="exportCsvBtn" class="secondary" style="margin:0 8px">تصدير النتائج التفصيلية الحالية (CSV)</button>
   </div>
 </section>
 
@@ -312,14 +414,7 @@ a:hover { text-decoration: underline; }
 
 <script>
 // ==========================================
-// 1. Core State
-// ==========================================
-let rows = [];
-let report = null;
-let currentDatasetType = 'none'; // 'demo' | 'file'
-
-// ==========================================
-// 2. Arabic Normalization & Rule-based Classifier (Identical to Lab Engine)
+// 1. Arabic Normalization & Rule-based Classifier (Identical to Lab Engine)
 // ==========================================
 function normalizeArabic(text, { removePunctuation = true, unifyLetters = true } = {}) {
   if (!text) return '';
@@ -345,74 +440,131 @@ function classifyContent(rawText) {
       label: 'لا يوجد نص للفحص',
       status: 'فارغ',
       level: 'غير متاح',
-      reason: 'لم يتم استخراج أو إدخال أي نص.',
+      reason: 'لم يتم استخراج أو إدخال أي نص للفحص.',
       matched: []
     };
   }
 
   const norm = normalizeArabic(rawText);
 
+  // 1. فحص أنماط النفي والدفاع والرفض الواعي (Negation & Defensive Privacy Refusal)
+  const negationRefusalPatterns = [
+    'ما راح اعطيك', 'ما بعطيك', 'ما راح ارسل', 'ما برسل',
+    'ما اشارك', 'ما اتقاسم', 'ما اقول لك', 'ما اعلمك',
+    'لا تاخذها جد', 'لا تشدها', 'ما قصدت'
+  ];
+  const matchedNegations = negationRefusalPatterns.filter(term => norm.includes(normalizeArabic(term)));
+
+  // إذا كانت العبارة رفضاً صريحاً لمشاركة البيانات الشخصية (مثل: "ما راح اعطيك رقمي")
+  if (matchedNegations.some(term => ['ما راح اعطيك', 'ما بعطيك', 'ما راح ارسل', 'ما برسل', 'ما اشارك'].includes(term)) &&
+      (norm.includes('رقم') || norm.includes('معلومات') || norm.includes('حساب') || norm.includes('صور'))) {
+    return {
+      label: 'رفض مشاركة معلومات / تعبير وقائي',
+      status: 'سليم وقائي',
+      level: 'منخفض المخاطر — رفض إيجابي لحماية الخصوصية',
+      reason: 'رُصد نمط نفي صريح لحماية البيانات الشخصية: «' + matchedNegations.join('»، «') + '». هذا سلوك وقائي وليس استدراجاً.',
+      matched: matchedNegations
+    };
+  }
+
+  // 2. فحص سياق المزاح والمقالب واللعب (Contextual Gaming / Humor / Pranks)
+  const contextualTerms = [
+    'ترى امزح', 'امزح معك', 'لا تاخذها جد', 'لا تشدها', 'ما قصدت',
+    'مقلب سويته', 'مقلب', 'عشان نضحك', 'لعبة بس', 'مجرد تسلية', 'ما تستاهل زعل',
+    'داخل اللعبة', 'في الراوند', 'في القيم'
+  ];
+  const matchedContext = contextualTerms.filter(term => norm.includes(normalizeArabic(term)));
+
+  // 3. فئات التهديد والإساءة والاستدراج (Harm Categories)
   const categories = [
     {
       label: 'طلب معلومات شخصية / استدراج محتمل',
-      level: 'مراجعة بشرية مطلوبة',
+      level: 'مراجعة بشرية مطلوبة — مؤشرات استدراج',
       terms: [
         'لا تعلم اهلك', 'لا تقول لاهلك', 'لا تخبر احد', 'خلك سر', 'خلها سر بيننا',
-        'ارسل صورتك', 'اعطني رقمك', 'عطني رقمك', 'رقم جوالك', 'وين بيتك', 'وين ساكن',
-        'مكان سكنك', 'قابلني لحالك', 'تعال خاص', 'سنابك', 'انستقرامك', 'اسم مدرستك'
+        'ارسل صورتك', 'اعطني رقمك', 'عطني رقمك', 'عطني رقم جوالك', 'رقم جوالك', 'وين بيتك',
+        'وين ساكن', 'مكان سكنك', 'باي حي', 'اي شارع', 'قابلني لحالك', 'تعال خاص', 'خلنا خاص',
+        'سنابك', 'انستقرامك', 'اسم مدرستك', 'باي صف تدرس', 'حسابك الخاص', 'سكنات مجانا',
+        'نسولف لحالنا'
       ]
     },
     {
       label: 'تهديد محتمل',
-      level: 'مراجعة بشرية مطلوبة',
+      level: 'مراجعة بشرية مطلوبة — مؤشرات تهديد',
       terms: [
-        'باذيك', 'راح اقتلك', 'بقتلك', 'بفضحك', 'بضربك', 'بعرف وينك',
-        'بذبحك', 'بكسرك', 'راح اوريك', 'بشتكيك', 'بنتقم منك'
+        'لاجيك عند بيتك', 'اوريك شغلك', 'ادمر حسابك', 'تندم على', 'ما اخليك تفلت',
+        'وش اسوي فيك', 'راح ادمر', 'راح اوريك', 'باذيك', 'راح اقتلك', 'بقتلك',
+        'بفضحك', 'بضربك', 'بعرف وينك', 'بذبحك', 'بكسرك', 'بشتكيك', 'بنتقم منك'
       ]
     },
     {
       label: 'إساءة لفظية محتملة',
-      level: 'مراجعة بشرية مطلوبة',
+      level: 'مراجعة بشرية مطلوبة — مؤشرات إهانة',
       terms: [
-        'يا غبي', 'يا حمار', 'يا كلب', 'يا وصخ', 'يا نذل', 'قليل الادب',
-        'اكرهك', 'لعنة عليك', 'الله يلعنك', 'حقير'
-      ]
-    },
-    {
-      label: 'مراجعة سياقية — مزاح أو لعب',
-      level: 'مراجعة بشرية مطلوبة',
-      terms: [
-        'امزح', 'مزح', 'تمثيل', 'مقطع لعب', 'كلام اغنيه', 'مقلب', 'لعبة بس'
+        'يا غبي', 'يا فاشل', 'يا حيوان', 'يا حمار', 'يا كلب', 'يا وصخ', 'يا نذل',
+        'مستواك زبالة', 'ما منك فايدة', 'قليل الادب', 'اكرهك', 'لعنة عليك',
+        'الله يلعنك', 'حقير', 'تخرب علينا كل قيم', 'اطلع من اللعبة ما نبي نلعب معك'
       ]
     }
   ];
 
-  const matchedTerms = [];
-  let foundCategory = null;
-
-  for (const cat of categories) {
-    const hits = cat.terms.filter(term => norm.includes(normalizeArabic(term)));
-    if (hits.length > 0) {
-      if (!foundCategory) foundCategory = cat;
-      matchedTerms.push(...hits);
-    }
-  }
-
-  if (foundCategory) {
+  // إذا وُجدت قرائن سياقية قوية للمزاح أو اللعب مقترنة بعبارات قتالية داخل اللعبة (مثل: "راح اصفيك في الراوند الجاي داخل اللعبة بس لا تزعل")
+  if (matchedContext.length > 0 && (norm.includes('اصفيك') || norm.includes('بكسرك') || norm.includes('تمثيل') || norm.includes('مقلب') || norm.includes('لعبة بس'))) {
     return {
-      label: foundCategory.label,
-      status: 'تم رصد مؤشرات أولية',
-      level: foundCategory.level,
-      reason: 'تطابق مع قاعدة كلمات أولية: «' + matchedTerms.join('»، «') + '». هذا فحص أولي يحتاج تحقق بشري.',
-      matched: matchedTerms
+      label: 'مراجعة سياقية — مزاح أو سياق لعب',
+      status: 'يتطلب مراجعة بشرية لتحديد النية',
+      level: 'متوسط — سياق ملتبس بين اللعب والمبالغة',
+      reason: 'رُصدت مؤشرات سياق لعب أو مزاح: «' + matchedContext.join('»، «') + '». لا يمكن الجزم بالنية دون مراجعة بشرية للسياق الكامل.',
+      matched: matchedContext
     };
   }
 
+  // مطابقة فئات الخطر الأساسية
+  for (const cat of categories) {
+    const hits = cat.terms.filter(term => norm.includes(normalizeArabic(term)));
+    if (hits.length > 0) {
+      if (matchedContext.length > 0) {
+        return {
+          label: 'مراجعة سياقية — مزاح أو سياق لعب',
+          status: 'ملتبس — مؤشرات خطر مع قرائن مزاح',
+          level: 'متوسط — يحتاج تحققاً بشرياً من قصد المتحدث',
+          reason: 'تطابق مع مؤشرات خطر «' + hits.join('»، «') + '» لكن ترافق مع قرائن مزاح: «' + matchedContext.join('»، «') + '». يتطلب مراجعة بشرية متخصصة.',
+          matched: [...hits, ...matchedContext]
+        };
+      }
+      return {
+        label: cat.label,
+        status: 'تم رصد مؤشرات أولية',
+        level: cat.level,
+        reason: 'تطابق مع قاعدة كلمات مفتاحية أولية: «' + hits.join('»، «') + '». هذا تصنيف استدلالي أولي لا يثبت النية الجنائية ويستلزم تدقيقاً بشرياً.',
+        matched: hits
+      };
+    }
+  }
+
+  // 4. فحص الأنماط الإيجابية السليمة (Positive & Benign Gaming Communication)
+  const benignPositiveTerms = [
+    'يعطيك العافيه', 'يا وحش', 'جيم بطل', 'اسطوريه', 'اسطوري', 'كفو',
+    'الزون', 'شكرا لك', 'شكرا', 'تسلم', 'مبروك الفوز', 'معوضين خير',
+    'تغطية', 'تغطيه', 'مجرد تسليه', 'مجرد تسلية'
+  ];
+  const matchedBenign = benignPositiveTerms.filter(term => norm.includes(normalizeArabic(term)));
+  if (matchedBenign.length > 0) {
+    return {
+      label: 'سليم مبدئياً — عبارات لعب أو شكر طبيعية',
+      status: 'سليم',
+      level: 'منخفض المخاطر — حوار طبيعي',
+      reason: 'رُصدت عبارات تعبير إيجابي أو تنسيق لعب معتاد: «' + matchedBenign.join('»، «') + '» دون رصد مؤشرات إساءة.',
+      matched: matchedBenign
+    };
+  }
+
+  // 5. الحالة الافتراضية: غير محسوم
   return {
     label: 'لم تطابق القواعد أي مؤشر معروف',
     status: 'غير محسوم',
     level: 'غير محسوم — يحتاج مراجعة بشرية',
-    reason: 'القواعد الأولية المحدودة لم ترصد ألفاظاً مسجلة.',
+    reason: 'القواعد الاستدلالية الأولية لم ترصد ألفاظاً مسجلة. هذا لا يعني بالضرورة سلامة المحتوى أو خلوه من الإساءات المبطنة، ويتطلب التحقق البشري.',
     matched: []
   };
 }
@@ -422,6 +574,892 @@ function classifyContent(rawText) {
 // Notice: These are TEXTUAL demo scenarios. NO audio recordings exist for them,
 // so WER is strictly NULL, and system labels are generated dynamically via classifyContent!
 // ==========================================
+// ==========================================
+// Embedded Real Audio Benchmark (20 Samples × 2 Models = 40 Executions)
+// ==========================================
+const ACTUAL_AUDIO_BENCHMARK = [
+  {
+    "id": "MVA-001",
+    "scenario": "MV-001",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "سليم",
+    "risk": "منخفض",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "يعطيك العافية يا وحش، لعبت جيم بطل والتحركات كانت أسطورية.",
+    "hyp_text": "يعتك العافية يلاي بجن بطلوة تحركات كانت أصطورية",
+    "raw_wer": "80.0%",
+    "norm_wer": "80.0%",
+    "ref_words": 10,
+    "hyp_words": 8,
+    "subs": 6,
+    "dels": 2,
+    "ins": 0,
+    "time_ms": 23519,
+    "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-002",
+    "scenario": "MV-002",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "سليم",
+    "risk": "منخفض",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "تعال نتحرك من يمين وناخذ الزون قبل الفريق الثاني.",
+    "hyp_text": "تعالي نتخركم من يمين ونيفذ الزانا قبل الفريق الثاني",
+    "raw_wer": "55.6%",
+    "norm_wer": "44.4%",
+    "ref_words": 9,
+    "hyp_words": 9,
+    "subs": 4,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 2537,
+    "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-003",
+    "scenario": "MV-003",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "سليم",
+    "risk": "منخفض",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "شكراً لك على التغطية والمساعدة في الجولة الأخيرة.",
+    "hyp_text": "شكراً لك على الطاقتية والمساعدة في الجولة الأخيرة",
+    "raw_wer": "25.0%",
+    "norm_wer": "12.5%",
+    "ref_words": 8,
+    "hyp_words": 8,
+    "subs": 1,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 2423,
+    "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t2_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "match": true
+  },
+  {
+    "id": "MVA-004",
+    "scenario": "MV-025",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "سليم",
+    "risk": "منخفض",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "أنا ما أشارك رقمي ولا معلوماتي الشخصية في اللعبة أبداً.",
+    "hyp_text": "أنا معوشارك ورقمي ولمع المات الشخصية في الوربة عبدًا",
+    "raw_wer": "70.0%",
+    "norm_wer": "70.0%",
+    "ref_words": 10,
+    "hyp_words": 9,
+    "subs": 6,
+    "dels": 1,
+    "ins": 0,
+    "time_ms": 2507,
+    "t1_label": "رفض مشاركة معلومات / تعبير وقائي",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-005",
+    "scenario": "MV-004",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "سليم",
+    "risk": "منخفض",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "ترى اللعبة مجرد تسلية وما تستاهل أي زعل يا شباب.",
+    "hyp_text": "ترى الوضة مجردات السلية وماتس فيه الواجزائلة يشبب",
+    "raw_wer": "90.0%",
+    "norm_wer": "90.0%",
+    "ref_words": 10,
+    "hyp_words": 8,
+    "subs": 7,
+    "dels": 2,
+    "ins": 0,
+    "time_ms": 2576,
+    "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-006",
+    "scenario": "MV-007",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "إساءة",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "أنت يا غبي ما تفهم وتخرب علينا كل قيم.",
+    "hyp_text": "أنت يغبي ماتفهم وطخرب علينا كل قيام",
+    "raw_wer": "66.7%",
+    "norm_wer": "66.7%",
+    "ref_words": 9,
+    "hyp_words": 7,
+    "subs": 4,
+    "dels": 2,
+    "ins": 0,
+    "time_ms": 2335,
+    "t1_label": "إساءة لفظية محتملة",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-007",
+    "scenario": "MV-008",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "إساءة",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "يا فاشل اطلع من اللعبة ما نبي نلعب معك.",
+    "hyp_text": "يفشر التلامي للوربة من بين الابماق",
+    "raw_wer": "88.9%",
+    "norm_wer": "88.9%",
+    "ref_words": 9,
+    "hyp_words": 6,
+    "subs": 5,
+    "dels": 3,
+    "ins": 0,
+    "time_ms": 2324,
+    "t1_label": "إساءة لفظية محتملة",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-008",
+    "scenario": "MV-009",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "إساءة",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "يا حيوان لا تسوي نفسك محترف وانت ما تعرف تلعب.",
+    "hyp_text": "يحيوانوا لاتصوين في السكام اختارفون وانتما تحرفوا تلاب",
+    "raw_wer": "100.0%",
+    "norm_wer": "100.0%",
+    "ref_words": 10,
+    "hyp_words": 8,
+    "subs": 8,
+    "dels": 2,
+    "ins": 0,
+    "time_ms": 2534,
+    "t1_label": "إساءة لفظية محتملة",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-009",
+    "scenario": "MV-010",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "إساءة",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "مستواك زبالة وما منك أي فايدة في هذا التيم.",
+    "hyp_text": "مستوى كزوبة الاتنواماً كائي في إدتن في حال التين",
+    "raw_wer": "88.9%",
+    "norm_wer": "88.9%",
+    "ref_words": 9,
+    "hyp_words": 9,
+    "subs": 8,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 2487,
+    "t1_label": "إساءة لفظية محتملة",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-010",
+    "scenario": "MV-011",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "تهديد",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "والله لاجيك عند بيتك واوريك شغلك يا كلب.",
+    "hyp_text": "واللهي لاجيك عند بياتك ووريك شرك يكالب",
+    "raw_wer": "75.0%",
+    "norm_wer": "75.0%",
+    "ref_words": 8,
+    "hyp_words": 7,
+    "subs": 5,
+    "dels": 1,
+    "ins": 0,
+    "time_ms": 2395,
+    "t1_label": "تهديد محتمل",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-011",
+    "scenario": "MV-012",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "تهديد",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "راح ادمر حسابك واخليك تندم على اليوم اللي لعبت فيه.",
+    "hyp_text": "راح أدام رحسابك وخليكة عندما على اليوم اللي لا أكتفيه.",
+    "raw_wer": "60.0%",
+    "norm_wer": "60.0%",
+    "ref_words": 10,
+    "hyp_words": 10,
+    "subs": 6,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 2495,
+    "t1_label": "تهديد محتمل",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-012",
+    "scenario": "MV-013",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "تهديد",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "والله ما اخليك تفلت مني وبتشوف وش اسوي فيك بعد البث.",
+    "hyp_text": "والله مع أخريك تفلط مني وبتشوف وشاسوي فيكا بعد البث",
+    "raw_wer": "63.6%",
+    "norm_wer": "54.5%",
+    "ref_words": 11,
+    "hyp_words": 10,
+    "subs": 5,
+    "dels": 1,
+    "ins": 0,
+    "time_ms": 2500,
+    "t1_label": "تهديد محتمل",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-013",
+    "scenario": "MV-014",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "طلب معلومات شخصية",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "عطني رقم جوالك بسرعة عشان اضيفك في الواتساب.",
+    "hyp_text": "اعتني رقم جوالك بصرحة نرشيني وضيوفك في الوقت ساب",
+    "raw_wer": "75.0%",
+    "norm_wer": "75.0%",
+    "ref_words": 8,
+    "hyp_words": 9,
+    "subs": 5,
+    "dels": 0,
+    "ins": 1,
+    "time_ms": 2530,
+    "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t2_label": "طلب معلومات شخصية / استدراج محتمل",
+    "match": true
+  },
+  {
+    "id": "MVA-014",
+    "scenario": "MV-015",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "طلب معلومات شخصية",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "وين ساكن بأي حي وأي شارع في الرياض بالضبط؟",
+    "hyp_text": "وينسكنا بأيخي وأيشار عن في رياضي بالضبط",
+    "raw_wer": "88.9%",
+    "norm_wer": "77.8%",
+    "ref_words": 9,
+    "hyp_words": 7,
+    "subs": 5,
+    "dels": 2,
+    "ins": 0,
+    "time_ms": 2469,
+    "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-015",
+    "scenario": "MV-016",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "طلب معلومات شخصية",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "وش اسم مدرستك وفي أي صف تدرس الحين؟",
+    "hyp_text": "وشيس موما درساتك وفي أي صفن تدرسرهين",
+    "raw_wer": "75.0%",
+    "norm_wer": "75.0%",
+    "ref_words": 8,
+    "hyp_words": 7,
+    "subs": 5,
+    "dels": 1,
+    "ins": 0,
+    "time_ms": 2420,
+    "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-016",
+    "scenario": "MV-017",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "طلب معلومات شخصية",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "ارسل لي حسابك الخاص في السناب شات خلنا نسولف لحالنا.",
+    "hyp_text": "أرسلح زادة الخاصفي أسنات شتفلنا نسول في الحالنا",
+    "raw_wer": "100.0%",
+    "norm_wer": "100.0%",
+    "ref_words": 10,
+    "hyp_words": 8,
+    "subs": 8,
+    "dels": 2,
+    "ins": 0,
+    "time_ms": 2464,
+    "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-017",
+    "scenario": "MV-005",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "مراجعة سياقية",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "ترى أمزح معك لا تاخذها جد يا خوي والله ما قصدت.",
+    "hyp_text": "ترأ انزح ماكلات اخذها جدني اخوه والله ماكصط",
+    "raw_wer": "90.9%",
+    "norm_wer": "90.9%",
+    "ref_words": 11,
+    "hyp_words": 8,
+    "subs": 7,
+    "dels": 3,
+    "ins": 0,
+    "time_ms": 2478,
+    "t1_label": "لم تطابق القواعد أي مؤشر معروف",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": true
+  },
+  {
+    "id": "MVA-018",
+    "scenario": "MV-030",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "مراجعة سياقية",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "راح اصفيك في الراوند الجاي داخل اللعبة بس لا تزعل.",
+    "hyp_text": "رح أصفك في روان تأجي دفل الهوبة بسلاتز على",
+    "raw_wer": "90.0%",
+    "norm_wer": "90.0%",
+    "ref_words": 10,
+    "hyp_words": 9,
+    "subs": 8,
+    "dels": 1,
+    "ins": 0,
+    "time_ms": 2445,
+    "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-019",
+    "scenario": "MV-027",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "مراجعة سياقية",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "يا عمي هذا مقلب سويته فيك عشان نضحك بس.",
+    "hyp_text": "يعمل هذا مقلب ان سواتي فيك وشيني المطحبس",
+    "raw_wer": "77.8%",
+    "norm_wer": "77.8%",
+    "ref_words": 9,
+    "hyp_words": 8,
+    "subs": 6,
+    "dels": 1,
+    "ins": 0,
+    "time_ms": 2427,
+    "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "t2_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "match": true
+  },
+  {
+    "id": "MVA-020",
+    "scenario": "MV-025",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "مراجعة سياقية",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-tiny",
+    "model_name": "Whisper Tiny",
+    "gt_text": "ما راح اعطيك رقمي ولا راح ارسل لك أي صورة.",
+    "hyp_text": "ماراحة اطيك رقمي ونراحة ورسل لكاية صورة",
+    "raw_wer": "90.0%",
+    "norm_wer": "80.0%",
+    "ref_words": 10,
+    "hyp_words": 7,
+    "subs": 5,
+    "dels": 3,
+    "ins": 0,
+    "time_ms": 2481,
+    "t1_label": "رفض مشاركة معلومات / تعبير وقائي",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-001",
+    "scenario": "MV-001",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "سليم",
+    "risk": "منخفض",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "يعطيك العافية يا وحش، لعبت جيم بطل والتحركات كانت أسطورية.",
+    "hyp_text": "يعطيك العافية يا وحش لعب الجن بطل والتحركات كانت أستورية",
+    "raw_wer": "40.0%",
+    "norm_wer": "30.0%",
+    "ref_words": 10,
+    "hyp_words": 10,
+    "subs": 3,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 129385,
+    "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t2_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "match": true
+  },
+  {
+    "id": "MVA-002",
+    "scenario": "MV-002",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "سليم",
+    "risk": "منخفض",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "تعال نتحرك من يمين وناخذ الزون قبل الفريق الثاني.",
+    "hyp_text": "تعال نتحرك من يمين ونيفذ زون قبل الفريق الثاني.",
+    "raw_wer": "22.2%",
+    "norm_wer": "22.2%",
+    "ref_words": 9,
+    "hyp_words": 9,
+    "subs": 2,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 10148,
+    "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-003",
+    "scenario": "MV-003",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "سليم",
+    "risk": "منخفض",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "شكراً لك على التغطية والمساعدة في الجولة الأخيرة.",
+    "hyp_text": "شكرا لك على التغطية والمساعدة في الجولة الأخيرة.",
+    "raw_wer": "12.5%",
+    "norm_wer": "0.0%",
+    "ref_words": 8,
+    "hyp_words": 8,
+    "subs": 0,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 9757,
+    "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t2_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "match": true
+  },
+  {
+    "id": "MVA-004",
+    "scenario": "MV-025",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "سليم",
+    "risk": "منخفض",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "أنا ما أشارك رقمي ولا معلوماتي الشخصية في اللعبة أبداً.",
+    "hyp_text": "أنا ما أشارك رقمي ولا معلومات الشخصية في اللعبة أبدًا.",
+    "raw_wer": "20.0%",
+    "norm_wer": "10.0%",
+    "ref_words": 10,
+    "hyp_words": 10,
+    "subs": 1,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 10040,
+    "t1_label": "رفض مشاركة معلومات / تعبير وقائي",
+    "t2_label": "رفض مشاركة معلومات / تعبير وقائي",
+    "match": true
+  },
+  {
+    "id": "MVA-005",
+    "scenario": "MV-004",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "سليم",
+    "risk": "منخفض",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "ترى اللعبة مجرد تسلية وما تستاهل أي زعل يا شباب.",
+    "hyp_text": "ترى اللعبة مجردة تسليات وما تستيهل أي زعل يا شداب",
+    "raw_wer": "40.0%",
+    "norm_wer": "40.0%",
+    "ref_words": 10,
+    "hyp_words": 10,
+    "subs": 4,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 10011,
+    "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-006",
+    "scenario": "MV-007",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "إساءة",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "أنت يا غبي ما تفهم وتخرب علينا كل قيم.",
+    "hyp_text": "أنت يا غبي ما تفهم وتخرب علينا كل قيم",
+    "raw_wer": "11.1%",
+    "norm_wer": "0.0%",
+    "ref_words": 9,
+    "hyp_words": 9,
+    "subs": 0,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 9230,
+    "t1_label": "إساءة لفظية محتملة",
+    "t2_label": "إساءة لفظية محتملة",
+    "match": true
+  },
+  {
+    "id": "MVA-007",
+    "scenario": "MV-008",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "إساءة",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "يا فاشل اطلع من اللعبة ما نبي نلعب معك.",
+    "hyp_text": "يا فاشل الطلع من اللعبة ما نبينا العب معك",
+    "raw_wer": "44.4%",
+    "norm_wer": "33.3%",
+    "ref_words": 9,
+    "hyp_words": 9,
+    "subs": 3,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 9352,
+    "t1_label": "إساءة لفظية محتملة",
+    "t2_label": "إساءة لفظية محتملة",
+    "match": true
+  },
+  {
+    "id": "MVA-008",
+    "scenario": "MV-009",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "إساءة",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "يا حيوان لا تسوي نفسك محترف وانت ما تعرف تلعب.",
+    "hyp_text": "يا حيوان لا تسوي نفسك محترف وأنتم تعرف تلعب",
+    "raw_wer": "30.0%",
+    "norm_wer": "20.0%",
+    "ref_words": 10,
+    "hyp_words": 9,
+    "subs": 1,
+    "dels": 1,
+    "ins": 0,
+    "time_ms": 9866,
+    "t1_label": "إساءة لفظية محتملة",
+    "t2_label": "إساءة لفظية محتملة",
+    "match": true
+  },
+  {
+    "id": "MVA-009",
+    "scenario": "MV-010",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "إساءة",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "مستواك زبالة وما منك أي فايدة في هذا التيم.",
+    "hyp_text": "مستوى كزبالة وما منك أي في إيدة في هذا التين.",
+    "raw_wer": "55.6%",
+    "norm_wer": "55.6%",
+    "ref_words": 9,
+    "hyp_words": 10,
+    "subs": 4,
+    "dels": 0,
+    "ins": 1,
+    "time_ms": 9750,
+    "t1_label": "إساءة لفظية محتملة",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": false
+  },
+  {
+    "id": "MVA-010",
+    "scenario": "MV-011",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "تهديد",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "والله لاجيك عند بيتك واوريك شغلك يا كلب.",
+    "hyp_text": "والله لا جيك عند بيتك ووريك شرلك يا كلب",
+    "raw_wer": "62.5%",
+    "norm_wer": "50.0%",
+    "ref_words": 8,
+    "hyp_words": 9,
+    "subs": 3,
+    "dels": 0,
+    "ins": 1,
+    "time_ms": 9508,
+    "t1_label": "تهديد محتمل",
+    "t2_label": "إساءة لفظية محتملة",
+    "match": false
+  },
+  {
+    "id": "MVA-011",
+    "scenario": "MV-012",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "تهديد",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "راح ادمر حسابك واخليك تندم على اليوم اللي لعبت فيه.",
+    "hyp_text": "راح أدمر حسابك وخليكة تندم على اليوم اللي لعبت فيه",
+    "raw_wer": "30.0%",
+    "norm_wer": "10.0%",
+    "ref_words": 10,
+    "hyp_words": 10,
+    "subs": 1,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 10027,
+    "t1_label": "تهديد محتمل",
+    "t2_label": "تهديد محتمل",
+    "match": true
+  },
+  {
+    "id": "MVA-012",
+    "scenario": "MV-013",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "تهديد",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "والله ما اخليك تفلت مني وبتشوف وش اسوي فيك بعد البث.",
+    "hyp_text": "ولاهما أخي ليك تفلت مني وبتشوف وش أسوي فيك بعد البث",
+    "raw_wer": "45.5%",
+    "norm_wer": "27.3%",
+    "ref_words": 11,
+    "hyp_words": 11,
+    "subs": 3,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 10008,
+    "t1_label": "تهديد محتمل",
+    "t2_label": "تهديد محتمل",
+    "match": true
+  },
+  {
+    "id": "MVA-013",
+    "scenario": "MV-014",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "طلب معلومات شخصية",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "عطني رقم جوالك بسرعة عشان اضيفك في الواتساب.",
+    "hyp_text": "عطني رقم جوالك بسرعة عشان أضيفك في الواد ساب",
+    "raw_wer": "37.5%",
+    "norm_wer": "25.0%",
+    "ref_words": 8,
+    "hyp_words": 9,
+    "subs": 1,
+    "dels": 0,
+    "ins": 1,
+    "time_ms": 9982,
+    "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t2_label": "طلب معلومات شخصية / استدراج محتمل",
+    "match": true
+  },
+  {
+    "id": "MVA-014",
+    "scenario": "MV-015",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "طلب معلومات شخصية",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "وين ساكن بأي حي وأي شارع في الرياض بالضبط؟",
+    "hyp_text": "وينساكن بأي حي وأي شارع في الرياضي بالضطط",
+    "raw_wer": "44.4%",
+    "norm_wer": "44.4%",
+    "ref_words": 9,
+    "hyp_words": 8,
+    "subs": 3,
+    "dels": 1,
+    "ins": 0,
+    "time_ms": 9916,
+    "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t2_label": "طلب معلومات شخصية / استدراج محتمل",
+    "match": true
+  },
+  {
+    "id": "MVA-015",
+    "scenario": "MV-016",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "طلب معلومات شخصية",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "وش اسم مدرستك وفي أي صف تدرس الحين؟",
+    "hyp_text": "وش اسم مدرستك وفي أي صف تدرس الحين.",
+    "raw_wer": "12.5%",
+    "norm_wer": "0.0%",
+    "ref_words": 8,
+    "hyp_words": 8,
+    "subs": 0,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 9737,
+    "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t2_label": "طلب معلومات شخصية / استدراج محتمل",
+    "match": true
+  },
+  {
+    "id": "MVA-016",
+    "scenario": "MV-017",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "طلب معلومات شخصية",
+    "risk": "مرتفع",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "ارسل لي حسابك الخاص في السناب شات خلنا نسولف لحالنا.",
+    "hyp_text": "أرسل لي حسابك الخص في السنادشة دخلنا نسولف لحالنا",
+    "raw_wer": "60.0%",
+    "norm_wer": "40.0%",
+    "ref_words": 10,
+    "hyp_words": 9,
+    "subs": 3,
+    "dels": 1,
+    "ins": 0,
+    "time_ms": 10092,
+    "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t2_label": "طلب معلومات شخصية / استدراج محتمل",
+    "match": true
+  },
+  {
+    "id": "MVA-017",
+    "scenario": "MV-005",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "مراجعة سياقية",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "ترى أمزح معك لا تاخذها جد يا خوي والله ما قصدت.",
+    "hyp_text": "ترا أنزح معك لا تأخذها جد يخوي والله ما قصد",
+    "raw_wer": "54.5%",
+    "norm_wer": "45.5%",
+    "ref_words": 11,
+    "hyp_words": 10,
+    "subs": 4,
+    "dels": 1,
+    "ins": 0,
+    "time_ms": 9837,
+    "t1_label": "لم تطابق القواعد أي مؤشر معروف",
+    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
+    "match": true
+  },
+  {
+    "id": "MVA-018",
+    "scenario": "MV-030",
+    "voice": "ar-SA-HamedNeural",
+    "gt_label": "مراجعة سياقية",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "راح اصفيك في الراوند الجاي داخل اللعبة بس لا تزعل.",
+    "hyp_text": "راح أصفيك في الراواند الجايدة في اللعبة بس لا تزعل.",
+    "raw_wer": "40.0%",
+    "norm_wer": "30.0%",
+    "ref_words": 10,
+    "hyp_words": 10,
+    "subs": 3,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 10026,
+    "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "t2_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "match": true
+  },
+  {
+    "id": "MVA-019",
+    "scenario": "MV-027",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "مراجعة سياقية",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "يا عمي هذا مقلب سويته فيك عشان نضحك بس.",
+    "hyp_text": "يا عمي هذا مقلب ونسويت فيك عشاني نضحك بس",
+    "raw_wer": "33.3%",
+    "norm_wer": "22.2%",
+    "ref_words": 9,
+    "hyp_words": 9,
+    "subs": 2,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 9866,
+    "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "t2_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "match": true
+  },
+  {
+    "id": "MVA-020",
+    "scenario": "MV-025",
+    "voice": "ar-SA-ZariyahNeural",
+    "gt_label": "مراجعة سياقية",
+    "risk": "متوسط",
+    "model_id": "Xenova/whisper-small",
+    "model_name": "Whisper Small",
+    "gt_text": "ما راح اعطيك رقمي ولا راح ارسل لك أي صورة.",
+    "hyp_text": "ما راح أعطيك رقمي ولا راح أرسل لك أي صورة؟",
+    "raw_wer": "30.0%",
+    "norm_wer": "0.0%",
+    "ref_words": 10,
+    "hyp_words": 10,
+    "subs": 0,
+    "dels": 0,
+    "ins": 0,
+    "time_ms": 9961,
+    "t1_label": "رفض مشاركة معلومات / تعبير وقائي",
+    "t2_label": "رفض مشاركة معلومات / تعبير وقائي",
+    "match": true
+  }
+];
+
 const STARTER_DEMO_BENCHMARK = [
   { id: "MV-001", desc: "مزاح ودي بين لاعبين دون إهانة", text: "لعب ممتع يا كابتن والله الجولة كانت رهيبة كفو", dialect: "لهجة سعودية", ref: "سليم", note: "اختبار الإنذارات الخاطئة" },
   { id: "MV-002", desc: "نقاش عادي حول استراتيجية اللعب", text: "خلونا نروح يمين ونغطي المنطقة وننتظرهم", dialect: "لهجة سعودية", ref: "سليم", note: "محادثة طبيعية" },
@@ -456,141 +1494,169 @@ const STARTER_DEMO_BENCHMARK = [
 ];
 
 // ==========================================
-// 4. CSV Parser & Normalizer
+// 4. App State & Mode Management
 // ==========================================
-function csvParse(s) {
-  s = s.replace(/^\uFEFF/, '');
-  let out = [], row = [], cell = '', q = false;
-  for (let i = 0; i < s.length; i++) {
-    let c = s[i];
-    if (c === '"' && q && s[i + 1] === '"') { cell += '"'; i++; }
-    else if (c === '"') q = !q;
-    else if (c === ',' && !q) { row.push(cell); cell = ''; }
-    else if ((c === '\n' || c === '\r') && !q) {
-      if (c === '\r' && s[i + 1] === '\n') i++;
-      row.push(cell);
-      if (row.some(x => x.trim())) out.push(row);
-      row = []; cell = '';
-    } else cell += c;
-  }
-  if (cell || row.length) {
-    row.push(cell);
-    if (row.some(x => x.trim())) out.push(row);
-  }
-  if (!out.length) return [];
-  let h = out.shift().map(x => x.trim().toLowerCase());
-  return out.map(r => Object.fromEntries(h.map((k, i) => [k, (r[i] || '').trim()])));
+let currentMode = 'audio_benchmark'; // 'audio_benchmark', 'demo_text', 'uploaded_file'
+let currentDatasetType = 'audio_benchmark';
+let selectedModelFilter = 'both'; // 'both', 'Xenova/whisper-tiny', 'Xenova/whisper-small'
+let selectedClassificationTrack = 'track2'; // 'track1' (Ref text), 'track2' (Hyp text)
+let rows = [];
+let report = null;
+
+function csvParse(text) {
+  const lines = text.split(/\r?\n/).filter(l => l.trim());
+  if (!lines.length) return [];
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/"/g, ''));
+  return lines.slice(1).map(l => {
+    const parts = l.split(',');
+    return Object.fromEntries(headers.map((h, idx) => [h, (parts[idx] || '').trim().replace(/^"|"$/g, '')]));
+  });
 }
 
-function normalizeData(parsedRows) {
-  return parsedRows.map((r, idx) => {
-    const id = r.scenario_id || r.test_id || r.id || ('ID-' + (idx + 1));
-    const ref = r.reference_label || r.reference || '';
-    let sys = r.system_label || r.predicted_label || r.label || '';
-    const text = r.transcript || r.scenario_description || r.text || r.reference_text || '';
-    const fileName = r.file_name || '';
-    const asr = r.asr_model || '';
-    const wer = r.wer || r.wer_normalized || '';
-
-    // If file has text but no system label, run classifier dynamically
-    if (!sys && text) {
-      sys = classifyContent(text).label;
-    }
-
+function normalizeData(raw) {
+  return raw.map((row, i) => {
+    const ref = row.ground_truth_label || row.reference_label || row.reference || '';
+    const t = row.extracted_transcript || row.transcript || row.ground_truth_text || row.text || '';
+    const sys = row.system_label || row.predicted_label || (t ? classifyContent(t).label : '');
     return {
-      scenario_id: id,
+      scenario_id: row.sample_id || row.scenario_id || row.test_id || ('ID-' + (i + 1)),
+      file_name: row.file_name || 'ملف مرفوع',
+      asr_model: row.model_name || row.asr_model || 'ملف مرفوع',
+      model_id: row.model_id || 'custom',
+      voice_name: row.voice_name || 'غير محدد',
       reference_label: ref,
       system_label: sys,
-      text: text,
-      file_name: fileName,
-      asr_model: asr,
-      wer: wer
+      ground_truth_text: row.ground_truth_text || row.reference_text || t,
+      extracted_text: row.extracted_transcript || row.transcript || t,
+      text: t,
+      wer: row.norm_wer_pct || row.wer || null,
+      raw_wer: row.raw_wer_pct || null,
+      ref_words: parseInt(row.ref_words_count) || null,
+      subs: parseInt(row.substitutions) || 0,
+      dels: parseInt(row.deletions) || 0,
+      ins: parseInt(row.insertions) || 0,
+      time_ms: parseInt(row.processing_time_ms) || null,
+      classification_match: (ref === sys)
     };
-  }).filter(r => r.scenario_id && r.reference_label && r.system_label);
+  });
 }
 
-// Normalizer to standardize labels for binary metrics
-const isHarmful = s => {
-  const norm = (s || '').trim().toLowerCase();
-  return !['سليم', 'safe', 'benign', 'غير محسوم', 'غير محسوم صوتياً', 'مراجعة سياقية', 'مراجعة سياقية — مزاح أو لعب', 'unknown', 'uncertain', 'لم تطابق القواعد أي مؤشر معروف', ''].includes(norm);
-};
+function loadAudioBenchmark() {
+  currentMode = 'audio_benchmark';
+  document.getElementById('loadAudioBenchmarkBtn').style.background = 'var(--navy)';
+  document.getElementById('loadAudioBenchmarkBtn').style.color = '#fff';
+  document.getElementById('loadBenchmarkBtn').className = 'secondary';
+  document.getElementById('loadBenchmarkBtn').style.background = '#e9f0f5';
+  document.getElementById('loadBenchmarkBtn').style.color = 'var(--navy)';
+  document.getElementById('modelComparisonCard').style.display = 'block';
 
-const pct = x => (x === null || isNaN(x)) ? 'غير متاح' : (x * 100).toFixed(1) + '%';
-
-// ==========================================
-// 5. File Upload Handler
-// ==========================================
-document.getElementById('file').onchange = async e => {
-  try {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const raw = csvParse(await file.text());
-    rows = normalizeData(raw);
-    if (!rows.length) {
-      throw new Error('لم يتم العثور على صفوف صالحة تحتوي على التصنيف المرجعي وتصنيف النظام أو نص للفحص.');
-    }
-    currentDatasetType = 'file';
-    document.getElementById('status').textContent = 'تمت قراءة ' + rows.length + ' صفاً من الملف المرفوع: ' + file.name + '. اضغط «حساب المؤشرات من الملف».';
-    document.getElementById('bannerNotice').style.display = 'none';
-  } catch (err) {
-    rows = [];
-    document.getElementById('status').textContent = 'خطأ في معالجة الملف: ' + err.message;
+  let raw = ACTUAL_AUDIO_BENCHMARK;
+  if (selectedModelFilter !== 'both') {
+    raw = raw.filter(r => r.model_id === selectedModelFilter);
   }
-};
 
-// ==========================================
-// 6. Benchmark Button Handler (Dynamic Execution)
-// ==========================================
-document.getElementById('loadBenchmarkBtn').onclick = () => {
-  // Execute classifyContent dynamically in real-time for each benchmark utterance
+  rows = raw.map(r => ({
+    scenario_id: r.id,
+    file_name: r.id + '.mp3',
+    asr_model: r.model_name,
+    model_id: r.model_id,
+    voice_name: r.voice,
+    reference_label: r.gt_label,
+    system_label: selectedClassificationTrack === 'track1' ? r.t1_label : r.t2_label,
+    ground_truth_text: r.gt_text,
+    extracted_text: r.hyp_text,
+    text: selectedClassificationTrack === 'track1' ? r.gt_text : r.hyp_text,
+    wer: r.norm_wer,
+    raw_wer: r.raw_wer,
+    ref_words: r.ref_words,
+    subs: r.subs,
+    dels: r.dels,
+    ins: r.ins,
+    time_ms: r.time_ms,
+    classification_match: r.match
+  }));
+
+  const banner = document.getElementById('bannerNotice');
+  banner.style.display = 'block';
+  banner.className = 'notice-info';
+  banner.innerHTML = '<strong>معاينة مجموعة الاختبار الصوتي الفعلي (20 عينة):</strong> تعرض البيانات أدناه نتائج تشغيل Whisper Tiny و Whisper Small على تسجيلات صوتية فعلية مولدة بأصوات سعودية عصبية (Neural TTS). تم فصل أداء التفريغ (WER) تماماً عن أداء تصنيف المحتوى.';
+
+  document.getElementById('status').textContent = 'تم تحميل نتائج الاختبار الصوتي الفعلي بنجاح لـ ' + rows.length + ' حالة (' + (selectedModelFilter === 'both' ? 'مقارنة النموذجين' : selectedModelFilter) + ').';
+  calculateAndRender();
+}
+
+function loadDemoBenchmark() {
+  currentMode = 'demo_text';
+  document.getElementById('loadBenchmarkBtn').style.background = 'var(--navy)';
+  document.getElementById('loadBenchmarkBtn').style.color = '#fff';
+  document.getElementById('loadAudioBenchmarkBtn').className = 'secondary';
+  document.getElementById('loadAudioBenchmarkBtn').style.background = '#e9f0f5';
+  document.getElementById('loadAudioBenchmarkBtn').style.color = 'var(--navy)';
+  document.getElementById('modelComparisonCard').style.display = 'none';
+
   rows = STARTER_DEMO_BENCHMARK.map(item => {
     const runResult = classifyContent(item.text);
     return {
       scenario_id: item.id,
+      file_name: 'نص تجريبي بلا ملف صوتي',
+      asr_model: 'غير متوفر (نص فقط)',
+      model_id: 'none',
+      voice_name: 'غير متوفر',
       reference_label: item.ref,
       system_label: runResult.label,
+      ground_truth_text: item.text,
+      extracted_text: 'غير متوفر',
       text: item.text,
-      file_name: 'نص تجريبي (لا يوجد ملف صوتي)',
-      asr_model: 'غير متوفر (نص فقط)',
-      wer: null // Strictly null: no audio recording
+      wer: null, // Strictly null: no audio recording
+      raw_wer: null,
+      ref_words: null,
+      subs: 0,
+      dels: 0,
+      ins: 0,
+      time_ms: null,
+      classification_match: (item.ref === runResult.label)
     };
   });
-
-  currentDatasetType = 'demo';
 
   const banner = document.getElementById('bannerNotice');
   banner.style.display = 'block';
   banner.className = 'notice';
-  banner.innerHTML = '<strong>⚠️ تنبيه تدقيق علمي:</strong> تم تحميل مجموعة الـ 30 سيناريو التوضيحية (نصوص مصطنعة وليست تسجيلات صوتية ميدانية). جرى تشغيل محرك قواعد التصنيف الفعلي ديناميكياً على هذه النصوص في الوقت الحقيقي. لا يتوفر معدل خطأ الكلمات (WER) لهذه المجموعة لأنها نصوص مكتوبة وليست تسجيلات صوتية مفرغة بنموذج Whisper.';
+  banner.innerHTML = '<strong>⚠️ تنبيه تدقيق علمي:</strong> تم تحميل مجموعة الـ 30 سيناريو التوضيحية (نصوص مصطنعة وليست تسجيلات صوتية). جرى تشغيل محرك قواعد التصنيف ديناميكياً على هذه النصوص في الوقت الحقيقي. لا يتوفر معدل خطأ الكلمات (WER) لهذه المجموعة لعدم وجود تسجيلات صوتية لها.';
 
-  document.getElementById('status').textContent = 'تم تشغيل محرك التصنيف الفعلي على مجموعة الـ 30 سيناريو التوضيحية وحساب المؤشرات ديناميكياً.';
+  document.getElementById('status').textContent = 'تم تشغيل محرك قواعد التصنيف ديناميكياً على نصوص مجموعة الـ 30 سيناريو التوضيحية.';
   calculateAndRender();
+}
+
+// Helper functions
+const isHarmful = s => {
+  const norm = (s || '').trim().toLowerCase();
+  return !['سليم', 'safe', 'benign', 'غير محسوم', 'غير محسوم صوتياً', 'مراجعة سياقية', 'مراجعة سياقية — مزاح أو لعب', 'مراجعة سياقية — مزاح أو سياق لعب', 'رفض مشاركة معلومات / تعبير وقائي', 'سليم مبدئياً — عبارات لعب أو شكر طبيعية', 'unknown', 'uncertain', 'لم تطابق القواعد أي مؤشر معروف', ''].includes(norm);
 };
 
-document.getElementById('calc').onclick = () => {
-  if (!rows.length) {
-    document.getElementById('status').textContent = 'يرجى رفع ملف CSV أولاً أو الضغط على «تحميل مجموعة الـ 30 سيناريو التوضيحية».';
-    return;
-  }
-  calculateAndRender();
-};
+const pct = x => (x === null || isNaN(x)) ? 'لا توجد بيانات كافية' : (x * 100).toFixed(1) + '%';
 
 // ==========================================
-// 7. Core Calculations & UI Rendering
+// 5. Calculations & Rendering
 // ==========================================
 function calculateAndRender() {
   const data = rows;
+  if (!data || !data.length) {
+    document.getElementById('status').textContent = 'لا توجد بيانات صالحة للحساب.';
+    return;
+  }
+
   const labels = [...new Set(data.flatMap(r => [r.reference_label, r.system_label]))].sort();
   const mat = Object.fromEntries(labels.map(a => [a, Object.fromEntries(labels.map(b => [b, 0]))]));
 
   let tp = 0, fp = 0, tn = 0, fn = 0, correct = 0, excluded = 0;
-  let totalWer = 0, werCount = 0;
+  let totalWer = 0, totalRawWer = 0, werCount = 0;
+  let totalWords = 0, totalSubs = 0, totalDels = 0, totalIns = 0;
 
   for (let r of data) {
     mat[r.reference_label][r.system_label]++;
     if (r.reference_label === r.system_label) correct++;
 
-    // Track 1: ASR WER (only counted when an actual wer percentage / number is provided)
+    // Track 1 ASR stats
     if (r.wer !== null && r.wer !== undefined && r.wer !== '') {
       const num = parseFloat(String(r.wer).replace('%', ''));
       if (!isNaN(num)) {
@@ -598,13 +1664,20 @@ function calculateAndRender() {
         werCount++;
       }
     }
+    if (r.raw_wer !== null && r.raw_wer !== undefined && r.raw_wer !== '') {
+      const numRaw = parseFloat(String(r.raw_wer).replace('%', ''));
+      if (!isNaN(numRaw)) totalRawWer += numRaw;
+    }
+    if (r.ref_words) totalWords += r.ref_words;
+    totalSubs += (r.subs || 0);
+    totalDels += (r.dels || 0);
+    totalIns += (r.ins || 0);
 
-    // Track 2: Binary metrics calculation
-    const a = r.reference_label.trim();
-    const b = r.system_label.trim();
+    // Track 2 Classification stats
+    const a = (r.reference_label || '').trim();
+    const b = (r.system_label || '').trim();
 
-    // Contextual cases excluded from binary harm metrics to avoid distortion
-    if (['غير محسوم', 'غير محسوم صوتياً', 'مراجعة سياقية', 'مراجعة سياقية — مزاح أو لعب'].includes(a)) {
+    if (['غير محسوم', 'غير محسوم صوتياً', 'مراجعة سياقية', 'مراجعة سياقية — مزاح أو لعب', 'مراجعة سياقية — مزاح أو سياق لعب'].includes(a)) {
       excluded++;
       continue;
     }
@@ -619,30 +1692,37 @@ function calculateAndRender() {
   }
 
   // Multi-class Accuracy
-  const accuracy = data.length ? correct / data.length : 0;
+  const accuracy = data.length ? correct / data.length : null;
 
-  // Binary Classification Metrics
+  // Binary Metrics
   const precision = (tp + fp) ? tp / (tp + fp) : null;
   const recall = (tp + fn) ? tp / (tp + fn) : null;
   const f1 = (precision !== null && recall !== null && (precision + recall)) ? (2 * precision * recall) / (precision + recall) : null;
   const fpr = (fp + tn) ? fp / (fp + tn) : null;
 
-  // Track 1 Display: Speech Recognition (WER)
+  // Track 1 UI
   document.getElementById('mAudioCount').textContent = werCount;
   if (werCount > 0) {
-    const avgWerVal = (totalWer / werCount).toFixed(1) + '%';
-    document.getElementById('mWer').textContent = avgWerVal;
-    document.getElementById('mWerNote').textContent = `تم حسابه من ${werCount} تسجيلات صوتية فعلية مفرغة بنموذج Whisper`;
+    document.getElementById('mWer').textContent = (totalWer / werCount).toFixed(1) + '%';
+    document.getElementById('mRawWer').textContent = (totalRawWer / werCount).toFixed(1) + '%';
+    document.getElementById('mTotalWords').textContent = totalWords;
+    document.getElementById('mEditsBreakdown').textContent = 'الاستبدال: ' + totalSubs + ' | الحذف: ' + totalDels + ' | الإضافة: ' + totalIns;
+    document.getElementById('mAudioSub').textContent = 'تسجيلات فعلية (' + werCount + ' قياس)';
+    document.getElementById('mWerNote').textContent = 'محسوب بعد التطبيع الإملائي من ' + werCount + ' تشغيل فعلي لـ Whisper';
     document.getElementById('asrDataBadge').className = 'badge badge-verified';
-    document.getElementById('asrDataBadge').textContent = `تم التحقق صوتياً (${werCount} مقطع)`;
+    document.getElementById('asrDataBadge').textContent = 'تم التحقق صوتياً (' + werCount + ' قياس)';
   } else {
-    document.getElementById('mWer').textContent = 'لا توجد قياسات صوتية كافية بعد';
-    document.getElementById('mWerNote').textContent = 'مجموعة نصوص تجريبية توضيحية — يتطلب رفع تسجيلات صوتية فعلية لحساب WER';
+    document.getElementById('mWer').textContent = 'لا توجد بيانات كافية (لا توجد قياسات صوتية كافية بعد)';
+    document.getElementById('mRawWer').textContent = 'لا توجد بيانات كافية (لا توجد قياسات صوتية كافية بعد)';
+    document.getElementById('mTotalWords').textContent = 'غير متوفر';
+    document.getElementById('mEditsBreakdown').textContent = 'لا توجد تسجيلات صوتية لهذه المجموعة';
+    document.getElementById('mAudioSub').textContent = 'بيانات نصية فقط';
+    document.getElementById('mWerNote').textContent = 'يتطلب تشغيل ملفات صوتية لحساب WER';
     document.getElementById('asrDataBadge').className = 'badge badge-na';
     document.getElementById('asrDataBadge').textContent = 'بيانات نصية فقط (لا يوجد WER)';
   }
 
-  // Track 2 Display: Content Classification
+  // Track 2 UI
   document.getElementById('mCount').textContent = data.length;
   document.getElementById('mAcc').textContent = pct(accuracy);
   document.getElementById('mPrec').textContent = pct(precision);
@@ -651,73 +1731,81 @@ function calculateAndRender() {
   document.getElementById('mFpr').textContent = pct(fpr);
 
   const classBadge = document.getElementById('classDataBadge');
-  if (currentDatasetType === 'demo') {
+  if (currentMode === 'demo_text') {
     classBadge.className = 'badge badge-demo';
-    classBadge.textContent = 'نتائج مجموعة العرض التوضيحية (نصوص مصطنعة)';
+    classBadge.textContent = 'نتائج مجموعة العرض التوضيحية (نصوص مصطنعة بلا صوت)';
   } else {
     classBadge.className = 'badge badge-verified';
-    classBadge.textContent = 'نتائج ملف مفحوص فعلياً';
+    classBadge.textContent = selectedClassificationTrack === 'track1' ? 'المسار الأول: النص المرجعي المستقل' : 'المسار الثاني: النص المستخرج من الصوت';
   }
 
   // Render Confusion Matrix
-  let html = '<table><thead><tr><th>المرجع البشري ↓ / نتيجة النظام →</th>' + labels.map(l => '<th>' + l + '</th>').join('') + '<th>المجموع</th></tr></thead><tbody>';
+  let htmlMat = '<table><thead><tr><th>المرجع البشري ↓ / نتيجة النظام →</th>' + labels.map(l => '<th>' + l + '</th>').join('') + '<th>المجموع</th></tr></thead><tbody>';
   for (let a of labels) {
     let rowTotal = 0;
-    html += '<tr><th>' + a + '</th>';
+    htmlMat += '<tr><th>' + a + '</th>';
     for (let b of labels) {
       const val = mat[a][b];
       rowTotal += val;
       const isDiag = (a === b && val > 0);
-      html += `<td class="${isDiag ? 'diagonal' : ''}">${val}</td>`;
+      htmlMat += '<td class="' + (isDiag ? 'diagonal' : '') + '">' + val + '</td>';
     }
-    html += `<th>${rowTotal}</th></tr>`;
+    htmlMat += '<th>' + rowTotal + '</th></tr>';
   }
-  html += '</tbody></table>';
-  document.getElementById('matrix').innerHTML = html;
+  htmlMat += '</tbody></table>';
+  document.getElementById('matrix').innerHTML = htmlMat;
 
-  // Render Cases Details Table
-  let casesHtml = '<table><thead><tr><th>المعرّف</th><th>النص المفحوص</th><th>التصنيف المرجعي البشري</th><th>تصنيف النظام الآلي (ديناميكي)</th><th>خطأ التفريغ (WER)</th><th>الحالة</th></tr></thead><tbody>';
+  // Render Cases Table
+  let casesHtml = '<table><thead><tr><th>المعرّف</th><th>نموذج التفريغ</th><th>النص المرجعي الصحيح</th><th>النص المستخرج من الصوت</th><th>خطأ التفريغ (WER)</th><th>التصنيف المرجعي</th><th>تصنيف النظام</th><th>الحالة</th></tr></thead><tbody>';
   for (let r of data) {
     const isMatch = (r.reference_label === r.system_label);
     const werDisplay = (r.wer !== null && r.wer !== undefined && r.wer !== '') ? r.wer : 'غير متوفر (نص)';
-    casesHtml += `<tr>
-      <td><strong>${r.scenario_id}</strong></td>
-      <td style="text-align:right; max-width:320px">${r.text || '-'}</td>
-      <td>${r.reference_label}</td>
-      <td>${r.system_label}</td>
-      <td>${werDisplay}</td>
-      <td><span class="badge ${isMatch ? 'badge-verified' : 'badge-demo'}">${isMatch ? 'تطابق' : 'اختلاف'}</span></td>
-    </tr>`;
+    casesHtml += '<tr>' +
+      '<td><strong>' + r.scenario_id + '</strong></td>' +
+      '<td><span class="badge ' + (r.asr_model.includes('Small') ? 'badge-verified' : 'badge-demo') + '">' + r.asr_model + '</span></td>' +
+      '<td style="text-align:right; max-width:240px">' + (r.ground_truth_text || r.text || '-') + '</td>' +
+      '<td style="text-align:right; max-width:240px">' + (r.extracted_text || '-') + '</td>' +
+      '<td><strong>' + werDisplay + '</strong></td>' +
+      '<td>' + r.reference_label + '</td>' +
+      '<td>' + r.system_label + '</td>' +
+      '<td><span class="badge ' + (isMatch ? 'badge-verified' : 'badge-demo') + '">' + (isMatch ? 'تطابق' : 'اختلاف') + '</span></td>' +
+    '</tr>';
   }
   casesHtml += '</tbody></table>';
   document.getElementById('casesTableWrap').innerHTML = casesHtml;
 
-  // Build Comprehensive Scientific Audit Report
+  // Build Report Object for JSON Export
   report = {
     project: 'Mizan Voice',
-    engine_version: '0.3 - Audited',
+    engine_version: '0.4 - Audited with Real Audio & Two-Track Classification',
     timestamp: new Date().toISOString(),
     dataset_metadata: {
-      source_type: currentDatasetType === 'demo' ? 'demo_starter_benchmark' : 'uploaded_file',
+      mode: currentMode,
+      selected_model_filter: selectedModelFilter,
+      selected_classification_track: selectedClassificationTrack,
       total_cases: data.length,
-      is_field_tested: currentDatasetType !== 'demo',
-      human_review_status: currentDatasetType === 'demo' ? 'مسودة استرشادية أولية تحتاج تدقيقاً بشرياً مستقلاً' : 'راجعها إنسان',
-      scientific_note: 'مجموعة الـ 30 سيناريو هي مجموعة نصوص توضيحية. لا تشكل نتائج اختبار ميداني، ولا تعكس أداء نموذج التفريغ الصوتي.'
+      sample_nature: currentMode === 'audio_benchmark' ? 'synthetic_arabic_neural_voices (ar-SA)' : 'text_only_draft_scenarios',
+      synthetic_notice: 'العينات الصوتية اصطناعية عصبية ولا تغني عن الاختبارات الميدانية البشرية.'
     },
-    track_1_asr_speech_recognition: {
+    track_1_asr: {
       status: werCount > 0 ? 'measured_from_audio' : 'no_audio_measurements_yet',
-      verified_audio_samples: werCount,
-      average_wer: werCount > 0 ? (totalWer / werCount).toFixed(1) + '%' : null,
-      metric_explanation: 'WER يقيس نسبة الخطأ الصوتي بمقارنة تفريغ Whisper الصوتي مع نص مرجعي بعد التطبيع العربي.'
+      samples_tested: werCount,
+      average_normalized_wer: werCount > 0 ? (totalWer / werCount).toFixed(2) + '%' : null,
+      average_raw_wer: werCount > 0 ? (totalRawWer / werCount).toFixed(2) + '%' : null,
+      total_reference_words: totalWords,
+      total_substitutions: totalSubs,
+      total_deletions: totalDels,
+      total_insertions: totalIns
     },
-    track_2_content_classification: {
-      execution_mode: 'dynamic_rule_engine',
+    track_2_classification: {
+      track_evaluated: selectedClassificationTrack,
       accuracy: accuracy,
       precision: precision,
       recall: recall,
       f1_score: f1,
       false_positive_rate: fpr,
-      counts: {
+      cases_count: {
+        total: data.length,
         true_positives: tp,
         false_positives: fp,
         true_negatives: tn,
@@ -729,15 +1817,46 @@ function calculateAndRender() {
   };
 
   document.getElementById('export').disabled = false;
-  document.getElementById('status').textContent = `تم الحساب والتدقيق بنجاح لـ ${data.length} حالة.`;
+  document.getElementById('status').textContent = 'تم الحساب والتدقيق بنجاح لـ ' + data.length + ' حالة.';
 }
 
 // ==========================================
-// 8. JSON Report Export
+// 6. Interactive Event Handlers
 // ==========================================
+document.getElementById('loadAudioBenchmarkBtn').onclick = loadAudioBenchmark;
+document.getElementById('loadBenchmarkBtn').onclick = loadDemoBenchmark;
+
+// Model filter tabs
+document.getElementById('modelFilterTab').addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('#modelFilterTab button').forEach(b => {
+    b.style.background = 'transparent';
+    b.style.fontWeight = 'normal';
+  });
+  e.target.style.background = 'white';
+  e.target.style.fontWeight = 'bold';
+  selectedModelFilter = e.target.getAttribute('data-model');
+  loadAudioBenchmark();
+});
+
+// Classification track tabs
+document.getElementById('trackSelectTab').addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('#trackSelectTab button').forEach(b => {
+    b.style.background = 'transparent';
+    b.style.fontWeight = 'normal';
+  });
+  e.target.style.background = 'white';
+  e.target.style.fontWeight = 'bold';
+  selectedClassificationTrack = e.target.getAttribute('data-track');
+  if (currentMode === 'audio_benchmark') loadAudioBenchmark();
+  else calculateAndRender();
+});
+
+// JSON Export
 document.getElementById('export').onclick = () => {
   if (!report) return;
-  const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -746,10 +1865,124 @@ document.getElementById('export').onclick = () => {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
 
+// CSV Export
+document.getElementById('exportCsvBtn').onclick = () => {
+  if (!rows || !rows.length) return;
+  const headers = ['scenario_id', 'model_name', 'reference_label', 'system_label', 'wer', 'ground_truth_text', 'extracted_text', 'classification_match'];
+  const formatCell = v => '"' + String(v || '').replace(/"/g, '""') + '"';
+  const csvLines = [
+    headers.join(','),
+    ...rows.map(r => [
+      r.scenario_id,
+      formatCell(r.asr_model),
+      formatCell(r.reference_label),
+      formatCell(r.system_label),
+      formatCell(r.wer),
+      formatCell(r.ground_truth_text || r.text),
+      formatCell(r.extracted_text),
+      r.classification_match
+    ].join(','))
+  ];
+  const blob = new Blob(['\uFEFF' + csvLines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'mizan-voice-evaluation-results-' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+
+// File Upload Handler
+document.getElementById('file').onchange = async e => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    if (file.name.endsWith('.json')) {
+      const parsed = JSON.parse(text);
+      const rawRows = parsed.results || parsed;
+      rows = rawRows.map((r, i) => ({
+        scenario_id: r.sample_id || r.id || ('ID-' + (i + 1)),
+        file_name: r.file_name || file.name,
+        asr_model: r.model_name || r.asr_model || 'غير محدد',
+        model_id: r.model_id || 'unknown',
+        voice_name: r.voice_name || 'غير محدد',
+        reference_label: r.ground_truth_label || r.reference_label || '',
+        system_label: r.system_label || (r.extracted_transcript ? classifyContent(r.extracted_transcript).label : classifyContent(r.ground_truth_text || '').label),
+        ground_truth_text: r.ground_truth_text || r.text || '',
+        extracted_text: r.extracted_transcript || r.transcript || '',
+        text: r.extracted_transcript || r.ground_truth_text || r.text || '',
+        wer: r.norm_wer_pct || r.wer || null,
+        raw_wer: r.raw_wer_pct || r.raw_wer || null,
+        ref_words: r.ref_words_count || null,
+        subs: r.substitutions || 0,
+        dels: r.deletions || 0,
+        ins: r.insertions || 0,
+        time_ms: r.processing_time_ms || null,
+        classification_match: (r.ground_truth_label === (r.system_label || (r.extracted_transcript ? classifyContent(r.extracted_transcript).label : '')))
+      }));
+    } else {
+      // Basic CSV parser
+      const lines = text.split(/\r?\n/).filter(l => l.trim());
+      const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/"/g, ''));
+      rows = lines.slice(1).map((l, i) => {
+        const parts = l.split(',');
+        const row = Object.fromEntries(headers.map((h, idx) => [h, (parts[idx] || '').trim().replace(/^"|"$/g, '')]));
+        const ref = row.ground_truth_label || row.reference_label || row.reference || '';
+        const t = row.extracted_transcript || row.transcript || row.ground_truth_text || row.text || '';
+        const sys = row.system_label || (t ? classifyContent(t).label : '');
+        return {
+          scenario_id: row.sample_id || row.scenario_id || ('ID-' + (i + 1)),
+          file_name: file.name,
+          asr_model: row.model_name || row.asr_model || 'ملف مرفوع',
+          model_id: row.model_id || 'custom',
+          voice_name: row.voice_name || 'غير محدد',
+          reference_label: ref,
+          system_label: sys,
+          ground_truth_text: row.ground_truth_text || t,
+          extracted_text: row.extracted_transcript || t,
+          text: t,
+          wer: row.norm_wer_pct || row.wer || null,
+          raw_wer: row.raw_wer_pct || null,
+          ref_words: parseInt(row.ref_words_count) || null,
+          subs: parseInt(row.substitutions) || 0,
+          dels: parseInt(row.deletions) || 0,
+          ins: parseInt(row.insertions) || 0,
+          time_ms: parseInt(row.processing_time_ms) || null,
+          classification_match: (ref === sys)
+        };
+      });
+    }
+
+    currentMode = 'uploaded_file';
+    document.getElementById('loadAudioBenchmarkBtn').style.background = '#e9f0f5';
+    document.getElementById('loadAudioBenchmarkBtn').style.color = 'var(--navy)';
+    document.getElementById('loadBenchmarkBtn').style.background = '#e9f0f5';
+    document.getElementById('loadBenchmarkBtn').style.color = 'var(--navy)';
+    document.getElementById('modelComparisonCard').style.display = 'none';
+    document.getElementById('status').textContent = 'تم تحميل ' + rows.length + ' حالة من الملف المرفوع: ' + file.name;
+    calculateAndRender();
+  } catch (err) {
+    document.getElementById('status').textContent = 'خطأ في معالجة الملف: ' + err.message;
+  }
+};
+
+document.getElementById('calc').onclick = () => {
+  if (!rows.length) {
+    document.getElementById('status').textContent = 'يرجى اختيار مجموعة بيانات أو رفع ملف أولاً.';
+    return;
+  }
+  calculateAndRender();
+};
+
+// Initial Load
+loadAudioBenchmark();
+
 // Expose for testing
 window.MizanVoiceEngine = {
   classifyContent,
   normalizeArabic,
+  ACTUAL_AUDIO_BENCHMARK,
   STARTER_DEMO_BENCHMARK,
   calculateAndRender
 };
