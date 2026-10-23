@@ -7,7 +7,9 @@
     "tested_models": [
       "Xenova/whisper-tiny",
       "Xenova/whisper-small"
-    ]
+    ],
+    "audit_date": "2026-10-23",
+    "audit_status": "audited_and_recalculated_with_canonical_categories"
   },
   "model_summary": {
     "Xenova/whisper-tiny": {
@@ -22,21 +24,45 @@
       "total_deletions": 27,
       "total_insertions": 1,
       "avg_processing_time_sec": "3.52",
-      "classification_stability_rate": "20.0%"
+      "multi_class_accuracy": "35.0%",
+      "harm_detection_metrics": {
+        "evaluated_cohort_size": 16,
+        "excluded_contextual_size": 4,
+        "true_positives": 2,
+        "false_positives": 0,
+        "true_negatives": 5,
+        "false_negatives": 9,
+        "precision": "100.0%",
+        "recall": "18.2%",
+        "f1_score": "30.8%",
+        "false_positive_rate": "0.0%"
+      }
     },
     "Xenova/whisper-small": {
       "model_id": "Xenova/whisper-small",
       "model_name": "Whisper Small",
       "samples_tested": 20,
       "avg_raw_wer": "36.30%",
-      "avg_norm_wer": "25.28%",
+      "avg_norm_wer": "25.27%",
       "corpus_wer": "25.53%",
       "total_ref_words": 188,
       "total_substitutions": 41,
       "total_deletions": 4,
       "total_insertions": 3,
       "avg_processing_time_sec": "15.82",
-      "classification_stability_rate": "80.0%"
+      "multi_class_accuracy": "90.0%",
+      "harm_detection_metrics": {
+        "evaluated_cohort_size": 16,
+        "excluded_contextual_size": 4,
+        "true_positives": 11,
+        "false_positives": 0,
+        "true_negatives": 5,
+        "false_negatives": 0,
+        "precision": "100.0%",
+        "recall": "100.0%",
+        "f1_score": "100.0%",
+        "false_positive_rate": "0.0%"
+      }
     }
   },
   "results": [
@@ -63,11 +89,21 @@
       "error_status": "none",
       "track1_ref_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
       "track1_ref_level": "منخفض المخاطر — حوار طبيعي",
-      "track1_ref_matched": "يعطيك العافيه; يا وحش; جيم بطل; اسطوريه; اسطوري",
+      "track1_ref_matched": [
+        "يعطيك العافيه",
+        "يا وحش",
+        "جيم بطل",
+        "اسطوريه",
+        "اسطوري"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "سليم",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-002",
@@ -92,11 +128,20 @@
       "error_status": "none",
       "track1_ref_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
       "track1_ref_level": "منخفض المخاطر — حوار طبيعي",
-      "track1_ref_matched": "الزون",
+      "track1_ref_matched": [
+        "الزون",
+        "ناخذ الزون",
+        "زون قبل",
+        "زون"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "سليم",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-003",
@@ -121,11 +166,23 @@
       "error_status": "none",
       "track1_ref_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
       "track1_ref_level": "منخفض المخاطر — حوار طبيعي",
-      "track1_ref_matched": "شكرا لك; شكرا; تغطية; تغطيه",
+      "track1_ref_matched": [
+        "شكرا لك",
+        "شكرا",
+        "تغطية",
+        "تغطيه"
+      ],
       "track2_hyp_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
       "track2_hyp_level": "منخفض المخاطر — حوار طبيعي",
-      "track2_hyp_matched": "شكرا لك; شكرا",
-      "classification_match": true
+      "track2_hyp_matched": [
+        "شكرا لك",
+        "شكرا"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "سليم",
+      "track2_hyp_canonical": "سليم",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-004",
@@ -150,11 +207,17 @@
       "error_status": "none",
       "track1_ref_label": "رفض مشاركة معلومات / تعبير وقائي",
       "track1_ref_level": "منخفض المخاطر — رفض إيجابي لحماية الخصوصية",
-      "track1_ref_matched": "ما اشارك",
+      "track1_ref_matched": [
+        "ما اشارك"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "سليم",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-005",
@@ -179,11 +242,19 @@
       "error_status": "none",
       "track1_ref_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
       "track1_ref_level": "منخفض المخاطر — حوار طبيعي",
-      "track1_ref_matched": "مجرد تسليه; مجرد تسلية",
+      "track1_ref_matched": [
+        "مجرد تسليه",
+        "مجرد تسلية",
+        "ما تستاهل"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "سليم",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-006",
@@ -207,12 +278,19 @@
       "processing_time_ms": 2335,
       "error_status": "none",
       "track1_ref_label": "إساءة لفظية محتملة",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات إهانة",
-      "track1_ref_matched": "يا غبي; تخرب علينا كل قيم",
+      "track1_ref_level": "متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة",
+      "track1_ref_matched": [
+        "يا غبي",
+        "تخرب علينا كل قيم"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "إساءة",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-007",
@@ -236,12 +314,19 @@
       "processing_time_ms": 2324,
       "error_status": "none",
       "track1_ref_label": "إساءة لفظية محتملة",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات إهانة",
-      "track1_ref_matched": "يا فاشل; اطلع من اللعبة ما نبي نلعب معك",
+      "track1_ref_level": "متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة",
+      "track1_ref_matched": [
+        "يا فاشل",
+        "اطلع من اللعبة ما نبي نلعب معك"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "إساءة",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-008",
@@ -265,12 +350,18 @@
       "processing_time_ms": 2534,
       "error_status": "none",
       "track1_ref_label": "إساءة لفظية محتملة",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات إهانة",
-      "track1_ref_matched": "يا حيوان",
+      "track1_ref_level": "متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة",
+      "track1_ref_matched": [
+        "يا حيوان"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "إساءة",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-009",
@@ -294,12 +385,19 @@
       "processing_time_ms": 2487,
       "error_status": "none",
       "track1_ref_label": "إساءة لفظية محتملة",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات إهانة",
-      "track1_ref_matched": "مستواك زبالة",
+      "track1_ref_level": "متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة",
+      "track1_ref_matched": [
+        "مستواك زبالة",
+        "ما منك اي فايدة"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "إساءة",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-010",
@@ -323,12 +421,20 @@
       "processing_time_ms": 2395,
       "error_status": "none",
       "track1_ref_label": "تهديد محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات تهديد",
-      "track1_ref_matched": "لاجيك عند بيتك; اوريك شغلك",
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات تهديد",
+      "track1_ref_matched": [
+        "لاجيك عند بيتك",
+        "اجيك عند بيتك",
+        "اوريك شغلك"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "تهديد",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-011",
@@ -352,12 +458,20 @@
       "processing_time_ms": 2495,
       "error_status": "none",
       "track1_ref_label": "تهديد محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات تهديد",
-      "track1_ref_matched": "ادمر حسابك; تندم على; راح ادمر",
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات تهديد",
+      "track1_ref_matched": [
+        "ادمر حسابك",
+        "تندم على",
+        "راح ادمر"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "تهديد",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-012",
@@ -381,12 +495,21 @@
       "processing_time_ms": 2500,
       "error_status": "none",
       "track1_ref_label": "تهديد محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات تهديد",
-      "track1_ref_matched": "ما اخليك تفلت; وش اسوي فيك",
-      "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
-      "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات تهديد",
+      "track1_ref_matched": [
+        "ما اخليك تفلت",
+        "وش اسوي فيك"
+      ],
+      "track2_hyp_label": "تهديد محتمل",
+      "track2_hyp_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات تهديد",
+      "track2_hyp_matched": [
+        "وشاسوي فيك"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "تهديد",
+      "track2_hyp_canonical": "تهديد",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-013",
@@ -410,12 +533,21 @@
       "processing_time_ms": 2530,
       "error_status": "none",
       "track1_ref_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track1_ref_matched": "عطني رقم جوالك; رقم جوالك",
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track1_ref_matched": [
+        "عطني رقم جوالك",
+        "رقم جوالك"
+      ],
       "track2_hyp_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track2_hyp_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track2_hyp_matched": "رقم جوالك",
-      "classification_match": true
+      "track2_hyp_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track2_hyp_matched": [
+        "رقم جوالك"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "طلب معلومات شخصية",
+      "track2_hyp_canonical": "طلب معلومات شخصية",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-014",
@@ -439,12 +571,20 @@
       "processing_time_ms": 2469,
       "error_status": "none",
       "track1_ref_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track1_ref_matched": "وين ساكن; باي حي; اي شارع",
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track1_ref_matched": [
+        "وين ساكن",
+        "باي حي",
+        "اي شارع"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "طلب معلومات شخصية",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-015",
@@ -468,12 +608,18 @@
       "processing_time_ms": 2420,
       "error_status": "none",
       "track1_ref_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track1_ref_matched": "اسم مدرستك",
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track1_ref_matched": [
+        "اسم مدرستك"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "طلب معلومات شخصية",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-016",
@@ -497,12 +643,19 @@
       "processing_time_ms": 2464,
       "error_status": "none",
       "track1_ref_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track1_ref_matched": "حسابك الخاص; نسولف لحالنا",
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track1_ref_matched": [
+        "حسابك الخاص",
+        "نسولف لحالنا"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "طلب معلومات شخصية",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-017",
@@ -525,13 +678,22 @@
       "insertions": 0,
       "processing_time_ms": 2478,
       "error_status": "none",
-      "track1_ref_label": "لم تطابق القواعد أي مؤشر معروف",
-      "track1_ref_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track1_ref_matched": "",
+      "track1_ref_label": "مراجعة سياقية — مزاح أو سياق لعب",
+      "track1_ref_level": "منخفض المخاطر — حوار مزاح معتاد",
+      "track1_ref_matched": [
+        "ترى امزح",
+        "امزح معك",
+        "لا تاخذها جد",
+        "ما قصدت"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": true
+      "track2_hyp_matched": [],
+      "classification_match": true,
+      "track1_ref_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-018",
@@ -556,11 +718,19 @@
       "error_status": "none",
       "track1_ref_label": "مراجعة سياقية — مزاح أو سياق لعب",
       "track1_ref_level": "متوسط — سياق ملتبس بين اللعب والمبالغة",
-      "track1_ref_matched": "لعبة بس; داخل اللعبة; في الراوند",
+      "track1_ref_matched": [
+        "لعبة بس",
+        "داخل اللعبة",
+        "في الراوند"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": true,
+      "track1_ref_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-019",
@@ -585,11 +755,21 @@
       "error_status": "none",
       "track1_ref_label": "مراجعة سياقية — مزاح أو سياق لعب",
       "track1_ref_level": "متوسط — سياق ملتبس بين اللعب والمبالغة",
-      "track1_ref_matched": "مقلب سويته; مقلب; عشان نضحك",
+      "track1_ref_matched": [
+        "مقلب سويته",
+        "مقلب",
+        "عشان نضحك"
+      ],
       "track2_hyp_label": "مراجعة سياقية — مزاح أو سياق لعب",
       "track2_hyp_level": "متوسط — سياق ملتبس بين اللعب والمبالغة",
-      "track2_hyp_matched": "مقلب",
-      "classification_match": true
+      "track2_hyp_matched": [
+        "مقلب"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-020",
@@ -614,11 +794,17 @@
       "error_status": "none",
       "track1_ref_label": "رفض مشاركة معلومات / تعبير وقائي",
       "track1_ref_level": "منخفض المخاطر — رفض إيجابي لحماية الخصوصية",
-      "track1_ref_matched": "ما راح اعطيك",
+      "track1_ref_matched": [
+        "ما راح اعطيك"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": true,
+      "track1_ref_canonical": "سليم",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-001",
@@ -643,11 +829,24 @@
       "error_status": "none",
       "track1_ref_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
       "track1_ref_level": "منخفض المخاطر — حوار طبيعي",
-      "track1_ref_matched": "يعطيك العافيه; يا وحش; جيم بطل; اسطوريه; اسطوري",
+      "track1_ref_matched": [
+        "يعطيك العافيه",
+        "يا وحش",
+        "جيم بطل",
+        "اسطوريه",
+        "اسطوري"
+      ],
       "track2_hyp_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
       "track2_hyp_level": "منخفض المخاطر — حوار طبيعي",
-      "track2_hyp_matched": "يعطيك العافيه; يا وحش",
-      "classification_match": true
+      "track2_hyp_matched": [
+        "يعطيك العافيه",
+        "يا وحش"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "سليم",
+      "track2_hyp_canonical": "سليم",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-002",
@@ -672,11 +871,23 @@
       "error_status": "none",
       "track1_ref_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
       "track1_ref_level": "منخفض المخاطر — حوار طبيعي",
-      "track1_ref_matched": "الزون",
-      "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
-      "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track1_ref_matched": [
+        "الزون",
+        "ناخذ الزون",
+        "زون قبل",
+        "زون"
+      ],
+      "track2_hyp_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+      "track2_hyp_level": "منخفض المخاطر — حوار طبيعي",
+      "track2_hyp_matched": [
+        "زون قبل",
+        "زون"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "سليم",
+      "track2_hyp_canonical": "سليم",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-003",
@@ -701,11 +912,25 @@
       "error_status": "none",
       "track1_ref_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
       "track1_ref_level": "منخفض المخاطر — حوار طبيعي",
-      "track1_ref_matched": "شكرا لك; شكرا; تغطية; تغطيه",
+      "track1_ref_matched": [
+        "شكرا لك",
+        "شكرا",
+        "تغطية",
+        "تغطيه"
+      ],
       "track2_hyp_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
       "track2_hyp_level": "منخفض المخاطر — حوار طبيعي",
-      "track2_hyp_matched": "شكرا لك; شكرا; تغطية; تغطيه",
-      "classification_match": true
+      "track2_hyp_matched": [
+        "شكرا لك",
+        "شكرا",
+        "تغطية",
+        "تغطيه"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "سليم",
+      "track2_hyp_canonical": "سليم",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-004",
@@ -730,11 +955,19 @@
       "error_status": "none",
       "track1_ref_label": "رفض مشاركة معلومات / تعبير وقائي",
       "track1_ref_level": "منخفض المخاطر — رفض إيجابي لحماية الخصوصية",
-      "track1_ref_matched": "ما اشارك",
+      "track1_ref_matched": [
+        "ما اشارك"
+      ],
       "track2_hyp_label": "رفض مشاركة معلومات / تعبير وقائي",
       "track2_hyp_level": "منخفض المخاطر — رفض إيجابي لحماية الخصوصية",
-      "track2_hyp_matched": "ما اشارك",
-      "classification_match": true
+      "track2_hyp_matched": [
+        "ما اشارك"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "سليم",
+      "track2_hyp_canonical": "سليم",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-005",
@@ -759,11 +992,19 @@
       "error_status": "none",
       "track1_ref_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
       "track1_ref_level": "منخفض المخاطر — حوار طبيعي",
-      "track1_ref_matched": "مجرد تسليه; مجرد تسلية",
+      "track1_ref_matched": [
+        "مجرد تسليه",
+        "مجرد تسلية",
+        "ما تستاهل"
+      ],
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track2_hyp_matched": [],
+      "classification_match": false,
+      "track1_ref_canonical": "سليم",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
     },
     {
       "sample_id": "MVA-006",
@@ -787,12 +1028,22 @@
       "processing_time_ms": 9230,
       "error_status": "none",
       "track1_ref_label": "إساءة لفظية محتملة",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات إهانة",
-      "track1_ref_matched": "يا غبي; تخرب علينا كل قيم",
+      "track1_ref_level": "متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة",
+      "track1_ref_matched": [
+        "يا غبي",
+        "تخرب علينا كل قيم"
+      ],
       "track2_hyp_label": "إساءة لفظية محتملة",
-      "track2_hyp_level": "مراجعة بشرية مطلوبة — مؤشرات إهانة",
-      "track2_hyp_matched": "يا غبي; تخرب علينا كل قيم",
-      "classification_match": true
+      "track2_hyp_level": "متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة",
+      "track2_hyp_matched": [
+        "يا غبي",
+        "تخرب علينا كل قيم"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "إساءة",
+      "track2_hyp_canonical": "إساءة",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-007",
@@ -816,12 +1067,21 @@
       "processing_time_ms": 9352,
       "error_status": "none",
       "track1_ref_label": "إساءة لفظية محتملة",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات إهانة",
-      "track1_ref_matched": "يا فاشل; اطلع من اللعبة ما نبي نلعب معك",
+      "track1_ref_level": "متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة",
+      "track1_ref_matched": [
+        "يا فاشل",
+        "اطلع من اللعبة ما نبي نلعب معك"
+      ],
       "track2_hyp_label": "إساءة لفظية محتملة",
-      "track2_hyp_level": "مراجعة بشرية مطلوبة — مؤشرات إهانة",
-      "track2_hyp_matched": "يا فاشل",
-      "classification_match": true
+      "track2_hyp_level": "متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة",
+      "track2_hyp_matched": [
+        "يا فاشل"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "إساءة",
+      "track2_hyp_canonical": "إساءة",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-008",
@@ -845,12 +1105,20 @@
       "processing_time_ms": 9866,
       "error_status": "none",
       "track1_ref_label": "إساءة لفظية محتملة",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات إهانة",
-      "track1_ref_matched": "يا حيوان",
+      "track1_ref_level": "متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة",
+      "track1_ref_matched": [
+        "يا حيوان"
+      ],
       "track2_hyp_label": "إساءة لفظية محتملة",
-      "track2_hyp_level": "مراجعة بشرية مطلوبة — مؤشرات إهانة",
-      "track2_hyp_matched": "يا حيوان",
-      "classification_match": true
+      "track2_hyp_level": "متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة",
+      "track2_hyp_matched": [
+        "يا حيوان"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "إساءة",
+      "track2_hyp_canonical": "إساءة",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-009",
@@ -874,12 +1142,22 @@
       "processing_time_ms": 9750,
       "error_status": "none",
       "track1_ref_label": "إساءة لفظية محتملة",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات إهانة",
-      "track1_ref_matched": "مستواك زبالة",
-      "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
-      "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": false
+      "track1_ref_level": "متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة",
+      "track1_ref_matched": [
+        "مستواك زبالة",
+        "ما منك اي فايدة"
+      ],
+      "track2_hyp_label": "إساءة لفظية محتملة",
+      "track2_hyp_level": "متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة",
+      "track2_hyp_matched": [
+        "مستوى كزبالة",
+        "كزبالة"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "إساءة",
+      "track2_hyp_canonical": "إساءة",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-010",
@@ -903,12 +1181,22 @@
       "processing_time_ms": 9508,
       "error_status": "none",
       "track1_ref_label": "تهديد محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات تهديد",
-      "track1_ref_matched": "لاجيك عند بيتك; اوريك شغلك",
-      "track2_hyp_label": "إساءة لفظية محتملة",
-      "track2_hyp_level": "مراجعة بشرية مطلوبة — مؤشرات إهانة",
-      "track2_hyp_matched": "يا كلب",
-      "classification_match": false
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات تهديد",
+      "track1_ref_matched": [
+        "لاجيك عند بيتك",
+        "اجيك عند بيتك",
+        "اوريك شغلك"
+      ],
+      "track2_hyp_label": "تهديد محتمل",
+      "track2_hyp_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات تهديد",
+      "track2_hyp_matched": [
+        "لا جيك عند بيتك"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "تهديد",
+      "track2_hyp_canonical": "تهديد",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-011",
@@ -932,12 +1220,24 @@
       "processing_time_ms": 10027,
       "error_status": "none",
       "track1_ref_label": "تهديد محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات تهديد",
-      "track1_ref_matched": "ادمر حسابك; تندم على; راح ادمر",
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات تهديد",
+      "track1_ref_matched": [
+        "ادمر حسابك",
+        "تندم على",
+        "راح ادمر"
+      ],
       "track2_hyp_label": "تهديد محتمل",
-      "track2_hyp_level": "مراجعة بشرية مطلوبة — مؤشرات تهديد",
-      "track2_hyp_matched": "ادمر حسابك; تندم على; راح ادمر",
-      "classification_match": true
+      "track2_hyp_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات تهديد",
+      "track2_hyp_matched": [
+        "ادمر حسابك",
+        "تندم على",
+        "راح ادمر"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "تهديد",
+      "track2_hyp_canonical": "تهديد",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-012",
@@ -961,12 +1261,21 @@
       "processing_time_ms": 10008,
       "error_status": "none",
       "track1_ref_label": "تهديد محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات تهديد",
-      "track1_ref_matched": "ما اخليك تفلت; وش اسوي فيك",
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات تهديد",
+      "track1_ref_matched": [
+        "ما اخليك تفلت",
+        "وش اسوي فيك"
+      ],
       "track2_hyp_label": "تهديد محتمل",
-      "track2_hyp_level": "مراجعة بشرية مطلوبة — مؤشرات تهديد",
-      "track2_hyp_matched": "وش اسوي فيك",
-      "classification_match": true
+      "track2_hyp_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات تهديد",
+      "track2_hyp_matched": [
+        "وش اسوي فيك"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "تهديد",
+      "track2_hyp_canonical": "تهديد",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-013",
@@ -990,12 +1299,22 @@
       "processing_time_ms": 9982,
       "error_status": "none",
       "track1_ref_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track1_ref_matched": "عطني رقم جوالك; رقم جوالك",
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track1_ref_matched": [
+        "عطني رقم جوالك",
+        "رقم جوالك"
+      ],
       "track2_hyp_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track2_hyp_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track2_hyp_matched": "عطني رقم جوالك; رقم جوالك",
-      "classification_match": true
+      "track2_hyp_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track2_hyp_matched": [
+        "عطني رقم جوالك",
+        "رقم جوالك"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "طلب معلومات شخصية",
+      "track2_hyp_canonical": "طلب معلومات شخصية",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-014",
@@ -1019,12 +1338,24 @@
       "processing_time_ms": 9916,
       "error_status": "none",
       "track1_ref_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track1_ref_matched": "وين ساكن; باي حي; اي شارع",
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track1_ref_matched": [
+        "وين ساكن",
+        "باي حي",
+        "اي شارع"
+      ],
       "track2_hyp_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track2_hyp_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track2_hyp_matched": "باي حي; اي شارع",
-      "classification_match": true
+      "track2_hyp_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track2_hyp_matched": [
+        "وينساكن",
+        "باي حي",
+        "اي شارع"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "طلب معلومات شخصية",
+      "track2_hyp_canonical": "طلب معلومات شخصية",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-015",
@@ -1048,12 +1379,20 @@
       "processing_time_ms": 9737,
       "error_status": "none",
       "track1_ref_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track1_ref_matched": "اسم مدرستك",
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track1_ref_matched": [
+        "اسم مدرستك"
+      ],
       "track2_hyp_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track2_hyp_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track2_hyp_matched": "اسم مدرستك",
-      "classification_match": true
+      "track2_hyp_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track2_hyp_matched": [
+        "اسم مدرستك"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "طلب معلومات شخصية",
+      "track2_hyp_canonical": "طلب معلومات شخصية",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-016",
@@ -1077,12 +1416,21 @@
       "processing_time_ms": 10092,
       "error_status": "none",
       "track1_ref_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track1_ref_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track1_ref_matched": "حسابك الخاص; نسولف لحالنا",
+      "track1_ref_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track1_ref_matched": [
+        "حسابك الخاص",
+        "نسولف لحالنا"
+      ],
       "track2_hyp_label": "طلب معلومات شخصية / استدراج محتمل",
-      "track2_hyp_level": "مراجعة بشرية مطلوبة — مؤشرات استدراج",
-      "track2_hyp_matched": "نسولف لحالنا",
-      "classification_match": true
+      "track2_hyp_level": "مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج",
+      "track2_hyp_matched": [
+        "نسولف لحالنا"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "طلب معلومات شخصية",
+      "track2_hyp_canonical": "طلب معلومات شخصية",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-017",
@@ -1105,13 +1453,24 @@
       "insertions": 0,
       "processing_time_ms": 9837,
       "error_status": "none",
-      "track1_ref_label": "لم تطابق القواعد أي مؤشر معروف",
-      "track1_ref_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track1_ref_matched": "",
-      "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
-      "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
-      "track2_hyp_matched": "",
-      "classification_match": true
+      "track1_ref_label": "مراجعة سياقية — مزاح أو سياق لعب",
+      "track1_ref_level": "منخفض المخاطر — حوار مزاح معتاد",
+      "track1_ref_matched": [
+        "ترى امزح",
+        "امزح معك",
+        "لا تاخذها جد",
+        "ما قصدت"
+      ],
+      "track2_hyp_label": "مراجعة سياقية — مزاح أو سياق لعب",
+      "track2_hyp_level": "منخفض المخاطر — حوار مزاح معتاد",
+      "track2_hyp_matched": [
+        "لا تاخذها جد"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-018",
@@ -1136,11 +1495,21 @@
       "error_status": "none",
       "track1_ref_label": "مراجعة سياقية — مزاح أو سياق لعب",
       "track1_ref_level": "متوسط — سياق ملتبس بين اللعب والمبالغة",
-      "track1_ref_matched": "لعبة بس; داخل اللعبة; في الراوند",
+      "track1_ref_matched": [
+        "لعبة بس",
+        "داخل اللعبة",
+        "في الراوند"
+      ],
       "track2_hyp_label": "مراجعة سياقية — مزاح أو سياق لعب",
       "track2_hyp_level": "متوسط — سياق ملتبس بين اللعب والمبالغة",
-      "track2_hyp_matched": "لعبة بس",
-      "classification_match": true
+      "track2_hyp_matched": [
+        "لعبة بس"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-019",
@@ -1165,11 +1534,21 @@
       "error_status": "none",
       "track1_ref_label": "مراجعة سياقية — مزاح أو سياق لعب",
       "track1_ref_level": "متوسط — سياق ملتبس بين اللعب والمبالغة",
-      "track1_ref_matched": "مقلب سويته; مقلب; عشان نضحك",
+      "track1_ref_matched": [
+        "مقلب سويته",
+        "مقلب",
+        "عشان نضحك"
+      ],
       "track2_hyp_label": "مراجعة سياقية — مزاح أو سياق لعب",
       "track2_hyp_level": "متوسط — سياق ملتبس بين اللعب والمبالغة",
-      "track2_hyp_matched": "مقلب",
-      "classification_match": true
+      "track2_hyp_matched": [
+        "مقلب"
+      ],
+      "classification_match": true,
+      "track1_ref_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
     {
       "sample_id": "MVA-020",
@@ -1194,11 +1573,19 @@
       "error_status": "none",
       "track1_ref_label": "رفض مشاركة معلومات / تعبير وقائي",
       "track1_ref_level": "منخفض المخاطر — رفض إيجابي لحماية الخصوصية",
-      "track1_ref_matched": "ما راح اعطيك",
+      "track1_ref_matched": [
+        "ما راح اعطيك"
+      ],
       "track2_hyp_label": "رفض مشاركة معلومات / تعبير وقائي",
       "track2_hyp_level": "منخفض المخاطر — رفض إيجابي لحماية الخصوصية",
-      "track2_hyp_matched": "ما راح اعطيك",
-      "classification_match": true
+      "track2_hyp_matched": [
+        "ما راح اعطيك"
+      ],
+      "classification_match": false,
+      "track1_ref_canonical": "سليم",
+      "track2_hyp_canonical": "سليم",
+      "error_root_cause": "غموض السياق والمزاح",
+      "proposed_remediation": "إحالة المحتوى للتدقيق البشري وإتاحة نافذة سياق أوسع للحوار لتحديد النية."
     }
   ]
 }

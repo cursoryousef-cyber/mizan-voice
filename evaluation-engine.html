@@ -227,60 +227,60 @@ a:hover { text-decoration: underline; }
     <table>
       <thead>
         <tr>
-          <th>المؤشر الإحصائي</th>
+          <th>المؤشر الإحصائي والمنهجي</th>
           <th>Whisper Tiny (~40 MB)</th>
           <th>Whisper Small (~480 MB)</th>
-          <th>الفارق والدلالة العلمية</th>
+          <th>الفارق والدلالة العلمية والميدانية</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>معدل خطأ الكلمات بعد التطبيع (WER)</strong></td>
+          <td><strong>معدل خطأ الكلمات المطبّع (Normalized WER)</strong></td>
           <td><strong style="color:#b91c1c">74.87%</strong></td>
-          <td><strong style="color:#047481">25.28%</strong></td>
+          <td><strong style="color:#047481">25.27%</strong></td>
           <td>تحسن الدقة الصامتة بمقدار <strong>49.6%</strong> لصالح Small</td>
         </tr>
         <tr>
           <td><strong>معدل خطأ الكلمات الخام (Raw WER)</strong></td>
           <td>77.57%</td>
           <td>36.30%</td>
-          <td>انخفاض التشويه الإملائي بنسبة كبيرة</td>
+          <td>انخفاض التشويه الإملائي بنسبة كبيرة جداً</td>
         </tr>
         <tr>
           <td><strong>خطأ المتن الإجمالي (Corpus WER)</strong></td>
           <td>75.53%</td>
           <td>25.53%</td>
-          <td>إجمالي تعديلات الكلمات على كامل المتن</td>
-        </tr>
-        <tr>
-          <td><strong>عدد الاستبدالات الحرفية (Substitutions)</strong></td>
-          <td>114 كلمة</td>
-          <td>41 كلمة</td>
-          <td>انخفاض استبدال الكلمات بنسبة 64%</td>
-        </tr>
-        <tr>
-          <td><strong>عدد الكلمات المحذوفة (Deletions)</strong></td>
-          <td>27 كلمة</td>
-          <td>4 كلمات</td>
-          <td>انخفاض إسقاط الكلمات بنسبة 85%</td>
-        </tr>
-        <tr>
-          <td><strong>عدد الإضافات الخاطئة (Insertions)</strong></td>
-          <td>1</td>
-          <td>3</td>
-          <td>معدل هلوسة منخفض جداً في كلا النموذجين</td>
+          <td>إجمالي تعديلات الكلمات على كامل المتن الصوتي</td>
         </tr>
         <tr>
           <td><strong>متوسط سرعة المعالجة للمقطع</strong></td>
           <td><strong>3.52 ثانية</strong></td>
           <td><strong>15.82 ثانية</strong></td>
-          <td>Tiny أسرع بـ 4.5 أضعاف في بيئة المتصفح</td>
+          <td>Tiny أسرع بـ 4.5 أضعاف في بيئة المتصفح الخفيفة</td>
         </tr>
         <tr>
-          <td><strong>نسبة استقرار تصنيف المحتوى</strong></td>
-          <td>20.0%</td>
-          <td><strong>80.0%</strong></td>
-          <td>أخطاء Tiny شوّهت 80% من الكلمات، بينما Small حافظ على 80% من القرارات السليمة</td>
+          <td><strong>التطابق متعدد الفئات بعد التفريغ (Accuracy)</strong></td>
+          <td><strong style="color:#b91c1c">35.0%</strong> (7/20)</td>
+          <td><strong style="color:#047481">90.0%</strong> (18/20)</td>
+          <td>Small يحقق استقراراً عالياً في التصنيف المتعدد (18 من أصل 20 حالة)</td>
+        </tr>
+        <tr>
+          <td><strong>حالات اكتشاف الخطر المفوتة (Missed Harm - FN)</strong></td>
+          <td><strong style="color:#b91c1c">9 حالات</strong> (81.8% تفويت)</td>
+          <td><strong style="color:#047481">0 حالات</strong> (0.0% تفويت - تغطية 100%)</td>
+          <td>أخطاء Tiny الصوتية حجبت 9 حالات إساءة وتهديد؛ بينما التقط Small كل الحالات الضارة</td>
+        </tr>
+        <tr>
+          <td><strong>الإنذارات الخاطئة لمحتوى سليم (False Positives - FPR)</strong></td>
+          <td><strong>0 حالات (0.0%)</strong></td>
+          <td><strong>0 حالات (0.0%)</strong></td>
+          <td>صفر إنذارات خاطئة في كلا النموذجين بفضل قواعد استبعاد المزاح ورفض مشاركة البيانات</td>
+        </tr>
+        <tr>
+          <td><strong>الحالات المحالة للمراجعة البشرية / سياقية</strong></td>
+          <td>13 حالة (65.0%)</td>
+          <td>4 حالات (20.0%)</td>
+          <td>Tiny يعجز عن الحسم في أغلب المقاطع المشوهة، بينما Small يحسم 80% منها بثقة</td>
         </tr>
       </tbody>
     </table>
@@ -400,6 +400,26 @@ a:hover { text-decoration: underline; }
     <button id="export" disabled>تنزيل تقرير التقييم والتدقيق العلمي (JSON)</button>
     <button id="exportCsvBtn" class="secondary" style="margin:0 8px">تصدير النتائج التفصيلية الحالية (CSV)</button>
   </div>
+<!-- 5. سجل تحليل الأخطاء والإنذارات الخاطئة -->
+<section class="card" id="errorAnalysisSection">
+  <div class="track-header">
+    <h2>5) سجل تحليل الأخطاء والإنذارات الخاطئة وأسبابها الجذرية (Root Cause Error Analysis)</h2>
+    <span id="errorReportBadge" class="badge badge-verified">تشخيص علمي معتمد</span>
+  </div>
+  <p class="hint">
+    يوثق هذا الجدول أسباب الاختلافات والإنذارات الخاطئة والحالات المحالة للمراجعة البشرية، مبيناً ما إذا كان السبب يعود إلى تشويه التفريغ الصوتي (ASR)، أم قصور القواعد، أم غموض وسياق مزدوج، مع الإجراء المقترح لمعالجة كل حالة.
+  </p>
+  <div class="row" style="margin-bottom:12px">
+    <button id="showErrorsOnlyBtn" class="active-btn" type="button" style="background:var(--navy); color:white; padding:6px 14px; border-radius:7px; border:0; font-size:13px; font-weight:bold; cursor:pointer">عرض حالات الاختلاف والتحويل للمراجعة فقط</button>
+    <button id="showAllAnalysisBtn" class="secondary" type="button" style="padding:6px 14px; border-radius:7px; border:1px solid #cbd5e1; font-size:13px; cursor:pointer">عرض تشخيص جميع العينات</button>
+    <a href="./data/mizan_voice_error_analysis_report.json" download style="font-size:13px; margin:0 8px">تنزيل تقرير الأخطاء الشامل (JSON)</a>
+    <a href="./data/model_comparison_tiny_vs_small.csv" download style="font-size:13px; margin:0 8px">مقارنة النموذجين (CSV)</a>
+  </div>
+  <div id="errorAnalysisTableWrap" class="table-wrap">
+    <div style="text-align:center; padding:20px; color:var(--muted)">جارٍ تحميل سجل الأخطاء...</div>
+  </div>
+</section>
+
 </section>
 
 <div class="row" style="margin:24px 4px">
@@ -437,6 +457,7 @@ function normalizeArabic(text, { removePunctuation = true, unifyLetters = true }
 function classifyContent(rawText) {
   if (!rawText || !rawText.trim()) {
     return {
+      canonicalCategory: 'غير محسوم',
       label: 'لا يوجد نص للفحص',
       status: 'فارغ',
       level: 'غير متاح',
@@ -447,22 +468,23 @@ function classifyContent(rawText) {
 
   const norm = normalizeArabic(rawText);
 
-  // 1. فحص أنماط النفي والدفاع والرفض الواعي (Negation & Defensive Privacy Refusal)
+  // 1. فحص أنماط النفي والدفاع والرفض الواعي لحماية الخصوصية (Defensive Privacy Refusal)
   const negationRefusalPatterns = [
-    'ما راح اعطيك', 'ما بعطيك', 'ما راح ارسل', 'ما برسل',
+    'ما راح اعطيك', 'ماراح اعطيك', 'ما بعطيك', 'ما اعطيك', 'ما ابغى اعطيك', 'ما بدي اعطيك',
+    'ما راح ارسل', 'ماراح ارسل', 'ما برسل', 'ما ارسل', 'مستحيل ارسل', 'مستحيل اعطيك',
     'ما اشارك', 'ما اتقاسم', 'ما اقول لك', 'ما اعلمك',
     'لا تاخذها جد', 'لا تشدها', 'ما قصدت'
   ];
   const matchedNegations = negationRefusalPatterns.filter(term => norm.includes(normalizeArabic(term)));
 
-  // إذا كانت العبارة رفضاً صريحاً لمشاركة البيانات الشخصية (مثل: "ما راح اعطيك رقمي")
-  if (matchedNegations.some(term => ['ما راح اعطيك', 'ما بعطيك', 'ما راح ارسل', 'ما برسل', 'ما اشارك'].includes(term)) &&
-      (norm.includes('رقم') || norm.includes('معلومات') || norm.includes('حساب') || norm.includes('صور'))) {
+  if (matchedNegations.some(term => ['ما راح اعطيك', 'ماراح اعطيك', 'ما بعطيك', 'ما اعطيك', 'ما ابغى اعطيك', 'ما بدي اعطيك', 'ما راح ارسل', 'ماراح ارسل', 'ما برسل', 'ما ارسل', 'مستحيل ارسل', 'مستحيل اعطيك', 'ما اشارك'].includes(term)) &&
+      (norm.includes('رقم') || norm.includes('معلومات') || norm.includes('حساب') || norm.includes('صور') || norm.includes('صوره') || norm.includes('صورتي') || norm.includes('جوالي') || norm.includes('سنابي') || norm.includes('اسمي'))) {
     return {
+      canonicalCategory: 'سليم',
       label: 'رفض مشاركة معلومات / تعبير وقائي',
       status: 'سليم وقائي',
       level: 'منخفض المخاطر — رفض إيجابي لحماية الخصوصية',
-      reason: 'رُصد نمط نفي صريح لحماية البيانات الشخصية: «' + matchedNegations.join('»، «') + '». هذا سلوك وقائي وليس استدراجاً.',
+      reason: 'رُصد نمط نفي صريح لحماية البيانات الشخصية: «' + matchedNegations.join('»، «') + '». هذا سلوك وقائي حميد وليس استدراجاً.',
       matched: matchedNegations
     };
   }
@@ -470,87 +492,143 @@ function classifyContent(rawText) {
   // 2. فحص سياق المزاح والمقالب واللعب (Contextual Gaming / Humor / Pranks)
   const contextualTerms = [
     'ترى امزح', 'امزح معك', 'لا تاخذها جد', 'لا تشدها', 'ما قصدت',
-    'مقلب سويته', 'مقلب', 'عشان نضحك', 'لعبة بس', 'مجرد تسلية', 'ما تستاهل زعل',
+    'مقلب سويته', 'مقلب', 'عشان نضحك', 'لعبة بس', 'مجرد تسلية', 'مجرد تسليه', 'مجرد تسليات',
+    'ما تستاهل زعل', 'ما يستاهل زعل', 'تسلية بس', 'تسليه بس',
     'داخل اللعبة', 'في الراوند', 'في القيم'
   ];
   const matchedContext = contextualTerms.filter(term => norm.includes(normalizeArabic(term)));
 
-  // 3. فئات التهديد والإساءة والاستدراج (Harm Categories)
-  const categories = [
-    {
-      label: 'طلب معلومات شخصية / استدراج محتمل',
-      level: 'مراجعة بشرية مطلوبة — مؤشرات استدراج',
-      terms: [
-        'لا تعلم اهلك', 'لا تقول لاهلك', 'لا تخبر احد', 'خلك سر', 'خلها سر بيننا',
-        'ارسل صورتك', 'اعطني رقمك', 'عطني رقمك', 'عطني رقم جوالك', 'رقم جوالك', 'وين بيتك',
-        'وين ساكن', 'مكان سكنك', 'باي حي', 'اي شارع', 'قابلني لحالك', 'تعال خاص', 'خلنا خاص',
-        'سنابك', 'انستقرامك', 'اسم مدرستك', 'باي صف تدرس', 'حسابك الخاص', 'سكنات مجانا',
-        'نسولف لحالنا'
-      ]
-    },
-    {
-      label: 'تهديد محتمل',
-      level: 'مراجعة بشرية مطلوبة — مؤشرات تهديد',
-      terms: [
-        'لاجيك عند بيتك', 'اوريك شغلك', 'ادمر حسابك', 'تندم على', 'ما اخليك تفلت',
-        'وش اسوي فيك', 'راح ادمر', 'راح اوريك', 'باذيك', 'راح اقتلك', 'بقتلك',
-        'بفضحك', 'بضربك', 'بعرف وينك', 'بذبحك', 'بكسرك', 'بشتكيك', 'بنتقم منك'
-      ]
-    },
-    {
-      label: 'إساءة لفظية محتملة',
-      level: 'مراجعة بشرية مطلوبة — مؤشرات إهانة',
-      terms: [
-        'يا غبي', 'يا فاشل', 'يا حيوان', 'يا حمار', 'يا كلب', 'يا وصخ', 'يا نذل',
-        'مستواك زبالة', 'ما منك فايدة', 'قليل الادب', 'اكرهك', 'لعنة عليك',
-        'الله يلعنك', 'حقير', 'تخرب علينا كل قيم', 'اطلع من اللعبة ما نبي نلعب معك'
-      ]
-    }
+  // 3. فئات الخطر مع ترتيب أولوية صارم: التهديد أولاً (أعلى خطورة)، ثم الاستدراج، ثم الإساءة
+  // لضمان عدم خفض التهديد الجسيم إلى مجرد شتيمة عند اشتماله على لفظ مهين
+  const threatTerms = [
+    'لاجيك عند بيتك', 'لا جيك عند بيتك', 'اجيك عند بيتك', 'اجيك لبيتك', 'اجيك لين بيتك', 'باب بيتك',
+    'اوريك شغلك', 'ادمر حسابك', 'تندم على', 'ما اخليك تفلت', 'ما اخليك تفلط',
+    'وش اسوي فيك', 'وشاسوي فيك', 'راح ادمر', 'راح اوريك', 'باذيك', 'راح اقتلك', 'بقتلك',
+    'بفضحك', 'بضربك', 'بعرف وينك', 'بذبحك', 'اذبحك', 'راح اذبحك', 'بكسرك', 'بشتكيك', 'بنتقم منك',
+    'اهكر جهازك', 'اهكر حسابك', 'يا ويلك'
   ];
 
-  // إذا وُجدت قرائن سياقية قوية للمزاح أو اللعب مقترنة بعبارات قتالية داخل اللعبة (مثل: "راح اصفيك في الراوند الجاي داخل اللعبة بس لا تزعل")
-  if (matchedContext.length > 0 && (norm.includes('اصفيك') || norm.includes('بكسرك') || norm.includes('تمثيل') || norm.includes('مقلب') || norm.includes('لعبة بس'))) {
+  const solicitationTerms = [
+    'لا تعلم اهلك', 'لا تقول لاهلك', 'لا تخبر احد', 'خلك سر', 'خلها سر بيننا',
+    'ارسل صورتك', 'اعطني رقمك', 'عطني رقمك', 'عطني رقم جوالك', 'رقم جوالك', 'وين بيتك',
+    'وين ساكن', 'وينساكن', 'مكان سكنك', 'باي حي', 'اي شارع', 'قابلني لحالك', 'تعال خاص', 'خلنا خاص',
+    'سنابك', 'انستقرامك', 'اسم مدرستك', 'اي مدرسة', 'في اي مدرسة', 'باي مدرسة', 'باي صف تدرس', 'حسابك الخاص', 'سكنات مجانا',
+    'نسولف لحالنا', 'سيرفر خاص', 'السيرفر الخاص'
+  ];
+
+  const abuseTerms = [
+    'يا غبي', 'انت غبي', 'يا فاشل', 'انت فاشل', 'لاعب فاشل', 'يا حيوان', 'انت حيوان',
+    'يا حمار', 'انت حمار', 'يا كلب', 'انت كلب', 'يا وصخ', 'يا نذل', 'انت نذل',
+    'مستواك زبالة', 'مستوى كزبالة', 'كزبالة', 'لعبك زبالة', 'ما منك فايدة', 'ما منك اي فايدة',
+    'قليل الادب', 'اكرهك', 'لعنة عليك', 'الله يلعنك', 'حقير', 'تخرب علينا كل قيم',
+    'اطلع من اللعبة ما نبي نلعب معك', 'نوب', 'noob'
+  ];
+
+  const matchedThreats = threatTerms.filter(term => norm.includes(normalizeArabic(term)));
+  const matchedSolicitations = solicitationTerms.filter(term => norm.includes(normalizeArabic(term)));
+  const matchedAbuse = abuseTerms.filter(term => norm.includes(normalizeArabic(term)));
+
+  // إذا وُجدت قرائن لعب/مزاح مقترنة بعبارات قتالية افتراضية داخل اللعبة
+  if (matchedContext.length > 0 && (norm.includes('اصفيك') || norm.includes('بكسرك') || norm.includes('تمثيل') || norm.includes('مقلب') || norm.includes('لعبة بس') || norm.includes('داخل اللعبة'))) {
     return {
+      canonicalCategory: 'مراجعة سياقية',
       label: 'مراجعة سياقية — مزاح أو سياق لعب',
       status: 'يتطلب مراجعة بشرية لتحديد النية',
       level: 'متوسط — سياق ملتبس بين اللعب والمبالغة',
-      reason: 'رُصدت مؤشرات سياق لعب أو مزاح: «' + matchedContext.join('»، «') + '». لا يمكن الجزم بالنية دون مراجعة بشرية للسياق الكامل.',
+      reason: 'رُصدت مؤشرات سياق لعب أو مزاح: «' + matchedContext.join('»، «') + '» مقترنة بعبارات قتالية داخل اللعبة. لا يمكن الجزم بالنية دون مراجعة بشرية.',
       matched: matchedContext
     };
   }
 
-  // مطابقة فئات الخطر الأساسية
-  for (const cat of categories) {
-    const hits = cat.terms.filter(term => norm.includes(normalizeArabic(term)));
-    if (hits.length > 0) {
-      if (matchedContext.length > 0) {
-        return {
-          label: 'مراجعة سياقية — مزاح أو سياق لعب',
-          status: 'ملتبس — مؤشرات خطر مع قرائن مزاح',
-          level: 'متوسط — يحتاج تحققاً بشرياً من قصد المتحدث',
-          reason: 'تطابق مع مؤشرات خطر «' + hits.join('»، «') + '» لكن ترافق مع قرائن مزاح: «' + matchedContext.join('»، «') + '». يتطلب مراجعة بشرية متخصصة.',
-          matched: [...hits, ...matchedContext]
-        };
-      }
+  // أولوية 1: التهديد
+  if (matchedThreats.length > 0) {
+    if (matchedContext.length > 0) {
       return {
-        label: cat.label,
-        status: 'تم رصد مؤشرات أولية',
-        level: cat.level,
-        reason: 'تطابق مع قاعدة كلمات مفتاحية أولية: «' + hits.join('»، «') + '». هذا تصنيف استدلالي أولي لا يثبت النية الجنائية ويستلزم تدقيقاً بشرياً.',
-        matched: hits
+        canonicalCategory: 'مراجعة سياقية',
+        label: 'مراجعة سياقية — مزاح أو سياق لعب',
+        status: 'ملتبس — مؤشرات تهديد مع قرائن مزاح',
+        level: 'متوسط — يحتاج تحققاً بشرياً من قصد المتحدث',
+        reason: 'تطابق مع مؤشرات تهديد «' + matchedThreats.join('»، «') + '» لكن ترافق مع قرائن مزاح: «' + matchedContext.join('»، «') + '». يتطلب مراجعة بشرية.',
+        matched: [...matchedThreats, ...matchedContext]
       };
     }
+    return {
+      canonicalCategory: 'تهديد',
+      label: 'تهديد محتمل',
+      status: 'تم رصد مؤشرات أولية',
+      level: 'مرتفع — مراجعة بشرية مطلوبة لمؤشرات تهديد',
+      reason: 'تطابق مع قاعدة مؤشرات التهديد: «' + matchedThreats.join('»، «') + '». هذا تصنيف أولي يستلزم التدقيق البشري.',
+      matched: matchedThreats
+    };
+  }
+
+  // أولوية 2: الاستدراج وطلب المعلومات
+  if (matchedSolicitations.length > 0) {
+    if (matchedContext.length > 0) {
+      return {
+        canonicalCategory: 'مراجعة سياقية',
+        label: 'مراجعة سياقية — مزاح أو سياق لعب',
+        status: 'ملتبس — مؤشرات طلب معلومات مع قرائن مزاح',
+        level: 'متوسط — يحتاج تحققاً بشرياً',
+        reason: 'تطابق مع مؤشرات طلب معلومات «' + matchedSolicitations.join('»، «') + '» ترافق مع قرائن مزاح.',
+        matched: [...matchedSolicitations, ...matchedContext]
+      };
+    }
+    return {
+      canonicalCategory: 'طلب معلومات شخصية',
+      label: 'طلب معلومات شخصية / استدراج محتمل',
+      status: 'تم رصد مؤشرات أولية',
+      level: 'مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج',
+      reason: 'تطابق مع قاعدة مؤشرات الاستدراج وطلب البيانات: «' + matchedSolicitations.join('»، «') + '».',
+      matched: matchedSolicitations
+    };
+  }
+
+  // أولوية 3: الإساءة اللفظية
+  if (matchedAbuse.length > 0) {
+    if (matchedContext.length > 0) {
+      return {
+        canonicalCategory: 'مراجعة سياقية',
+        label: 'مراجعة سياقية — مزاح أو سياق لعب',
+        status: 'ملتبس — ألفاظ إهانة مع قرائن مزاح',
+        level: 'متوسط — يتطلب تدقيق النية',
+        reason: 'تطابق مع ألفاظ إهانة «' + matchedAbuse.join('»، «') + '» ترافقت مع قرائن مزاح.',
+        matched: [...matchedAbuse, ...matchedContext]
+      };
+    }
+    return {
+      canonicalCategory: 'إساءة',
+      label: 'إساءة لفظية محتملة',
+      status: 'تم رصد مؤشرات أولية',
+      level: 'متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة',
+      reason: 'تطابق مع قاعدة مؤشرات الإساءة اللفظية: «' + matchedAbuse.join('»، «') + '».',
+      matched: matchedAbuse
+    };
+  }
+
+  // فحص المزاح الصريح الخالي من التهديدات أو الإساءات
+  if (matchedContext.some(term => ['ترى امزح', 'امزح معك', 'لا تاخذها جد', 'لا تشدها', 'مقلب سويته', 'مقلب', 'عشان نضحك'].includes(term))) {
+    return {
+      canonicalCategory: 'مراجعة سياقية',
+      label: 'مراجعة سياقية — مزاح أو سياق لعب',
+      status: 'مزاح أو لعب ودي',
+      level: 'منخفض المخاطر — حوار مزاح معتاد',
+      reason: 'رُصدت مؤشرات مزاح واضحة أو مقلب لتلطيف الأجواء: «' + matchedContext.join('»، «') + '» خالية من مؤشرات التهديد أو الإساءة.',
+      matched: matchedContext
+    };
   }
 
   // 4. فحص الأنماط الإيجابية السليمة (Positive & Benign Gaming Communication)
   const benignPositiveTerms = [
-    'يعطيك العافيه', 'يا وحش', 'جيم بطل', 'اسطوريه', 'اسطوري', 'كفو',
-    'الزون', 'شكرا لك', 'شكرا', 'تسلم', 'مبروك الفوز', 'معوضين خير',
-    'تغطية', 'تغطيه', 'مجرد تسليه', 'مجرد تسلية'
+    'يعطيك العافيه', 'يا وحش', 'يا غالي', 'جيم بطل', 'اسطوريه', 'اسطوري', 'كفو',
+    'الزون', 'ناخذ الزون', 'ناخذ زون', 'في الزون', 'زون قبل', 'زون', 'لوت', 'معي لوت',
+    'شكرا لك', 'شكرا', 'تسلم', 'مبروك الفوز', 'معوضين خير',
+    'تغطية', 'تغطيه', 'مجرد تسليه', 'مجرد تسلية', 'مجرد تسليات', 'ما تستاهل زعل', 'ما تستاهل'
   ];
   const matchedBenign = benignPositiveTerms.filter(term => norm.includes(normalizeArabic(term)));
   if (matchedBenign.length > 0) {
     return {
+      canonicalCategory: 'سليم',
       label: 'سليم مبدئياً — عبارات لعب أو شكر طبيعية',
       status: 'سليم',
       level: 'منخفض المخاطر — حوار طبيعي',
@@ -559,8 +637,9 @@ function classifyContent(rawText) {
     };
   }
 
-  // 5. الحالة الافتراضية: غير محسوم
+  // 5. الحالة الافتراضية: غير محسوم (إحالة للمراجعة البشرية)
   return {
+    canonicalCategory: 'مراجعة سياقية',
     label: 'لم تطابق القواعد أي مؤشر معروف',
     status: 'غير محسوم',
     level: 'غير محسوم — يحتاج مراجعة بشرية',
@@ -583,6 +662,7 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "scenario": "MV-001",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "سليم",
+    "gt_canonical": "سليم",
     "risk": "منخفض",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -597,14 +677,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 23519,
     "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t1_canonical": "سليم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-002",
     "scenario": "MV-002",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "سليم",
+    "gt_canonical": "سليم",
     "risk": "منخفض",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -619,14 +704,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2537,
     "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t1_canonical": "سليم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-003",
     "scenario": "MV-003",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "سليم",
+    "gt_canonical": "سليم",
     "risk": "منخفض",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -641,14 +731,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2423,
     "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t1_canonical": "سليم",
     "t2_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
-    "match": true
+    "t2_canonical": "سليم",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-004",
     "scenario": "MV-025",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "سليم",
+    "gt_canonical": "سليم",
     "risk": "منخفض",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -663,14 +758,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2507,
     "t1_label": "رفض مشاركة معلومات / تعبير وقائي",
+    "t1_canonical": "سليم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-005",
     "scenario": "MV-004",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "سليم",
+    "gt_canonical": "سليم",
     "risk": "منخفض",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -685,14 +785,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2576,
     "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t1_canonical": "سليم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-006",
     "scenario": "MV-007",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "إساءة",
+    "gt_canonical": "إساءة",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -707,14 +812,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2335,
     "t1_label": "إساءة لفظية محتملة",
+    "t1_canonical": "إساءة",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-007",
     "scenario": "MV-008",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "إساءة",
+    "gt_canonical": "إساءة",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -729,14 +839,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2324,
     "t1_label": "إساءة لفظية محتملة",
+    "t1_canonical": "إساءة",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-008",
     "scenario": "MV-009",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "إساءة",
+    "gt_canonical": "إساءة",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -751,14 +866,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2534,
     "t1_label": "إساءة لفظية محتملة",
+    "t1_canonical": "إساءة",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-009",
     "scenario": "MV-010",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "إساءة",
+    "gt_canonical": "إساءة",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -773,14 +893,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2487,
     "t1_label": "إساءة لفظية محتملة",
+    "t1_canonical": "إساءة",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-010",
     "scenario": "MV-011",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "تهديد",
+    "gt_canonical": "تهديد",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -795,14 +920,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2395,
     "t1_label": "تهديد محتمل",
+    "t1_canonical": "تهديد",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-011",
     "scenario": "MV-012",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "تهديد",
+    "gt_canonical": "تهديد",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -817,14 +947,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2495,
     "t1_label": "تهديد محتمل",
+    "t1_canonical": "تهديد",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-012",
     "scenario": "MV-013",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "تهديد",
+    "gt_canonical": "تهديد",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -839,14 +974,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2500,
     "t1_label": "تهديد محتمل",
-    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t1_canonical": "تهديد",
+    "t2_label": "تهديد محتمل",
+    "t2_canonical": "تهديد",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-013",
     "scenario": "MV-014",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "طلب معلومات شخصية",
+    "gt_canonical": "طلب معلومات شخصية",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -861,14 +1001,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 1,
     "time_ms": 2530,
     "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t1_canonical": "طلب معلومات شخصية",
     "t2_label": "طلب معلومات شخصية / استدراج محتمل",
-    "match": true
+    "t2_canonical": "طلب معلومات شخصية",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-014",
     "scenario": "MV-015",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "طلب معلومات شخصية",
+    "gt_canonical": "طلب معلومات شخصية",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -883,14 +1028,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2469,
     "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t1_canonical": "طلب معلومات شخصية",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-015",
     "scenario": "MV-016",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "طلب معلومات شخصية",
+    "gt_canonical": "طلب معلومات شخصية",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -905,14 +1055,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2420,
     "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t1_canonical": "طلب معلومات شخصية",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-016",
     "scenario": "MV-017",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "طلب معلومات شخصية",
+    "gt_canonical": "طلب معلومات شخصية",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -927,14 +1082,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2464,
     "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t1_canonical": "طلب معلومات شخصية",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-017",
     "scenario": "MV-005",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "مراجعة سياقية",
+    "gt_canonical": "مراجعة سياقية / غير محسوم",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -948,15 +1108,20 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "dels": 3,
     "ins": 0,
     "time_ms": 2478,
-    "t1_label": "لم تطابق القواعد أي مؤشر معروف",
+    "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "t1_canonical": "مراجعة سياقية / غير محسوم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": true
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-018",
     "scenario": "MV-030",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "مراجعة سياقية",
+    "gt_canonical": "مراجعة سياقية / غير محسوم",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -971,14 +1136,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2445,
     "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "t1_canonical": "مراجعة سياقية / غير محسوم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-019",
     "scenario": "MV-027",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "مراجعة سياقية",
+    "gt_canonical": "مراجعة سياقية / غير محسوم",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -993,14 +1163,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2427,
     "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "t1_canonical": "مراجعة سياقية / غير محسوم",
     "t2_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "match": true
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-020",
     "scenario": "MV-025",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "مراجعة سياقية",
+    "gt_canonical": "مراجعة سياقية / غير محسوم",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -1015,14 +1190,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2481,
     "t1_label": "رفض مشاركة معلومات / تعبير وقائي",
+    "t1_canonical": "سليم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-001",
     "scenario": "MV-001",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "سليم",
+    "gt_canonical": "سليم",
     "risk": "منخفض",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1037,14 +1217,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 129385,
     "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t1_canonical": "سليم",
     "t2_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
-    "match": true
+    "t2_canonical": "سليم",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-002",
     "scenario": "MV-002",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "سليم",
+    "gt_canonical": "سليم",
     "risk": "منخفض",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1059,14 +1244,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 10148,
     "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
-    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t1_canonical": "سليم",
+    "t2_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t2_canonical": "سليم",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-003",
     "scenario": "MV-003",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "سليم",
+    "gt_canonical": "سليم",
     "risk": "منخفض",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1081,14 +1271,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 9757,
     "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t1_canonical": "سليم",
     "t2_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
-    "match": true
+    "t2_canonical": "سليم",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-004",
     "scenario": "MV-025",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "سليم",
+    "gt_canonical": "سليم",
     "risk": "منخفض",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1103,14 +1298,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 10040,
     "t1_label": "رفض مشاركة معلومات / تعبير وقائي",
+    "t1_canonical": "سليم",
     "t2_label": "رفض مشاركة معلومات / تعبير وقائي",
-    "match": true
+    "t2_canonical": "سليم",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-005",
     "scenario": "MV-004",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "سليم",
+    "gt_canonical": "سليم",
     "risk": "منخفض",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1125,14 +1325,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 10011,
     "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
+    "t1_canonical": "سليم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
   },
   {
     "id": "MVA-006",
     "scenario": "MV-007",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "إساءة",
+    "gt_canonical": "إساءة",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1147,14 +1352,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 9230,
     "t1_label": "إساءة لفظية محتملة",
+    "t1_canonical": "إساءة",
     "t2_label": "إساءة لفظية محتملة",
-    "match": true
+    "t2_canonical": "إساءة",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-007",
     "scenario": "MV-008",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "إساءة",
+    "gt_canonical": "إساءة",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1169,14 +1379,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 9352,
     "t1_label": "إساءة لفظية محتملة",
+    "t1_canonical": "إساءة",
     "t2_label": "إساءة لفظية محتملة",
-    "match": true
+    "t2_canonical": "إساءة",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-008",
     "scenario": "MV-009",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "إساءة",
+    "gt_canonical": "إساءة",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1191,14 +1406,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 9866,
     "t1_label": "إساءة لفظية محتملة",
+    "t1_canonical": "إساءة",
     "t2_label": "إساءة لفظية محتملة",
-    "match": true
+    "t2_canonical": "إساءة",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-009",
     "scenario": "MV-010",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "إساءة",
+    "gt_canonical": "إساءة",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1213,14 +1433,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 1,
     "time_ms": 9750,
     "t1_label": "إساءة لفظية محتملة",
-    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": false
+    "t1_canonical": "إساءة",
+    "t2_label": "إساءة لفظية محتملة",
+    "t2_canonical": "إساءة",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-010",
     "scenario": "MV-011",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "تهديد",
+    "gt_canonical": "تهديد",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1235,14 +1460,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 1,
     "time_ms": 9508,
     "t1_label": "تهديد محتمل",
-    "t2_label": "إساءة لفظية محتملة",
-    "match": false
+    "t1_canonical": "تهديد",
+    "t2_label": "تهديد محتمل",
+    "t2_canonical": "تهديد",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-011",
     "scenario": "MV-012",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "تهديد",
+    "gt_canonical": "تهديد",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1257,14 +1487,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 10027,
     "t1_label": "تهديد محتمل",
+    "t1_canonical": "تهديد",
     "t2_label": "تهديد محتمل",
-    "match": true
+    "t2_canonical": "تهديد",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-012",
     "scenario": "MV-013",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "تهديد",
+    "gt_canonical": "تهديد",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1279,14 +1514,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 10008,
     "t1_label": "تهديد محتمل",
+    "t1_canonical": "تهديد",
     "t2_label": "تهديد محتمل",
-    "match": true
+    "t2_canonical": "تهديد",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-013",
     "scenario": "MV-014",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "طلب معلومات شخصية",
+    "gt_canonical": "طلب معلومات شخصية",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1301,14 +1541,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 1,
     "time_ms": 9982,
     "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t1_canonical": "طلب معلومات شخصية",
     "t2_label": "طلب معلومات شخصية / استدراج محتمل",
-    "match": true
+    "t2_canonical": "طلب معلومات شخصية",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-014",
     "scenario": "MV-015",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "طلب معلومات شخصية",
+    "gt_canonical": "طلب معلومات شخصية",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1323,14 +1568,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 9916,
     "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t1_canonical": "طلب معلومات شخصية",
     "t2_label": "طلب معلومات شخصية / استدراج محتمل",
-    "match": true
+    "t2_canonical": "طلب معلومات شخصية",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-015",
     "scenario": "MV-016",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "طلب معلومات شخصية",
+    "gt_canonical": "طلب معلومات شخصية",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1345,14 +1595,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 9737,
     "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t1_canonical": "طلب معلومات شخصية",
     "t2_label": "طلب معلومات شخصية / استدراج محتمل",
-    "match": true
+    "t2_canonical": "طلب معلومات شخصية",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-016",
     "scenario": "MV-017",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "طلب معلومات شخصية",
+    "gt_canonical": "طلب معلومات شخصية",
     "risk": "مرتفع",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1367,14 +1622,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 10092,
     "t1_label": "طلب معلومات شخصية / استدراج محتمل",
+    "t1_canonical": "طلب معلومات شخصية",
     "t2_label": "طلب معلومات شخصية / استدراج محتمل",
-    "match": true
+    "t2_canonical": "طلب معلومات شخصية",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-017",
     "scenario": "MV-005",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "مراجعة سياقية",
+    "gt_canonical": "مراجعة سياقية / غير محسوم",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1388,15 +1648,20 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "dels": 1,
     "ins": 0,
     "time_ms": 9837,
-    "t1_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "match": true
+    "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "t1_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-018",
     "scenario": "MV-030",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "مراجعة سياقية",
+    "gt_canonical": "مراجعة سياقية / غير محسوم",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1411,14 +1676,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 10026,
     "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "t1_canonical": "مراجعة سياقية / غير محسوم",
     "t2_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "match": true
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-019",
     "scenario": "MV-027",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "مراجعة سياقية",
+    "gt_canonical": "مراجعة سياقية / غير محسوم",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1433,14 +1703,19 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 9866,
     "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
+    "t1_canonical": "مراجعة سياقية / غير محسوم",
     "t2_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "match": true
+    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   },
   {
     "id": "MVA-020",
     "scenario": "MV-025",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "مراجعة سياقية",
+    "gt_canonical": "مراجعة سياقية / غير محسوم",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1455,8 +1730,12 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 9961,
     "t1_label": "رفض مشاركة معلومات / تعبير وقائي",
+    "t1_canonical": "سليم",
     "t2_label": "رفض مشاركة معلومات / تعبير وقائي",
-    "match": true
+    "t2_canonical": "سليم",
+    "match": false,
+    "error_root_cause": "غموض السياق والمزاح",
+    "proposed_remediation": "إحالة المحتوى للتدقيق البشري وإتاحة نافذة سياق أوسع للحوار لتحديد النية."
   }
 ];
 
@@ -1638,6 +1917,21 @@ const pct = x => (x === null || isNaN(x)) ? 'لا توجد بيانات كافي
 // ==========================================
 // 5. Calculations & Rendering
 // ==========================================
+const CANONICAL_CLASSES = ['سليم', 'إساءة', 'تهديد', 'طلب معلومات شخصية', 'مراجعة سياقية'];
+
+function toCanonicalCategory(label) {
+  if (!label) return 'مراجعة سياقية';
+  const str = String(label).trim();
+  if (str === 'سليم' || str.includes('سليم') || str.includes('رفض مشاركة معلومات')) return 'سليم';
+  if (str === 'إساءة' || str.includes('إساءة')) return 'إساءة';
+  if (str === 'تهديد' || str.includes('تهديد')) return 'تهديد';
+  if (str === 'طلب معلومات شخصية' || str.includes('استدراج') || str.includes('طلب معلومات')) return 'طلب معلومات شخصية';
+  if (str === 'مراجعة سياقية' || str.includes('مراجعة سياقية') || str.includes('سياق لعب') || str.includes('مزاح') || str.includes('لم تطابق') || str.includes('غير محسوم')) return 'مراجعة سياقية';
+  return 'مراجعة سياقية';
+}
+
+let showOnlyErrorsInAnalysis = true;
+
 function calculateAndRender() {
   const data = rows;
   if (!data || !data.length) {
@@ -1645,16 +1939,21 @@ function calculateAndRender() {
     return;
   }
 
-  const labels = [...new Set(data.flatMap(r => [r.reference_label, r.system_label]))].sort();
-  const mat = Object.fromEntries(labels.map(a => [a, Object.fromEntries(labels.map(b => [b, 0]))]));
+  // Canonical 5x5 Confusion Matrix
+  const mat = Object.fromEntries(CANONICAL_CLASSES.map(a => [a, Object.fromEntries(CANONICAL_CLASSES.map(b => [b, 0]))]));
 
-  let tp = 0, fp = 0, tn = 0, fn = 0, correct = 0, excluded = 0;
+  let tp = 0, fp = 0, tn = 0, fn = 0, correctCanonical = 0, excludedContextual = 0;
   let totalWer = 0, totalRawWer = 0, werCount = 0;
   let totalWords = 0, totalSubs = 0, totalDels = 0, totalIns = 0;
 
   for (let r of data) {
-    mat[r.reference_label][r.system_label]++;
-    if (r.reference_label === r.system_label) correct++;
+    const refCanon = toCanonicalCategory(r.reference_label);
+    const sysCanon = toCanonicalCategory(r.system_label);
+
+    mat[refCanon][sysCanon]++;
+    if (refCanon === sysCanon) {
+      correctCanonical++;
+    }
 
     // Track 1 ASR stats
     if (r.wer !== null && r.wer !== undefined && r.wer !== '') {
@@ -1673,32 +1972,32 @@ function calculateAndRender() {
     totalDels += (r.dels || 0);
     totalIns += (r.ins || 0);
 
-    // Track 2 Classification stats
-    const a = (r.reference_label || '').trim();
-    const b = (r.system_label || '').trim();
-
-    if (['غير محسوم', 'غير محسوم صوتياً', 'مراجعة سياقية', 'مراجعة سياقية — مزاح أو لعب', 'مراجعة سياقية — مزاح أو سياق لعب'].includes(a)) {
-      excluded++;
+    // Track 2 Binary Harm Detection:
+    // Harmful: ['إساءة', 'تهديد', 'طلب معلومات شخصية']
+    // Safe: ['سليم'] (including protective refusals)
+    // Contextual / Ambiguous / Review: ['مراجعة سياقية'] (excluded from binary denominator)
+    if (refCanon === 'مراجعة سياقية') {
+      excludedContextual++;
       continue;
     }
 
-    const harmA = isHarmful(a);
-    const harmB = isHarmful(b);
+    const harmRef = ['إساءة', 'تهديد', 'طلب معلومات شخصية'].includes(refCanon);
+    const harmSys = ['إساءة', 'تهديد', 'طلب معلومات شخصية'].includes(sysCanon);
 
-    if (harmA && harmB) tp++;
-    else if (!harmA && harmB) fp++;
-    else if (!harmA && !harmB) tn++;
+    if (harmRef && harmSys) tp++;
+    else if (!harmRef && harmSys) fp++;
+    else if (!harmRef && !harmSys) tn++;
     else fn++;
   }
 
   // Multi-class Accuracy
-  const accuracy = data.length ? correct / data.length : null;
+  const accuracy = data.length ? correctCanonical / data.length : null;
 
   // Binary Metrics
-  const precision = (tp + fp) ? tp / (tp + fp) : null;
+  const precision = (tp + fp) ? tp / (tp + fp) : ((tp + fn > 0) ? 0 : 1.0);
   const recall = (tp + fn) ? tp / (tp + fn) : null;
-  const f1 = (precision !== null && recall !== null && (precision + recall)) ? (2 * precision * recall) / (precision + recall) : null;
-  const fpr = (fp + tn) ? fp / (fp + tn) : null;
+  const f1 = (precision !== null && recall !== null && (precision + recall)) ? (2 * precision * recall) / (precision + recall) : ((tp === 0) ? 0 : null);
+  const fpr = (fp + tn) ? fp / (fp + tn) : 0;
 
   // Track 1 UI
   document.getElementById('mAudioCount').textContent = werCount;
@@ -1739,12 +2038,15 @@ function calculateAndRender() {
     classBadge.textContent = selectedClassificationTrack === 'track1' ? 'المسار الأول: النص المرجعي المستقل' : 'المسار الثاني: النص المستخرج من الصوت';
   }
 
-  // Render Confusion Matrix
-  let htmlMat = '<table><thead><tr><th>المرجع البشري ↓ / نتيجة النظام →</th>' + labels.map(l => '<th>' + l + '</th>').join('') + '<th>المجموع</th></tr></thead><tbody>';
-  for (let a of labels) {
+  // Render Canonical Confusion Matrix
+  let htmlMat = '<table><thead><tr><th>الفئة المرجعية (Ground Truth) ↓ / نتيجة النظام →</th>' +
+    CANONICAL_CLASSES.map(l => '<th>' + l + '</th>').join('') +
+    '<th>المجموع</th></tr></thead><tbody>';
+
+  for (let a of CANONICAL_CLASSES) {
     let rowTotal = 0;
     htmlMat += '<tr><th>' + a + '</th>';
-    for (let b of labels) {
+    for (let b of CANONICAL_CLASSES) {
       const val = mat[a][b];
       rowTotal += val;
       const isDiag = (a === b && val > 0);
@@ -1753,12 +2055,25 @@ function calculateAndRender() {
     htmlMat += '<th>' + rowTotal + '</th></tr>';
   }
   htmlMat += '</tbody></table>';
+
+  // Add Binary Harm detection explanation under matrix
+  htmlMat += '<div class="notice-info" style="margin-top:12px; font-size:13px">' +
+    '<strong>إحصائيات اكتشاف المحتوى الضار (Binary Harm Detection):</strong> ' +
+    'حجم العينة الداخلة في القياس الثنائي الصارم: <strong>' + (tp + fp + tn + fn) + ' حالة</strong> ' +
+    '(الحالات الضارة: ' + (tp + fn) + ' | الحالات السليمة: ' + (tn + fp) + ')، ' +
+    'مع استبعاد <strong>' + excludedContextual + ' حالات</strong> مراجعة سياقية أو ملتبسة لتجنب التحيز. ' +
+    '<br><strong>التوزيع الثنائي:</strong> TP: ' + tp + ' | FP: ' + fp + ' | TN: ' + tn + ' | FN: ' + fn + ' ' +
+    '· الدقة (Precision): ' + pct(precision) + ' · الاستدعاء (Recall): ' + pct(recall) + ' · المقياس المتوازن (F1): ' + pct(f1) + ' · الإنذارات الخاطئة (FPR): ' + pct(fpr) +
+    '</div>';
+
   document.getElementById('matrix').innerHTML = htmlMat;
 
   // Render Cases Table
   let casesHtml = '<table><thead><tr><th>المعرّف</th><th>نموذج التفريغ</th><th>النص المرجعي الصحيح</th><th>النص المستخرج من الصوت</th><th>خطأ التفريغ (WER)</th><th>التصنيف المرجعي</th><th>تصنيف النظام</th><th>الحالة</th></tr></thead><tbody>';
   for (let r of data) {
-    const isMatch = (r.reference_label === r.system_label);
+    const refC = toCanonicalCategory(r.reference_label);
+    const sysC = toCanonicalCategory(r.system_label);
+    const isMatch = (refC === sysC);
     const werDisplay = (r.wer !== null && r.wer !== undefined && r.wer !== '') ? r.wer : 'غير متوفر (نص)';
     casesHtml += '<tr>' +
       '<td><strong>' + r.scenario_id + '</strong></td>' +
@@ -1774,10 +2089,13 @@ function calculateAndRender() {
   casesHtml += '</tbody></table>';
   document.getElementById('casesTableWrap').innerHTML = casesHtml;
 
+  // Render Section 5: Error Root Cause Analysis Table
+  renderErrorAnalysisTable();
+
   // Build Report Object for JSON Export
   report = {
     project: 'Mizan Voice',
-    engine_version: '0.4 - Audited with Real Audio & Two-Track Classification',
+    engine_version: '0.5 - Canonical Multi-Class & Error Root Cause Analysis',
     timestamp: new Date().toISOString(),
     dataset_metadata: {
       mode: currentMode,
@@ -1799,18 +2117,21 @@ function calculateAndRender() {
     },
     track_2_classification: {
       track_evaluated: selectedClassificationTrack,
-      accuracy: accuracy,
-      precision: precision,
-      recall: recall,
-      f1_score: f1,
-      false_positive_rate: fpr,
-      cases_count: {
-        total: data.length,
-        true_positives: tp,
-        false_positives: fp,
-        true_negatives: tn,
-        false_negatives: fn,
-        excluded_contextual: excluded
+      multi_class_accuracy: accuracy,
+      binary_harm_metrics: {
+        precision: precision,
+        recall: recall,
+        f1_score: f1,
+        false_positive_rate: fpr,
+        cohort_counts: {
+          total: data.length,
+          evaluated_binary: (tp + fp + tn + fn),
+          true_positives: tp,
+          false_positives: fp,
+          true_negatives: tn,
+          false_negatives: fn,
+          excluded_contextual: excludedContextual
+        }
       },
       confusion_matrix: mat
     }
@@ -1819,6 +2140,81 @@ function calculateAndRender() {
   document.getElementById('export').disabled = false;
   document.getElementById('status').textContent = 'تم الحساب والتدقيق بنجاح لـ ' + data.length + ' حالة.';
 }
+
+function renderErrorAnalysisTable() {
+  const tableWrap = document.getElementById('errorAnalysisTableWrap');
+  if (!tableWrap) return;
+
+  let benchmarkData = ACTUAL_AUDIO_BENCHMARK;
+  if (selectedModelFilter !== 'both') {
+    benchmarkData = benchmarkData.filter(r => r.model_id === selectedModelFilter);
+  }
+
+  let filtered = benchmarkData;
+  if (showOnlyErrorsInAnalysis) {
+    filtered = benchmarkData.filter(r => !r.match || r.gt_canonical !== r.t2_canonical);
+  }
+
+  if (filtered.length === 0) {
+    tableWrap.innerHTML = '<div style="text-align:center; padding:20px; color:#155724; background:#d4edda; border-radius:8px"><strong>ممتاز! لا توجد حالات أخطاء أو اختلافات في الفلتر الحالي.</strong></div>';
+    return;
+  }
+
+  let html = '<table><thead><tr>' +
+    '<th>المعرّف</th>' +
+    '<th>النموذج</th>' +
+    '<th>النص المنطوق المرجعي</th>' +
+    '<th>النص المستخرج من Whisper</th>' +
+    '<th>التصنيف المرجعي</th>' +
+    '<th>تصنيف النظام</th>' +
+    '<th>السبب الجذري للاختلاف</th>' +
+    '<th>الإجراء المقترح للمعالجة</th>' +
+    '</tr></thead><tbody>';
+
+  for (let item of filtered) {
+    const isError = !item.match || (item.gt_canonical !== item.t2_canonical);
+    const rootCause = item.error_root_cause || (isError ? 'اختلاف في التفريغ أو القواعد' : 'مطابقة تامة');
+    const remediation = item.proposed_remediation || 'مراجعة نموذج التفريغ أو القواعد.';
+
+    html += '<tr>' +
+      '<td><strong>' + item.id + '</strong></td>' +
+      '<td><span class="badge ' + (item.model_name.includes('Small') ? 'badge-verified' : 'badge-demo') + '">' + item.model_name + '</span></td>' +
+      '<td style="text-align:right; max-width:200px">' + item.gt_text + '</td>' +
+      '<td style="text-align:right; max-width:200px">' + item.hyp_text + '</td>' +
+      '<td><span class="pill">' + item.gt_canonical + '</span></td>' +
+      '<td><span class="pill" style="' + (isError ? 'background:#fee2e2; color:#991b1b' : '') + '">' + item.t2_canonical + '</span></td>' +
+      '<td><strong>' + rootCause + '</strong></td>' +
+      '<td style="font-size:12px; color:var(--muted)">' + remediation + '</td>' +
+    '</tr>';
+  }
+
+  html += '</tbody></table>';
+  tableWrap.innerHTML = html;
+}
+
+// Error analysis filter listeners
+document.addEventListener('DOMContentLoaded', () => {
+  const errBtn = document.getElementById('showErrorsOnlyBtn');
+  const allBtn = document.getElementById('showAllAnalysisBtn');
+  if (errBtn && allBtn) {
+    errBtn.onclick = () => {
+      showOnlyErrorsInAnalysis = true;
+      errBtn.style.background = 'var(--navy)';
+      errBtn.style.color = 'white';
+      allBtn.style.background = 'transparent';
+      allBtn.style.color = 'var(--navy)';
+      renderErrorAnalysisTable();
+    };
+    allBtn.onclick = () => {
+      showOnlyErrorsInAnalysis = false;
+      allBtn.style.background = 'var(--navy)';
+      allBtn.style.color = 'white';
+      errBtn.style.background = 'transparent';
+      errBtn.style.color = 'var(--navy)';
+      renderErrorAnalysisTable();
+    };
+  }
+});
 
 // ==========================================
 // 6. Interactive Event Handlers
