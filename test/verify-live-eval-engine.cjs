@@ -25,15 +25,34 @@ async function verifyLive() {
       audioCount: document.getElementById('mAudioCount') ? document.getElementById('mAudioCount').textContent : null,
       mWer: document.getElementById('mWer') ? document.getElementById('mWer').textContent : null,
       hasComparisonCard: document.getElementById('modelComparisonCard') ? (document.getElementById('modelComparisonCard').style.display !== 'none') : false,
-      rowsCount: document.querySelectorAll('#casesTableWrap tbody tr').length
+      rowsCount: document.querySelectorAll('#casesTableWrap tbody tr').length,
+      hasErrorSection: !!document.getElementById('errorAnalysisSection'),
+      matrixRows: document.querySelectorAll('#matrix tr').length,
+      accuracy: document.getElementById('mAcc') ? document.getElementById('mAcc').textContent : null,
+      precision: document.getElementById('mPrec') ? document.getElementById('mPrec').textContent : null
     };
   });
 
-  console.log('Live Deployed Evaluation Engine State:', state);
+  console.log('Live Deployed Evaluation Engine Initial State:', state);
   console.log('Errors:', errors);
 
+  console.log('Testing Small Model filter on live site...');
+  await page.click('button[data-model="Xenova/whisper-small"]');
+  await new Promise(r => setTimeout(r, 600));
+
+  const smallState = await page.evaluate(() => ({
+    audioCount: document.getElementById('mAudioCount').textContent,
+    normWer: document.getElementById('mWer').textContent,
+    accuracy: document.getElementById('mAcc').textContent,
+    precision: document.getElementById('mPrec').textContent,
+    recall: document.getElementById('mRec').textContent,
+    f1: document.getElementById('mF1').textContent,
+    fpr: document.getElementById('mFpr').textContent
+  }));
+  console.log('Live Small Model Filter State:', smallState);
+
   await browser.close();
-  return state;
+  return { state, smallState };
 }
 
 verifyLive().catch(err => {
