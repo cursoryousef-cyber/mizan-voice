@@ -260,9 +260,9 @@ a:hover { text-decoration: underline; }
         </tr>
         <tr>
           <td><strong>التطابق متعدد الفئات بعد التفريغ (Accuracy)</strong></td>
-          <td><strong style="color:#b91c1c">35.0%</strong> (7/20)</td>
-          <td><strong style="color:#047481">90.0%</strong> (18/20)</td>
-          <td>Small يحقق استقراراً عالياً في التصنيف المتعدد (18 من أصل 20 حالة)</td>
+          <td><strong style="color:#b91c1c">30.0%</strong> (6/20)</td>
+          <td><strong style="color:#047481">95.0%</strong> (19/20)</td>
+          <td>Small يحقق استقراراً فائقاً في التصنيف المتعدد (19 من أصل 20 حالة)</td>
         </tr>
         <tr>
           <td><strong>حالات اكتشاف الخطر المفوتة (Missed Harm - FN)</strong></td>
@@ -278,7 +278,7 @@ a:hover { text-decoration: underline; }
         </tr>
         <tr>
           <td><strong>الحالات المحالة للمراجعة البشرية / سياقية</strong></td>
-          <td>13 حالة (65.0%)</td>
+          <td>17 حالة (85.0%)</td>
           <td>4 حالات (20.0%)</td>
           <td>Tiny يعجز عن الحسم في أغلب المقاطع المشوهة، بينما Small يحسم 80% منها بثقة</td>
         </tr>
@@ -679,10 +679,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
     "t1_canonical": "سليم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-002",
@@ -706,10 +706,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
     "t1_canonical": "سليم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-003",
@@ -760,10 +760,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "رفض مشاركة معلومات / تعبير وقائي",
     "t1_canonical": "سليم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-005",
@@ -787,10 +787,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
     "t1_canonical": "سليم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-006",
@@ -814,10 +814,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "إساءة لفظية محتملة",
     "t1_canonical": "إساءة",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-007",
@@ -841,10 +841,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "إساءة لفظية محتملة",
     "t1_canonical": "إساءة",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-008",
@@ -868,10 +868,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "إساءة لفظية محتملة",
     "t1_canonical": "إساءة",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-009",
@@ -895,10 +895,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "إساءة لفظية محتملة",
     "t1_canonical": "إساءة",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-010",
@@ -922,10 +922,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "تهديد محتمل",
     "t1_canonical": "تهديد",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-011",
@@ -949,10 +949,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "تهديد محتمل",
     "t1_canonical": "تهديد",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-012",
@@ -1030,10 +1030,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "طلب معلومات شخصية / استدراج محتمل",
     "t1_canonical": "طلب معلومات شخصية",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-015",
@@ -1057,10 +1057,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "طلب معلومات شخصية / استدراج محتمل",
     "t1_canonical": "طلب معلومات شخصية",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-016",
@@ -1084,17 +1084,17 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "طلب معلومات شخصية / استدراج محتمل",
     "t1_canonical": "طلب معلومات شخصية",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-017",
     "scenario": "MV-005",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "مراجعة سياقية",
-    "gt_canonical": "مراجعة سياقية / غير محسوم",
+    "gt_canonical": "مراجعة سياقية",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -1109,9 +1109,9 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2478,
     "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "t1_canonical": "مراجعة سياقية / غير محسوم",
+    "t1_canonical": "مراجعة سياقية",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": true,
     "error_root_cause": "مطابقة تامة دون خطأ",
     "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
@@ -1121,7 +1121,7 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "scenario": "MV-030",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "مراجعة سياقية",
-    "gt_canonical": "مراجعة سياقية / غير محسوم",
+    "gt_canonical": "مراجعة سياقية",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -1136,9 +1136,9 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2445,
     "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "t1_canonical": "مراجعة سياقية / غير محسوم",
+    "t1_canonical": "مراجعة سياقية",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": true,
     "error_root_cause": "مطابقة تامة دون خطأ",
     "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
@@ -1148,7 +1148,7 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "scenario": "MV-027",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "مراجعة سياقية",
-    "gt_canonical": "مراجعة سياقية / غير محسوم",
+    "gt_canonical": "مراجعة سياقية",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
@@ -1163,9 +1163,9 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 2427,
     "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "t1_canonical": "مراجعة سياقية / غير محسوم",
+    "t1_canonical": "مراجعة سياقية",
     "t2_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": true,
     "error_root_cause": "مطابقة تامة دون خطأ",
     "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
@@ -1174,9 +1174,9 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "id": "MVA-020",
     "scenario": "MV-025",
     "voice": "ar-SA-ZariyahNeural",
-    "gt_label": "مراجعة سياقية",
-    "gt_canonical": "مراجعة سياقية / غير محسوم",
-    "risk": "متوسط",
+    "gt_label": "سليم",
+    "gt_canonical": "سليم",
+    "risk": "منخفض",
     "model_id": "Xenova/whisper-tiny",
     "model_name": "Whisper Tiny",
     "gt_text": "ما راح اعطيك رقمي ولا راح ارسل لك أي صورة.",
@@ -1192,10 +1192,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "رفض مشاركة معلومات / تعبير وقائي",
     "t1_canonical": "سليم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
-    "match": true,
-    "error_root_cause": "مطابقة تامة دون خطأ",
-    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
+    "t2_canonical": "مراجعة سياقية",
+    "match": false,
+    "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-001",
@@ -1327,10 +1327,10 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_label": "سليم مبدئياً — عبارات لعب أو شكر طبيعية",
     "t1_canonical": "سليم",
     "t2_label": "لم تطابق القواعد أي مؤشر معروف",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": false,
     "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+    "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
   },
   {
     "id": "MVA-006",
@@ -1634,7 +1634,7 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "scenario": "MV-005",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "مراجعة سياقية",
-    "gt_canonical": "مراجعة سياقية / غير محسوم",
+    "gt_canonical": "مراجعة سياقية",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1649,9 +1649,9 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 9837,
     "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "t1_canonical": "مراجعة سياقية / غير محسوم",
+    "t1_canonical": "مراجعة سياقية",
     "t2_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": true,
     "error_root_cause": "مطابقة تامة دون خطأ",
     "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
@@ -1661,7 +1661,7 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "scenario": "MV-030",
     "voice": "ar-SA-HamedNeural",
     "gt_label": "مراجعة سياقية",
-    "gt_canonical": "مراجعة سياقية / غير محسوم",
+    "gt_canonical": "مراجعة سياقية",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1676,9 +1676,9 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 10026,
     "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "t1_canonical": "مراجعة سياقية / غير محسوم",
+    "t1_canonical": "مراجعة سياقية",
     "t2_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": true,
     "error_root_cause": "مطابقة تامة دون خطأ",
     "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
@@ -1688,7 +1688,7 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "scenario": "MV-027",
     "voice": "ar-SA-ZariyahNeural",
     "gt_label": "مراجعة سياقية",
-    "gt_canonical": "مراجعة سياقية / غير محسوم",
+    "gt_canonical": "مراجعة سياقية",
     "risk": "متوسط",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
@@ -1703,9 +1703,9 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "ins": 0,
     "time_ms": 9866,
     "t1_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "t1_canonical": "مراجعة سياقية / غير محسوم",
+    "t1_canonical": "مراجعة سياقية",
     "t2_label": "مراجعة سياقية — مزاح أو سياق لعب",
-    "t2_canonical": "مراجعة سياقية / غير محسوم",
+    "t2_canonical": "مراجعة سياقية",
     "match": true,
     "error_root_cause": "مطابقة تامة دون خطأ",
     "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
@@ -1714,9 +1714,9 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "id": "MVA-020",
     "scenario": "MV-025",
     "voice": "ar-SA-ZariyahNeural",
-    "gt_label": "مراجعة سياقية",
-    "gt_canonical": "مراجعة سياقية / غير محسوم",
-    "risk": "متوسط",
+    "gt_label": "سليم",
+    "gt_canonical": "سليم",
+    "risk": "منخفض",
     "model_id": "Xenova/whisper-small",
     "model_name": "Whisper Small",
     "gt_text": "ما راح اعطيك رقمي ولا راح ارسل لك أي صورة.",
@@ -1733,9 +1733,9 @@ const ACTUAL_AUDIO_BENCHMARK = [
     "t1_canonical": "سليم",
     "t2_label": "رفض مشاركة معلومات / تعبير وقائي",
     "t2_canonical": "سليم",
-    "match": false,
-    "error_root_cause": "غموض السياق والمزاح",
-    "proposed_remediation": "إحالة المحتوى للتدقيق البشري وإتاحة نافذة سياق أوسع للحوار لتحديد النية."
+    "match": true,
+    "error_root_cause": "مطابقة تامة دون خطأ",
+    "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
   }
 ];
 

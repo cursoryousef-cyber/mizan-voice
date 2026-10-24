@@ -1,17 +1,14 @@
-metric,Whisper_Tiny,Whisper_Small,Description
-tested_samples,20,20,عدد العينات المفحوصة
-avg_raw_wer,77.57%,36.30%,متوسط خطأ الكلمات الخام
-avg_normalized_wer,74.87%,25.27%,متوسط خطأ الكلمات بعد التطبيع
-corpus_wer,75.53%,25.53%,خطأ المتن الإجمالي
-total_ref_words,188,188,إجمالي كلمات المتن المرجعي
-total_substitutions,114,41,عدد الاستبدالات الخاطئة
-total_deletions,27,4,عدد الكلمات المحذوفة
-total_insertions,1,3,عدد الإضافات الخاطئة
-avg_processing_time_sec,3.52,15.82,متوسط زمن المعالجة بالثانية
-multi_class_accuracy,35.0%,90.0%,دقة المطابقة التامة متعددة الفئات
-harm_detection_recall,18.2%,100.0%,حساسية اكتشاف المحتوى الضار
-harm_detection_precision,100.0%,100.0%,دقة الإنذارات الصادرة
-harm_detection_f1,30.8%,100.0%,المقياس المتوازن لاكتشاف الضرر
-missed_harm_cases,9,0,حالات الضرر المفلتة بسبب أخطاء الصوت
-false_alarm_cases,0,0,حالات الإنذار الخاطئ ضد السليم
-human_review_referrals,17,3,الحالات المحالة للمراجعة البشرية
+﻿metric_name,whisper_tiny,whisper_small,scientific_notes
+"Normalized WER","74.87%","25.27%","WER reduction in Small model"
+"Raw WER","77.57%","36.30%","Lower phonetic and orthographic distortion"
+"Corpus WER","75.53%","25.53%","Aggregated word edits over full corpus"
+"Average Processing Time (sec)","3.52","15.82","Tiny is 4.5x faster in browser"
+"Multi-Class Accuracy","30.0%","95.0%","Canonical 5-class match on full audio track"
+"Evaluated Binary Cohort (N)","17","17","Pre-defined harmful (11) and safe (6) samples"
+"Excluded Contextual Samples (N)","3","3","Pre-defined contextual review samples (MVA-017, MVA-018, MVA-019)"
+"Missed Harm Cases (FN)","9","0","Harmful cases obscured by speech distortion"
+"False Alarms (FP)","0","0","Zero false alarms across both models"
+"Harm Precision","100.0%","100.0%","Precision on harmful flags"
+"Harm Recall","18.2%","100.0%","Small captures 100% of harm; Tiny only 18.2%"
+"Harm F1-Score","30.8%","100.0%","Harm detection harmonic mean"
+"False Positive Rate (FPR)","0.0%","0.0%","Zero false positives on safe content"

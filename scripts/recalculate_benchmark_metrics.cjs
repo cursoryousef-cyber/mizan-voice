@@ -1,236 +1,52 @@
 const fs = require('fs');
 const path = require('path');
 
-function normalizeArabic(text, { removePunctuation = true, unifyLetters = true } = {}) {
-  if (!text) return '';
-  let s = String(text);
-  s = s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, '');
-  s = s.replace(/\u0640/g, '');
-  if (unifyLetters) {
-    s = s.replace(/[أإآٱ]/g, 'ا');
-    s = s.replace(/ة/g, 'ه');
-    s = s.replace(/[ىي]/g, 'ي');
-    s = s.replace(/ؤ/g, 'و');
-    s = s.replace(/ئ/g, 'ي');
-  }
-  if (removePunctuation) {
-    s = s.replace(/[.,/#!$%^&*;:{}=\-_`~()؟،؛«»"'\\[\]<>?]/g, ' ');
-  }
-  return s.replace(/\s+/g, ' ').trim();
-}
+// Extract classifyContent and normalizeArabic from audio-upload-lab.html to guarantee 100% parity
+const labHtml = fs.readFileSync(path.resolve('audio-upload-lab.html'), 'utf8');
 
-function classifyContent(rawText) {
-  if (!rawText || !rawText.trim()) {
-    return {
-      canonicalCategory: 'مراجعة سياقية / غير محسوم',
-      label: 'لا يوجد نص للفحص',
-      status: 'فارغ',
-      level: 'غير متاح',
-      reason: 'لم يتم استخراج أو إدخال أي نص للفحص.',
-      matched: []
-    };
-  }
+const normMatch = labHtml.match(/function normalizeArabic\([\s\S]*?\n\}/);
+const classMatch = labHtml.match(/function classifyContent\(rawText\)[\s\S]*?\n\}/);
 
-  const norm = normalizeArabic(rawText);
+const fnBundle = new Function(`
+  ${normMatch[0]}
+  ${classMatch[0]}
+  return { normalizeArabic, classifyContent };
+`)();
 
-  // 1. فحص أنماط النفي والدفاع والرفض الواعي لحماية الخصوصية
-  const negationRefusalPatterns = [
-    'ما راح اعطيك', 'ما بعطيك', 'ما راح ارسل', 'ما برسل',
-    'ما اشارك', 'ما اتقاسم', 'ما اقول لك', 'ما اعلمك',
-    'لا تاخذها جد', 'لا تشدها', 'ما قصدت'
-  ];
-  const matchedNegations = negationRefusalPatterns.filter(term => norm.includes(normalizeArabic(term)));
+const { normalizeArabic, classifyContent } = fnBundle;
 
-  if (matchedNegations.some(term => ['ما راح اعطيك', 'ما بعطيك', 'ما راح ارسل', 'ما برسل', 'ما اشارك'].includes(term)) &&
-      (norm.includes('رقم') || norm.includes('معلومات') || norm.includes('حساب') || norm.includes('صور') || norm.includes('صوره'))) {
-    return {
-      canonicalCategory: 'سليم',
-      label: 'رفض مشاركة معلومات / تعبير وقائي',
-      status: 'سليم وقائي',
-      level: 'منخفض المخاطر — رفض إيجابي لحماية الخصوصية',
-      reason: 'رُصد نمط نفي صريح لحماية البيانات الشخصية: «' + matchedNegations.join('»، «') + '». هذا سلوك وقائي حميد وليس استدراجاً.',
-      matched: matchedNegations
-    };
-  }
-
-  // 2. فحص سياق المزاح والمقالب واللعب
-  const contextualTerms = [
-    'ترى امزح', 'امزح معك', 'لا تاخذها جد', 'لا تشدها', 'ما قصدت',
-    'مقلب سويته', 'مقلب', 'عشان نضحك', 'لعبة بس', 'مجرد تسلية', 'مجرد تسليه', 'مجرد تسليات',
-    'ما تستاهل زعل', 'ما يستاهل زعل', 'تسلية بس', 'تسليه بس',
-    'داخل اللعبة', 'في الراوند', 'في القيم'
-  ];
-  const matchedContext = contextualTerms.filter(term => norm.includes(normalizeArabic(term)));
-
-  // 3. فئات الخطر مع أولوية التهديد أولاً
-  const threatTerms = [
-    'لاجيك عند بيتك', 'لا جيك عند بيتك', 'اجيك عند بيتك', 'اجيك لبيتك', 'اجيك لين بيتك', 'باب بيتك',
-    'اوريك شغلك', 'ادمر حسابك', 'تندم على', 'ما اخليك تفلت', 'ما اخليك تفلط',
-    'وش اسوي فيك', 'وشاسوي فيك', 'راح ادمر', 'راح اوريك', 'باذيك', 'راح اقتلك', 'بقتلك',
-    'بفضحك', 'بضربك', 'بعرف وينك', 'بذبحك', 'اذبحك', 'راح اذبحك', 'بكسرك', 'بشتكيك', 'بنتقم منك',
-    'اهكر جهازك', 'اهكر حسابك', 'يا ويلك'
-  ];
-
-  const solicitationTerms = [
-    'لا تعلم اهلك', 'لا تقول لاهلك', 'لا تخبر احد', 'خلك سر', 'خلها سر بيننا',
-    'ارسل صورتك', 'اعطني رقمك', 'عطني رقمك', 'عطني رقم جوالك', 'رقم جوالك', 'وين بيتك',
-    'وين ساكن', 'وينساكن', 'مكان سكنك', 'باي حي', 'اي شارع', 'قابلني لحالك', 'تعال خاص', 'خلنا خاص',
-    'سنابك', 'انستقرامك', 'اسم مدرستك', 'اي مدرسة', 'في اي مدرسة', 'باي مدرسة', 'باي صف تدرس', 'حسابك الخاص', 'سكنات مجانا',
-    'نسولف لحالنا', 'سيرفر خاص', 'السيرفر الخاص'
-  ];
-
-  const abuseTerms = [
-    'يا غبي', 'يا فاشل', 'يا حيوان', 'يا حمار', 'يا كلب', 'يا وصخ', 'يا نذل',
-    'مستواك زبالة', 'مستوى كزبالة', 'كزبالة', 'لعبك زبالة', 'ما منك فايدة', 'ما منك اي فايدة',
-    'قليل الادب', 'اكرهك', 'لعنة عليك', 'الله يلعنك', 'حقير', 'تخرب علينا كل قيم',
-    'اطلع من اللعبة ما نبي نلعب معك', 'نوب', 'noob'
-  ];
-
-  const matchedThreats = threatTerms.filter(term => norm.includes(normalizeArabic(term)));
-  const matchedSolicitations = solicitationTerms.filter(term => norm.includes(normalizeArabic(term)));
-  const matchedAbuse = abuseTerms.filter(term => norm.includes(normalizeArabic(term)));
-
-  if (matchedContext.length > 0 && (norm.includes('اصفيك') || norm.includes('بكسرك') || norm.includes('تمثيل') || norm.includes('مقلب') || norm.includes('لعبة بس') || norm.includes('داخل اللعبة'))) {
-    return {
-      canonicalCategory: 'مراجعة سياقية',
-      label: 'مراجعة سياقية — مزاح أو سياق لعب',
-      status: 'يتطلب مراجعة بشرية لتحديد النية',
-      level: 'متوسط — سياق ملتبس بين اللعب والمبالغة',
-      reason: 'رُصدت مؤشرات سياق لعب أو مزاح: «' + matchedContext.join('»، «') + '» مقترنة بعبارات قتالية داخل اللعبة. لا يمكن الجزم بالنية دون مراجعة بشرية.',
-      matched: matchedContext
-    };
-  }
-
-  // التهديد أولاً
-  if (matchedThreats.length > 0) {
-    if (matchedContext.length > 0) {
-      return {
-        canonicalCategory: 'مراجعة سياقية',
-        label: 'مراجعة سياقية — مزاح أو سياق لعب',
-        status: 'ملتبس — مؤشرات تهديد مع قرائن مزاح',
-        level: 'متوسط — يحتاج تحققاً بشرياً من قصد المتحدث',
-        reason: 'تطابق مع مؤشرات تهديد «' + matchedThreats.join('»، «') + '» لكن ترافق مع قرائن مزاح: «' + matchedContext.join('»، «') + '». يتطلب مراجعة بشرية.',
-        matched: [...matchedThreats, ...matchedContext]
-      };
-    }
-    return {
-      canonicalCategory: 'تهديد',
-      label: 'تهديد محتمل',
-      status: 'تم رصد مؤشرات أولية',
-      level: 'مرتفع — مراجعة بشرية مطلوبة لمؤشرات تهديد',
-      reason: 'تطابق مع قاعدة مؤشرات التهديد: «' + matchedThreats.join('»، «') + '». هذا تصنيف أولي يستلزم التدقيق البشري.',
-      matched: matchedThreats
-    };
-  }
-
-  // الاستدراج ثانياً
-  if (matchedSolicitations.length > 0) {
-    if (matchedContext.length > 0) {
-      return {
-        canonicalCategory: 'مراجعة سياقية',
-        label: 'مراجعة سياقية — مزاح أو سياق لعب',
-        status: 'ملتبس — مؤشرات طلب معلومات مع قرائن مزاح',
-        level: 'متوسط — يحتاج تحققاً بشرياً',
-        reason: 'تطابق مع مؤشرات طلب معلومات «' + matchedSolicitations.join('»، «') + '» ترافق مع قرائن مزاح.',
-        matched: [...matchedSolicitations, ...matchedContext]
-      };
-    }
-    return {
-      canonicalCategory: 'طلب معلومات شخصية',
-      label: 'طلب معلومات شخصية / استدراج محتمل',
-      status: 'تم رصد مؤشرات أولية',
-      level: 'مرتفع — مراجعة بشرية مطلوبة لمؤشرات استدراج',
-      reason: 'تطابق مع قاعدة مؤشرات الاستدراج وطلب البيانات: «' + matchedSolicitations.join('»، «') + '».',
-      matched: matchedSolicitations
-    };
-  }
-
-  // الإساءة ثالثاً
-  if (matchedAbuse.length > 0) {
-    if (matchedContext.length > 0) {
-      return {
-        canonicalCategory: 'مراجعة سياقية',
-        label: 'مراجعة سياقية — مزاح أو سياق لعب',
-        status: 'ملتبس — ألفاظ إهانة مع قرائن مزاح',
-        level: 'متوسط — يتطلب تدقيق النية',
-        reason: 'تطابق مع ألفاظ إهانة «' + matchedAbuse.join('»، «') + '» ترافقت مع قرائن مزاح.',
-        matched: [...matchedAbuse, ...matchedContext]
-      };
-    }
-    return {
-      canonicalCategory: 'إساءة',
-      label: 'إساءة لفظية محتملة',
-      status: 'تم رصد مؤشرات أولية',
-      level: 'متوسط — مراجعة بشرية مطلوبة لمؤشرات إهانة',
-      reason: 'تطابق مع قاعدة مؤشرات الإساءة اللفظية: «' + matchedAbuse.join('»، «') + '».',
-      matched: matchedAbuse
-    };
-  }
-
-  // المزاح الصريح
-  if (matchedContext.some(term => ['ترى امزح', 'امزح معك', 'لا تاخذها جد', 'لا تشدها', 'مقلب سويته', 'مقلب', 'عشان نضحك'].includes(term))) {
-    return {
-      canonicalCategory: 'مراجعة سياقية',
-      label: 'مراجعة سياقية — مزاح أو سياق لعب',
-      status: 'مزاح أو لعب ودي',
-      level: 'منخفض المخاطر — حوار مزاح معتاد',
-      reason: 'رُصدت مؤشرات مزاح واضحة أو مقلب لتلطيف الأجواء: «' + matchedContext.join('»، «') + '» خالية من مؤشرات التهديد أو الإساءة.',
-      matched: matchedContext
-    };
-  }
-
-  // 4. فحص الأنماط الإيجابية السليمة
-  const benignPositiveTerms = [
-    'يعطيك العافيه', 'يا وحش', 'جيم بطل', 'اسطوريه', 'اسطوري', 'كفو',
-    'الزون', 'ناخذ الزون', 'ناخذ زون', 'في الزون', 'زون قبل', 'زون',
-    'شكرا لك', 'شكرا', 'تسلم', 'مبروك الفوز', 'معوضين خير',
-    'تغطية', 'تغطيه', 'مجرد تسليه', 'مجرد تسلية', 'مجرد تسليات', 'ما تستاهل زعل', 'ما تستاهل'
-  ];
-  const matchedBenign = benignPositiveTerms.filter(term => norm.includes(normalizeArabic(term)));
-  if (matchedBenign.length > 0) {
-    return {
-      canonicalCategory: 'سليم',
-      label: 'سليم مبدئياً — عبارات لعب أو شكر طبيعية',
-      status: 'سليم',
-      level: 'منخفض المخاطر — حوار طبيعي',
-      reason: 'رُصدت عبارات تعبير إيجابي أو تنسيق لعب معتاد: «' + matchedBenign.join('»، «') + '» دون رصد مؤشرات إساءة.',
-      matched: matchedBenign
-    };
-  }
-
-  // 5. الحالة الافتراضية
-  return {
-    canonicalCategory: 'مراجعة سياقية / غير محسوم',
-    label: 'لم تطابق القواعد أي مؤشر معروف',
-    status: 'غير محسوم',
-    level: 'غير محسوم — يحتاج مراجعة بشرية',
-    reason: 'القواعد الاستدلالية الأولية لم ترصد ألفاظاً مسجلة. هذا لا يعني بالضرورة سلامة المحتوى أو خلوه من الإساءات المبطنة، ويتطلب التحقق البشري.',
-    matched: []
-  };
-}
+const CANONICAL_CLASSES = ['سليم', 'إساءة', 'تهديد', 'طلب معلومات شخصية', 'مراجعة سياقية'];
 
 function mapToCanonical(label) {
-  if (!label) return 'مراجعة سياقية / غير محسوم';
-  const l = label.trim();
+  if (!label) return 'مراجعة سياقية';
+  const l = String(label).trim();
   if (l.includes('سليم') || l.includes('وقائي')) return 'سليم';
   if (l.includes('إساءة')) return 'إساءة';
   if (l.includes('تهديد')) return 'تهديد';
   if (l.includes('معلومات') || l.includes('استدراج')) return 'طلب معلومات شخصية';
-  if (l.includes('سياق') || l.includes('مزاح') || l.includes('لم تطابق') || l.includes('غير محسوم')) return 'مراجعة سياقية / غير محسوم';
-  return 'مراجعة سياقية / غير محسوم';
+  if (l.includes('سياق') || l.includes('مزاح') || l.includes('لم تطابق') || l.includes('غير محسوم')) return 'مراجعة سياقية';
+  return 'مراجعة سياقية';
 }
 
 function main() {
+  const manifestPath = path.resolve('data/audio_test_set/audio_test_manifest.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  const manifestMap = Object.fromEntries(manifest.samples.map(s => [s.sample_id, s]));
+
   const jsonPath = path.resolve('data/audio_benchmark_results.json');
   const existing = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
 
   const updatedResults = existing.results.map(r => {
+    const manifestItem = manifestMap[r.sample_id];
+    const gtLabel = manifestItem ? manifestItem.ground_truth_label : r.ground_truth_label;
+    const gtRisk = manifestItem ? manifestItem.ground_truth_risk : r.ground_truth_risk;
+
     const t1 = classifyContent(r.ground_truth_text);
     const t2 = classifyContent(r.extracted_transcript);
 
-    const gtCanonical = mapToCanonical(r.ground_truth_label);
-    const t1Canonical = mapToCanonical(t1.label);
-    const t2Canonical = mapToCanonical(t2.label);
+    const gtCanonical = mapToCanonical(gtLabel);
+    const t1Canonical = mapToCanonical(t1.canonicalCategory || t1.label);
+    const t2Canonical = mapToCanonical(t2.canonicalCategory || t2.label);
 
     const werNum = parseFloat(String(r.norm_wer_pct || '0').replace('%', ''));
     let rootCause = 'مطابقة تامة دون خطأ';
@@ -239,18 +55,20 @@ function main() {
     if (gtCanonical !== t2Canonical) {
       if (werNum >= 35.0) {
         rootCause = 'خطأ في التفريغ الصوتي (ASR)';
-        remediation = 'الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية.';
-      } else if (r.ground_truth_label === 'مراجعة سياقية' || t2.label.includes('مزاح') || t2.label.includes('سياق')) {
+        remediation = 'الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة.';
+      } else if (gtLabel === 'مراجعة سياقية' || t2.label.includes('مزاح') || t2.label.includes('سياق')) {
         rootCause = 'غموض السياق والمزاح';
-        remediation = 'إحالة المحتوى للتدقيق البشري وإتاحة نافذة سياق أوسع للحوار لتحديد النية.';
+        remediation = 'إحالة المحتوى للتدقيق البشري وإتاحة نافذة سياق أوسع للحوار لتحديد نية المتحدث.';
       } else {
         rootCause = 'قصور في القواعد المعجمية';
-        remediation = 'إضافة تراكيب معجمية جديدة أو مراعاة التفرعات الدلالية دون إحداث إنذارات خاطئة.';
+        remediation = 'توسيع التراكيب المعجمية للقواعد لاستيعاب اشتقاقات اللهجة دون إحداث إنذارات خاطئة.';
       }
     }
 
     return {
       ...r,
+      ground_truth_label: gtLabel,
+      ground_truth_risk: gtRisk,
       track1_ref_label: t1.label,
       track1_ref_canonical: t1Canonical,
       track1_ref_level: t1.level,
@@ -285,6 +103,7 @@ function main() {
       const isGtHarm = ['إساءة', 'تهديد', 'طلب معلومات شخصية'].includes(gt);
       const isPredHarm = ['إساءة', 'تهديد', 'طلب معلومات شخصية'].includes(pred);
 
+      // A Priori Exclusion: ONLY exclude samples whose Ground Truth is contextual / ambiguous (مراجعة سياقية)
       if (r.ground_truth_label === 'مراجعة سياقية') {
         excluded++;
       } else {
@@ -355,18 +174,18 @@ function main() {
     'system_label', 'system_canonical', 'classification_match', 'norm_wer', 'raw_wer',
     'error_root_cause', 'proposed_remediation', 'ground_truth_text', 'extracted_transcript'
   ];
-  const formatCell = v => '"' + String(v || '').replace(/"/g, '""') + '"';
+  const formatCell = v => '"' + (v === null || v === undefined ? '' : String(v)).replace(/"/g, '""') + '"';
   const csvRows = [
     csvHeaders.join(','),
     ...updatedResults.map(r => [
-      r.sample_id,
+      formatCell(r.sample_id),
       formatCell(r.model_name),
       formatCell(r.voice_name),
       formatCell(r.ground_truth_label),
-      formatCell(r.ground_truth_canonical || mapToCanonical(r.ground_truth_label)),
+      formatCell(mapToCanonical(r.ground_truth_label)),
       formatCell(r.track2_hyp_label),
-      formatCell(r.track2_hyp_canonical || mapToCanonical(r.track2_hyp_label)),
-      r.classification_match,
+      formatCell(mapToCanonical(r.track2_hyp_label)),
+      formatCell(r.classification_match ? 'true' : 'false'),
       formatCell(r.norm_wer_pct),
       formatCell(r.raw_wer_pct),
       formatCell(r.error_root_cause),
@@ -375,10 +194,11 @@ function main() {
       formatCell(r.extracted_transcript)
     ].join(','))
   ];
+
   fs.writeFileSync(path.resolve('data/audio_benchmark_results.csv'), '\uFEFF' + csvRows.join('\r\n'), 'utf8');
   console.log('Saved updated audio_benchmark_results.csv');
 
-  // Save compact UI json
+  // Compact JSON for evaluation engine UI
   const compact = updatedResults.map(r => ({
     id: r.sample_id,
     scenario: r.scenario_ref,
@@ -409,19 +229,43 @@ function main() {
   fs.writeFileSync(path.resolve('data/compact_benchmark_for_ui.json'), JSON.stringify(compact, null, 2), 'utf8');
   console.log('Saved updated compact_benchmark_for_ui.json');
 
-  // Error analysis report json and csv
-  const errorCasesOnly = updatedResults.filter(r => !r.classification_match);
-  fs.writeFileSync(path.resolve('data/mizan_voice_error_analysis_report.json'), JSON.stringify({
-    report_title: 'Mizan Voice Error & Misclassification Analysis Report',
-    date: '2026-10-23',
-    total_errors_recorded: errorCasesOnly.length,
-    errors: errorCasesOnly
-  }, null, 2), 'utf8');
-  console.log('Saved mizan_voice_error_analysis_report.json');
+  // Save Error Analysis Report
+  const errorsOnly = updatedResults.filter(r => !r.classification_match);
+  const errorReport = {
+    report_title: "Mizan Voice Error & Misclassification Analysis Report",
+    date: "2026-10-23",
+    total_errors_recorded: errorsOnly.length,
+    errors: errorsOnly
+  };
+  fs.writeFileSync(path.resolve('data/mizan_voice_error_analysis_report.json'), JSON.stringify(errorReport, null, 2), 'utf8');
+  console.log('Saved updated mizan_voice_error_analysis_report.json (' + errorsOnly.length + ' error cases)');
 
-  console.log('Summary of recalculation:');
-  console.log('Whisper Small Summary:', updatedSummary['Xenova/whisper-small']);
-  console.log('Whisper Tiny Summary:', updatedSummary['Xenova/whisper-tiny']);
+  // Save model comparison CSV
+  const tiny = updatedSummary['Xenova/whisper-tiny'];
+  const small = updatedSummary['Xenova/whisper-small'];
+  const compHeaders = ['metric_name', 'whisper_tiny', 'whisper_small', 'scientific_notes'];
+  const compRows = [
+    compHeaders.join(','),
+    [formatCell('Normalized WER'), formatCell(tiny.avg_norm_wer), formatCell(small.avg_norm_wer), formatCell('WER reduction in Small model')].join(','),
+    [formatCell('Raw WER'), formatCell(tiny.avg_raw_wer), formatCell(small.avg_raw_wer), formatCell('Lower phonetic and orthographic distortion')].join(','),
+    [formatCell('Corpus WER'), formatCell(tiny.corpus_wer), formatCell(small.corpus_wer), formatCell('Aggregated word edits over full corpus')].join(','),
+    [formatCell('Average Processing Time (sec)'), formatCell(tiny.avg_processing_time_sec), formatCell(small.avg_processing_time_sec), formatCell('Tiny is 4.5x faster in browser')].join(','),
+    [formatCell('Multi-Class Accuracy'), formatCell(tiny.multi_class_accuracy), formatCell(small.multi_class_accuracy), formatCell('Canonical 5-class match on full audio track')].join(','),
+    [formatCell('Evaluated Binary Cohort (N)'), formatCell(tiny.harm_detection_metrics.evaluated_cohort_size), formatCell(small.harm_detection_metrics.evaluated_cohort_size), formatCell('Pre-defined harmful (11) and safe (6) samples')].join(','),
+    [formatCell('Excluded Contextual Samples (N)'), formatCell(tiny.harm_detection_metrics.excluded_contextual_size), formatCell(small.harm_detection_metrics.excluded_contextual_size), formatCell('Pre-defined contextual review samples (MVA-017, MVA-018, MVA-019)')].join(','),
+    [formatCell('Missed Harm Cases (FN)'), formatCell(tiny.harm_detection_metrics.false_negatives), formatCell(small.harm_detection_metrics.false_negatives), formatCell('Harmful cases obscured by speech distortion')].join(','),
+    [formatCell('False Alarms (FP)'), formatCell(tiny.harm_detection_metrics.false_positives), formatCell(small.harm_detection_metrics.false_positives), formatCell('Zero false alarms across both models')].join(','),
+    [formatCell('Harm Precision'), formatCell(tiny.harm_detection_metrics.precision), formatCell(small.harm_detection_metrics.precision), formatCell('Precision on harmful flags')].join(','),
+    [formatCell('Harm Recall'), formatCell(tiny.harm_detection_metrics.recall), formatCell(small.harm_detection_metrics.recall), formatCell('Small captures 100% of harm; Tiny only 18.2%')].join(','),
+    [formatCell('Harm F1-Score'), formatCell(tiny.harm_detection_metrics.f1_score), formatCell(small.harm_detection_metrics.f1_score), formatCell('Harm detection harmonic mean')].join(','),
+    [formatCell('False Positive Rate (FPR)'), formatCell(tiny.harm_detection_metrics.false_positive_rate), formatCell(small.harm_detection_metrics.false_positive_rate), formatCell('Zero false positives on safe content')].join(',')
+  ];
+  fs.writeFileSync(path.resolve('data/model_comparison_tiny_vs_small.csv'), '\uFEFF' + compRows.join('\r\n'), 'utf8');
+  console.log('Saved updated model_comparison_tiny_vs_small.csv');
+
+  console.log('\n--- MODEL SUMMARY STATS ---');
+  console.log('Whisper Tiny:', tiny);
+  console.log('\nWhisper Small:', small);
 }
 
 main();

@@ -24,13 +24,13 @@
       "total_deletions": 27,
       "total_insertions": 1,
       "avg_processing_time_sec": "3.52",
-      "multi_class_accuracy": "35.0%",
+      "multi_class_accuracy": "30.0%",
       "harm_detection_metrics": {
-        "evaluated_cohort_size": 16,
-        "excluded_contextual_size": 4,
+        "evaluated_cohort_size": 17,
+        "excluded_contextual_size": 3,
         "true_positives": 2,
         "false_positives": 0,
-        "true_negatives": 5,
+        "true_negatives": 6,
         "false_negatives": 9,
         "precision": "100.0%",
         "recall": "18.2%",
@@ -50,13 +50,13 @@
       "total_deletions": 4,
       "total_insertions": 3,
       "avg_processing_time_sec": "15.82",
-      "multi_class_accuracy": "90.0%",
+      "multi_class_accuracy": "95.0%",
       "harm_detection_metrics": {
-        "evaluated_cohort_size": 16,
-        "excluded_contextual_size": 4,
+        "evaluated_cohort_size": 17,
+        "excluded_contextual_size": 3,
         "true_positives": 11,
         "false_positives": 0,
-        "true_negatives": 5,
+        "true_negatives": 6,
         "false_negatives": 0,
         "precision": "100.0%",
         "recall": "100.0%",
@@ -101,9 +101,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "سليم",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-002",
@@ -139,9 +139,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "سليم",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-003",
@@ -215,9 +215,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "سليم",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-005",
@@ -252,9 +252,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "سليم",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-006",
@@ -288,9 +288,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "إساءة",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-007",
@@ -324,9 +324,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "إساءة",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-008",
@@ -359,9 +359,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "إساءة",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-009",
@@ -395,9 +395,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "إساءة",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-010",
@@ -432,9 +432,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "تهديد",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-011",
@@ -469,9 +469,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "تهديد",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-012",
@@ -582,9 +582,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "طلب معلومات شخصية",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-015",
@@ -617,9 +617,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "طلب معلومات شخصية",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-016",
@@ -653,9 +653,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "طلب معلومات شخصية",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-017",
@@ -690,8 +690,8 @@
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
       "track2_hyp_matched": [],
       "classification_match": true,
-      "track1_ref_canonical": "مراجعة سياقية / غير محسوم",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track1_ref_canonical": "مراجعة سياقية",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "مطابقة تامة دون خطأ",
       "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
@@ -727,8 +727,8 @@
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
       "track2_hyp_matched": [],
       "classification_match": true,
-      "track1_ref_canonical": "مراجعة سياقية / غير محسوم",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track1_ref_canonical": "مراجعة سياقية",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "مطابقة تامة دون خطأ",
       "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
@@ -766,8 +766,8 @@
         "مقلب"
       ],
       "classification_match": true,
-      "track1_ref_canonical": "مراجعة سياقية / غير محسوم",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track1_ref_canonical": "مراجعة سياقية",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "مطابقة تامة دون خطأ",
       "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
@@ -775,8 +775,8 @@
       "sample_id": "MVA-020",
       "scenario_ref": "MV-025",
       "voice_name": "ar-SA-ZariyahNeural",
-      "ground_truth_label": "مراجعة سياقية",
-      "ground_truth_risk": "متوسط",
+      "ground_truth_label": "سليم",
+      "ground_truth_risk": "منخفض",
       "model_id": "Xenova/whisper-tiny",
       "model_name": "Whisper Tiny",
       "ground_truth_text": "ما راح اعطيك رقمي ولا راح ارسل لك أي صورة.",
@@ -800,11 +800,11 @@
       "track2_hyp_label": "لم تطابق القواعد أي مؤشر معروف",
       "track2_hyp_level": "غير محسوم — يحتاج مراجعة بشرية",
       "track2_hyp_matched": [],
-      "classification_match": true,
+      "classification_match": false,
       "track1_ref_canonical": "سليم",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
-      "error_root_cause": "مطابقة تامة دون خطأ",
-      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
+      "track2_hyp_canonical": "مراجعة سياقية",
+      "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-001",
@@ -1002,9 +1002,9 @@
       "track2_hyp_matched": [],
       "classification_match": false,
       "track1_ref_canonical": "سليم",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "خطأ في التفريغ الصوتي (ASR)",
-      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية."
+      "proposed_remediation": "الارتقاء إلى نموذج تفريغ صوتي أكبر أو تدريب موجه على الصوتيات العامية لاستعادة الكلمات المفتاحية المشوهة."
     },
     {
       "sample_id": "MVA-006",
@@ -1467,8 +1467,8 @@
         "لا تاخذها جد"
       ],
       "classification_match": true,
-      "track1_ref_canonical": "مراجعة سياقية / غير محسوم",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track1_ref_canonical": "مراجعة سياقية",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "مطابقة تامة دون خطأ",
       "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
@@ -1506,8 +1506,8 @@
         "لعبة بس"
       ],
       "classification_match": true,
-      "track1_ref_canonical": "مراجعة سياقية / غير محسوم",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track1_ref_canonical": "مراجعة سياقية",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "مطابقة تامة دون خطأ",
       "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
@@ -1545,8 +1545,8 @@
         "مقلب"
       ],
       "classification_match": true,
-      "track1_ref_canonical": "مراجعة سياقية / غير محسوم",
-      "track2_hyp_canonical": "مراجعة سياقية / غير محسوم",
+      "track1_ref_canonical": "مراجعة سياقية",
+      "track2_hyp_canonical": "مراجعة سياقية",
       "error_root_cause": "مطابقة تامة دون خطأ",
       "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     },
@@ -1554,8 +1554,8 @@
       "sample_id": "MVA-020",
       "scenario_ref": "MV-025",
       "voice_name": "ar-SA-ZariyahNeural",
-      "ground_truth_label": "مراجعة سياقية",
-      "ground_truth_risk": "متوسط",
+      "ground_truth_label": "سليم",
+      "ground_truth_risk": "منخفض",
       "model_id": "Xenova/whisper-small",
       "model_name": "Whisper Small",
       "ground_truth_text": "ما راح اعطيك رقمي ولا راح ارسل لك أي صورة.",
@@ -1581,11 +1581,11 @@
       "track2_hyp_matched": [
         "ما راح اعطيك"
       ],
-      "classification_match": false,
+      "classification_match": true,
       "track1_ref_canonical": "سليم",
       "track2_hyp_canonical": "سليم",
-      "error_root_cause": "غموض السياق والمزاح",
-      "proposed_remediation": "إحالة المحتوى للتدقيق البشري وإتاحة نافذة سياق أوسع للحوار لتحديد النية."
+      "error_root_cause": "مطابقة تامة دون خطأ",
+      "proposed_remediation": "لا يتطلب إجراء؛ مخرجات النموذج والقواعد متطابقة مع المرجع."
     }
   ]
 }
